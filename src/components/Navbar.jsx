@@ -72,7 +72,7 @@ function ResponsiveAppBar() {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "rgba(0, 0, 0, 0.7)", boxShadow: "none" }}
+      sx={{ backgroundColor: "black", boxShadow: "none" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -145,6 +145,7 @@ function ResponsiveAppBar() {
             href=""
             sx={{
               mr: 2,
+
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "monospace",

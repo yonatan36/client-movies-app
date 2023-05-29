@@ -4,7 +4,7 @@ import ResponsiveAppBar from "./components/Navbar";
 import Router from "./routes/Router";
 function App() {
   return (
-    <Container>
+    <div>
       <header>
         <ResponsiveAppBar />
       </header>
@@ -12,7 +12,7 @@ function App() {
         <Router />
       </main>
       <footer></footer>
-    </Container>
+    </div>
   );
 }
 
