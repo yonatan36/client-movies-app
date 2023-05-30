@@ -4,7 +4,11 @@ import ResponsiveAppBar from "./components/Navbar";
 import Router from "./routes/Router";
 function App() {
   return (
-    <div>
+    <Container
+      maxWidth={false}
+      disableGutters
+      style={{ height: "100vh", position: "relative" }}
+    >
       <header>
         <ResponsiveAppBar />
       </header>
@@ -12,7 +16,7 @@ function App() {
         <Router />
       </main>
       <footer></footer>
-    </div>
+    </Container>
   );
 }
 
