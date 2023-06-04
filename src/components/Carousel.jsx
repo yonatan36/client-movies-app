@@ -1,7 +1,6 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
 import slide1 from "../../src/assets/home1.jpg";
 import slide2 from "../../src/assets/home2.jpg";
 import slide3 from "../../src/assets/home3.jpg";
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
   },
   imageTitle: {
     position: "absolute",
-    top: 60,
+    top: 15,
     left: 80,
     fontSize: 90,
     fontWeight: "800",
@@ -28,7 +27,6 @@ const useStyles = makeStyles({
     WebkitFontSmoothing: "antialiased",
   },
 });
-
 
 const CarouselComponent = () => {
   const classes = useStyles();
@@ -63,9 +61,7 @@ const CarouselComponent = () => {
             alt={item.caption}
             className={classes.carouselImage}
           />
-          <Typography variant="h6" className={classes.imageTitle}>
-            {item.Title}
-          </Typography>
+          <h1 className={classes.imageTitle}>{item.Title}</h1>
         </div>
       ))}
     </Carousel>

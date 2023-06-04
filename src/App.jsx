@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "@mui/material";
-import ResponsiveAppBar from "./components/Navbar";
+import ResponsiveAppBar from "./components/navbar/Navbar";
 import Router from "./routes/Router";
 function App() {
   return (

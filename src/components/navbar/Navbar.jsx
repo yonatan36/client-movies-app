@@ -8,12 +8,11 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import ROUTES from "../routes/ROUTES";
-import { NavLink } from "react-router-dom";
+import ROUTES from "../../routes/ROUTES";
+import NavLinkComponent from "./NavLinkComponent";
 
 
 
@@ -92,7 +91,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            YOFIX
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -130,13 +129,13 @@ function ResponsiveAppBar() {
                   key={"miniLinks" + page.url}
                   onClick={handleCloseNavMenu}
                 >
-                  <NavLink to={page.url}>
-                    <Typography textAlign="center">{page.label}</Typography>
-                  </NavLink>
+                
+                  <NavLinkComponent url={page.url} label={page.label} />
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -160,21 +159,14 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <NavLink key={page.url} to={page.url}>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.label}
-                </Button>
-              </NavLink>
+              <NavLinkComponent key={page.url} {...page} />
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" />
               </IconButton>
             </Tooltip>
             <Menu
