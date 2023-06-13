@@ -45,14 +45,13 @@ function Home() {
  const [cardsArr,setCardArr] = useState(initalCardArr)
   return (
     <>
-   
       <Box>
         <CarouselComponent />
 
         <Container maxWidth="" sx={{ my: 2, display: "flex" }}>
           <Grid
             container
-            spacing={6}
+            spacing={3}
             justifyContent={"flex-start"}
             alignItems={"center"}
           >
@@ -71,6 +70,7 @@ function Home() {
           </Grid>
         </Container>
       </Box>
+    
     </>
   );
 }

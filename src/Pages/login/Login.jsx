@@ -11,15 +11,19 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { TextField } from "@mui/material";
 import ROUTES from "../../routes/ROUTES";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { feildValidation } from "../../validation/feildValidation";
 import { LoginArray } from "./ArrayLogin";
+import useLoggedIn from "../../hooks/useLoggedIn";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const loggedIn = useLoggedIn();
 
   const handleChange = (event) => {
     const { name, value, checked, type } = event.target;
@@ -32,17 +36,31 @@ const Login = () => {
     }
   };
 
+  const getUserInfo = async () => {
+    const { data } = await axios.get("/auth/:id");
+    return data.name.firstName;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if(formError){
-        console.log("error")
+      if (!formError) {
+        console.log("error");
+        return;
       }
-      await axios.post("http://localhost:8181/api/auth/login", formData);
+      setIsLoading(true);
+      const { data } = await axios.post("/auth/login", formData);
+      localStorage.setItem("token", data.token);
+      setIsLoading(false);
+      loggedIn();
       console.log(formData);
       navigate(ROUTES.HOME);
-    } catch (error) {
-      console.log(error);
+      const firstName = await getUserInfo();
+      toast.success(`Welcome ${firstName}! Good to see you`);
+    } catch (err) {
+       setIsLoading(false);
+       toast.error(`invalid email and/or password`);
+      console.log(err);
     }
   };
 
@@ -75,7 +93,7 @@ const Login = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             {LoginArray.map((field, index) => (
               <Grid
@@ -106,8 +124,8 @@ const Login = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                onClick={handleSubmit}
                 sx={{ mt: 2 }}
+                color="error"
               >
                 Sign Up
               </Button>
@@ -118,6 +136,7 @@ const Login = () => {
                 fullWidth
                 variant="contained"
                 onClick={resetForm}
+                color="error"
               >
                 <RestartAltIcon /> Reset Form
               </Button>

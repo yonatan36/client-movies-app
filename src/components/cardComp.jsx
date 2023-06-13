@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import {
   Card,
   CardActionArea,
   CardMedia,
   CardHeader,
-  CardContent,
   CardActions,
   Button,
   Dialog,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 
-const CardComponent = ({ img, title, price, description, id, }) => {
+const CardComponent = ({ img, title, description, id }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -31,7 +31,7 @@ const CardComponent = ({ img, title, price, description, id, }) => {
       <CardActionArea onClick={handleOpen}>
         <CardMedia height="250" component="img" image={img} />
         <CardHeader
-          title="Title"
+          title={title}
           sx={{
             position: "absolute",
             top: 0,
@@ -43,20 +43,20 @@ const CardComponent = ({ img, title, price, description, id, }) => {
             zIndex: 1,
           }}
         />
-        <CardContent></CardContent>
-        <CardActions>
-          <Button size="small" onClick={handleOpen}>
-            Button
-          </Button>
-        </CardActions>
       </CardActionArea>
+      <CardActions>
+        <Button size="small" onClick={handleOpen}>
+          Button
+        </Button>
+        <Button sx={{ marginLeft: "auto" }}>
+          <PlayCircleFilledIcon />
+        </Button>
+      </CardActions>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
         <CardMedia height="250" component="img" image={img} />
         <DialogContent>
-          <DialogContentText>
-            {description}
-          </DialogContentText>
+          <DialogContentText>{description}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

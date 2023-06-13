@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   carouselImage: {
     position: "relative",
     width: "100%",
-    height: 500,
+    height: 470,
     objectFit: "cover",
   },
   imageTitle: {
