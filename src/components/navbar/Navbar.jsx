@@ -71,7 +71,7 @@ function ResponsiveAppBar() {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "black", boxShadow: "none" }}
+      sx={{ backgroundColor: "#212121", boxShadow: "none" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -129,7 +129,6 @@ function ResponsiveAppBar() {
                   key={"miniLinks" + page.url}
                   onClick={handleCloseNavMenu}
                 >
-                
                   <NavLinkComponent url={page.url} label={page.label} />
                 </MenuItem>
               ))}
@@ -154,7 +153,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            YOFIX
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
