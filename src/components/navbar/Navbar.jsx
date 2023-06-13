@@ -2,6 +2,7 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import { useSelector } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
@@ -13,8 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
-
-
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import BedtimeIcon from "@mui/icons-material/Bedtime";
 
 const pages = [
   {
@@ -47,9 +48,12 @@ const pages = [
 //   },
 // ];
 
-const settings = ["Profile", "Account",  "Logout"];
+const settings = ["Profile", "Account", "Logout"];
 
-function ResponsiveAppBar() {
+const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
+  const { isLoggedIn } = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice
+  );
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -135,7 +139,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
 
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -161,13 +164,24 @@ function ResponsiveAppBar() {
               <NavLinkComponent key={page.url} {...page} />
             ))}
           </Box>
-
+          <Typography sx={{ display: { xs: "none", md: "inline" } }}>
+            {darkMode ? "Dark" : "Light"} Mode
+          </Typography>
+          <IconButton
+            color="inherit"
+            onClick={onThemeChange}
+            sx={{ ml: 1, mr: 2 }}
+          >
+            {darkMode ? <BedtimeIcon /> : <WbSunnyIcon />}
+          </IconButton>
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" />
               </IconButton>
             </Tooltip>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -195,5 +209,5 @@ function ResponsiveAppBar() {
       </Container>
     </AppBar>
   );
-}
+};
 export default ResponsiveAppBar;
