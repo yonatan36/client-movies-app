@@ -15,7 +15,19 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 
-const CardComponent = ({ img, title, description, id }) => {
+const CardComponent = ({
+  img,
+  title,
+  subTitle,
+  phone,
+  address,
+  description,
+  email,
+  createdAt,
+  likes,
+  bizNumber,
+  id,
+}) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {

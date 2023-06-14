@@ -5,9 +5,9 @@ const ROUTES = {
   REGISTER: "/register",
   ABOUT: "/about",
   //   PROFILE: "/profile",
-  //   FAV: "/favorit",
+    FAV: "/favorit",
   //   MYCARDS: "/mycards",
-  // LOGOUT: "/logout",
+   LOGOUT: "/logout",
 };
 export default ROUTES;
 

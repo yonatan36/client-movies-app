@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 
+import useLoggedIn from "./hooks/useLoggedIn";
+
 const light = {
   palette: {
     mode: "light",
@@ -24,6 +26,10 @@ const dark = {
   
 
 function App() {
+  const loggIn = useLoggedIn();
+  useEffect(() => {
+    loggIn();
+  }, []);
     const [darkMode, setDarkMode] = useState(true);
     const changeTheme = () => {
       setDarkMode(!darkMode);

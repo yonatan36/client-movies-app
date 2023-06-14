@@ -4,6 +4,8 @@ import Register from "../Pages/registerPage/Register";
 import Login from "../Pages/login/Login";
 import About from "../Pages/About";
 import ROUTES from "./ROUTES.js";
+import Fav from "../Pages/Fav";
+import LogOut from "../components/LogOut";
 
 const Router = () => {
   return (
@@ -13,6 +15,8 @@ const Router = () => {
       <Route exact path={ROUTES.REGISTER} element={<Register />} />
       <Route exact path={ROUTES.LOGIN} element={<Login />} />
       <Route exact path={ROUTES.ABOUT} element={<About />} />
+      <Route exact path={ROUTES.FAV} element={<Fav />} />
+      <Route exact path={ROUTES.LOGOUT} element={<LogOut />} />
     </Routes>
   );
 };

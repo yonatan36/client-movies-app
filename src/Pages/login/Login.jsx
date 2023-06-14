@@ -8,16 +8,23 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { TextField } from "@mui/material";
-import ROUTES from "../../routes/ROUTES";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { feildValidation } from "../../validation/feildValidation";
 import { LoginArray } from "./ArrayLogin";
+import ROUTES from "../../routes/ROUTES";
+import axios from "axios";
+import { TextField } from "@mui/material";
+import { toast } from "react-toastify";
+import { feildValidation } from "../../validation/feildValidation";
+import { useNavigate } from "react-router-dom";
 import useLoggedIn from "../../hooks/useLoggedIn";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
 
-const Login = () => {
+const Login = ({ openLogin, setOpenLogin }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
@@ -37,7 +44,7 @@ const Login = () => {
   };
 
   const getUserInfo = async () => {
-    const { data } = await axios.get("/auth/:id");
+    const { data } = await axios.get("/users/userInfo");
     return data.name.firstName;
   };
 
@@ -49,7 +56,7 @@ const Login = () => {
         return;
       }
       setIsLoading(true);
-      const { data } = await axios.post("/auth/login", formData);
+      const { data } = await axios.post("/users/login", formData);
       localStorage.setItem("token", data.token);
       setIsLoading(false);
       loggedIn();
@@ -57,9 +64,10 @@ const Login = () => {
       navigate(ROUTES.HOME);
       const firstName = await getUserInfo();
       toast.success(`Welcome ${firstName}! Good to see you`);
+      handleClose(true);
     } catch (err) {
-       setIsLoading(false);
-       toast.error(`invalid email and/or password`);
+      setIsLoading(false);
+      toast.error(`invalid email and/or password`);
       console.log(err);
     }
   };
@@ -74,78 +82,94 @@ const Login = () => {
     setFormData({});
     setFormError({});
   };
-
-  // const formValid = Object.keys(formError).length === 0;
+  const handleClose = () => setOpenLogin(false);
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <HowToRegIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            {LoginArray.map((field, index) => (
-              <Grid
-                item
-                xs={12}
-                sm={field.sm}
-                key={`${new Date()}-${field.id}`}
+    <React.Fragment>
+      <Dialog open={openLogin} onClose={handleClose}>
+        <DialogContent>
+          <Container maxWidth="xs">
+            <Box
+              sx={{
+                marginTop: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <HowToRegIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 3 }}
               >
-                <TextField
-                  fullWidth
-                  label={field.label}
-                  name={field.name}
-                  id={field.id}
-                  type={field.type}
-                  required={field.required}
-                  value={formData[field.name] || ""}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  autoFocus={index === fieldToFocus}
-                />
-                <Typography color="red" fontSize="8pt">
-                  {formError[field.name] || ""}
-                </Typography>
-              </Grid>
-            ))}
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 2 }}
-                color="error"
-              >
-                Sign Up
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="button"
-                fullWidth
-                variant="contained"
-                onClick={resetForm}
-                color="error"
-              >
-                <RestartAltIcon /> Reset Form
-              </Button>
-            </Grid>
-          </Grid>
-          {/* Cancel button and Link to login page */}
-        </Box>
-      </Box>
-    </Container>
+                <Grid container spacing={2}>
+                  {LoginArray.map((field, index) => (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={field.sm}
+                      key={`${new Date()}-${field.id}`}
+                    >
+                      <TextField
+                        fullWidth
+                        label={field.label}
+                        name={field.name}
+                        id={field.id}
+                        type={field.type}
+                        required={field.required}
+                        value={formData[field.name] || ""}
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        autoFocus={index === fieldToFocus}
+                      />
+                      <Typography color="red" fontSize="8pt">
+                        {formError[field.name] || ""}
+                      </Typography>
+                    </Grid>
+                  ))}
+                  <Grid item xs={12}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 4 }}
+                      color="error"
+                    >
+                      Sign Up
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      type="button"
+                      fullWidth
+                      variant="contained"
+                      onClick={resetForm}
+                      color="error"
+                    >
+                      <RestartAltIcon /> Reset Form
+                    </Button>
+                  </Grid>
+                </Grid>
+                {/* Cancel button and Link to login page */}
+              </Box>
+            </Box>
+                
+          </Container>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
   );
 };
 
