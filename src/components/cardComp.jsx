@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import {
   Card,
   CardActionArea,
@@ -27,6 +29,7 @@ const CardComponent = ({
   likes,
   bizNumber,
   id,
+  onDelete,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -37,6 +40,9 @@ const CardComponent = ({
   const handleClose = () => {
     setOpen(false);
   };
+  const handleDeleteBtnClick = ()=>{
+    onDelete(id)
+  }
 
   return (
     <Card square raised>
@@ -62,6 +68,9 @@ const CardComponent = ({
         </Button>
         <Button sx={{ marginLeft: "auto" }}>
           <PlayCircleFilledIcon />
+        </Button>
+        <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
+          <DeleteIcon />
         </Button>
       </CardActions>
       <Dialog open={open} onClose={handleClose}>

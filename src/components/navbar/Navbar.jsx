@@ -18,8 +18,8 @@ import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
-
 
 const pages = [
   {
@@ -33,9 +33,17 @@ const pages = [
 ];
 
 //not logged in users
-const settings = ["Profile", "Account", "Logout"];
+const settings = [
+  {
+    label: "Profile",
+  },
+  {
+    label: "LOGOUT",
+    url: ROUTES.LOGOUT,
+  },
+];
 
-const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
+const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
   const notAuthPages = [
     {
       label: "Login",
@@ -51,15 +59,13 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
       label: "Fav cards",
       url: ROUTES.FAV,
     },
-    {
-      label: "LOGOUT",
-      url: ROUTES.LOGOUT,
-    },
   ];
 
   const { isLoggedIn } = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice
   );
+  const { payload } = useSelector((bigPieBigState) => bigPieBigState.authSlice);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openLogin, setOpenLogin] = useState(false);
@@ -146,14 +152,13 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                   </MenuItem>
                 ))}
                 {isLoggedIn
-                  ? authedPages.map((page) => (
-                      <NavLinkComponent key={page.url} {...page} />
-                    ))
+                  ? ""
                   : notAuthPages.map((page) => (
                       <NavLinkComponent key={page.url} {...page} />
                     ))}
               </Menu>
             </Box>
+            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 
             <Typography
               variant="h5"
@@ -162,7 +167,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               href=""
               sx={{
                 mr: 2,
-
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
                 fontFamily: "monospace",
@@ -179,52 +183,78 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               {pages.map((page) => (
                 <NavLinkComponent key={page.url} {...page} />
               ))}
-              {(isLoggedIn ? authedPages : notAuthPages).map((page) => (
-                <NavLinkComponent key={page.url} {...page} />
-              ))}
             </Box>
-
-            <Typography sx={{ display: { xs: "none", md: "inline" } }}>
-              {darkMode ? "Dark" : "Light"} Mode
-            </Typography>
             <IconButton
               color="inherit"
               onClick={onThemeChange}
-              sx={{ ml: 1, mr: 2 }}
+              sx={{ ml: 1, mr: 1 }}
             >
               {darkMode ? <BedtimeIcon /> : <WbSunnyIcon />}
             </IconButton>
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" />
-                </IconButton>
-              </Tooltip>
-
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              {" "}
+              {isLoggedIn
+                ? ""
+                : notAuthPages.map((page) => (
+                    <NavLinkComponent key={page.url} {...page} />
+                  ))}
             </Box>
+
+            {isLoggedIn ? (
+              <Box sx={{ flexGrow: 0, ml: 1, mr: 1.5 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" />
+                  </IconButton>
+                </Tooltip>
+
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <Typography
+                    variant="button"
+                    sx={{
+                      display: "block",
+                      paddingX: "0.3rem",
+                      textAlign: "center",
+                      textTransform: "none",
+                      fontWeight: 600,
+                    }}
+                    color={"white"}
+                  >
+                    Hi {name}!
+                  </Typography>
+                  {settings.map((setting, index) => (
+                    <MenuItem key={index} onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center" sx={{ fontSize: "1rem" }}>
+                        <NavLink
+                          key={setting.url}
+                          to={setting.url}
+                          style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                        >
+                          {setting.label}
+                        </NavLink>
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            ) : (
+              ""
+            )}
           </Toolbar>
         </Container>
       </AppBar>

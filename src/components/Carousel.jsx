@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@material-ui/core/styles";
-import slide1 from "../../src/assets/home1.jpg";
-import slide2 from "../../src/assets/home2.jpg";
-import slide3 from "../../src/assets/home3.jpg";
 import font from "../../src/assets/texure.jpg";
+import { Box } from "@mui/material";
+import axios from "axios";
 
 const useStyles = makeStyles({
   carouselImage: {
     position: "relative",
     width: "100%",
-    height: 470,
+    height: 460,
     objectFit: "cover",
   },
   imageTitle: {
@@ -29,41 +28,28 @@ const useStyles = makeStyles({
 });
 
 const CarouselComponent = () => {
+  const [cardsArr, setCardArr] = useState(null);
+
   const classes = useStyles();
 
-  const carouselData = [
-    {
-      id: 1,
-      imageUrl: slide1,
-      caption: "Image 1",
-      Title: "Nice Image 1",
-    },
-    {
-      id: 2,
-      imageUrl: slide2,
-      caption: "Image 2",
-      Title: "Nice Image 2",
-    },
-    {
-      id: 3,
-      imageUrl: slide3,
-      caption: "Image 3",
-      Title: "Nice Image 3",
-    },
-  ];
+  useEffect(() => {
+    axios
+      .get("/cards")
+      .then(({ data }) => {
+        setCardArr(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Carousel animation="slide" swipe>
-      {carouselData.map((item) => (
-        <div key={item.id}>
-          <img
-            src={item.imageUrl}
-            alt={item.caption}
-            className={classes.carouselImage}
-          />
-          <h1 className={classes.imageTitle}>{item.Title}</h1>
-        </div>
-      ))}
+      {cardsArr &&
+        cardsArr.map((item, index) => (
+          <Box key={index}>
+            <img src={item.image.url} className={classes.carouselImage} />
+            <h1 className={classes.imageTitle}>{item.title}</h1>
+          </Box>
+        ))}
     </Carousel>
   );
 };

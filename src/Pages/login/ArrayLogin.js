@@ -1,4 +1,5 @@
 import Joi from "joi";
+import PasswordField from "../../components/PasswordField";
 
 export const LoginArray = [
   {
@@ -26,10 +27,8 @@ export const LoginArray = [
         )
       )
       .min(8)
-      .messages({
-        "string.pattern.base": `Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character from @$!%*?&.`,
-      })
       .max(15)
       .required(),
+    // component: PasswordField,
   },
-]
+];

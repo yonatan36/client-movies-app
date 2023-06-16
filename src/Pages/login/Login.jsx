@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -8,6 +8,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import LinearProgress from "@mui/material/LinearProgress";
 import { LoginArray } from "./ArrayLogin";
 import ROUTES from "../../routes/ROUTES";
 import axios from "axios";
@@ -15,6 +16,9 @@ import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import { feildValidation } from "../../validation/feildValidation";
 import { useNavigate } from "react-router-dom";
+import RegisterPage from "../registerPage/Register";
+import PasswordField from "../../components/PasswordField";
+
 import useLoggedIn from "../../hooks/useLoggedIn";
 import {
   Dialog,
@@ -28,20 +32,46 @@ const Login = ({ openLogin, setOpenLogin }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
+  const [formValid, setFormValid] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
+  const passwordRef = useRef();
+    const confirmPasswordRef = useRef();
+
+
+ 
+
   const navigate = useNavigate();
   const loggedIn = useLoggedIn();
 
-  const handleChange = (event) => {
-    const { name, value, checked, type } = event.target;
-    const fieldValue = type === "checkbox" ? checked : value;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: fieldValue }));
-    const fieldSchema = LoginArray.find((field) => field.name === name)?.joi;
-    if (fieldSchema) {
-      const error = feildValidation(fieldSchema, fieldValue, name);
-      setFormError((prevFormError) => ({ ...prevFormError, [name]: error }));
+
+  
+ const handleChange = (event) => {
+   const { name, value, checked, type } = event.target;
+   const fieldValue = type === "checkbox" ? checked : value;
+   setFormData((prevFormData) => ({ ...prevFormData, [name]: fieldValue }));
+   const fieldSchema = LoginArray.find((field) => field.name === name)?.joi;
+   if (fieldSchema) {
+     const error = feildValidation(fieldSchema, fieldValue, name);
+     setFormError((prevFormError) => ({ ...prevFormError, [name]: error }));
+   }
+ };
+  
+  // Validate the entire form
+  const validateForm = () => {
+    for (const field of LoginArray) {
+      if (field.required && (!formData[field.name] || formError[field.name])) {
+        return false;
+      }
     }
+    return true;
   };
+
+  useEffect(() => {
+    setFormValid(validateForm());
+  }, [formData, formError]);
 
   const getUserInfo = async () => {
     const { data } = await axios.get("/users/userInfo");
@@ -50,9 +80,11 @@ const Login = ({ openLogin, setOpenLogin }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
-      if (!formError) {
-        console.log("error");
+      if (!formValid) {
+        toast.info("Please fill in all the required fields correctly.");
+
         return;
       }
       setIsLoading(true);
@@ -60,15 +92,13 @@ const Login = ({ openLogin, setOpenLogin }) => {
       localStorage.setItem("token", data.token);
       setIsLoading(false);
       loggedIn();
-      console.log(formData);
-      navigate(ROUTES.HOME);
       const firstName = await getUserInfo();
       toast.success(`Welcome ${firstName}! Good to see you`);
+      navigate(ROUTES.HOME);
       handleClose(true);
     } catch (err) {
       setIsLoading(false);
-      toast.error(`invalid email and/or password`);
-      console.log(err);
+      toast.error("erorrr");
     }
   };
 
@@ -82,12 +112,21 @@ const Login = ({ openLogin, setOpenLogin }) => {
     setFormData({});
     setFormError({});
   };
-  const handleClose = () => setOpenLogin(false);
+
+  const handleClose = () => {
+    setOpenLogin(false);
+  };
+
+  const handleClick = () => {
+    setOpenRegister(true);
+  };
 
   return (
     <React.Fragment>
       <Dialog open={openLogin} onClose={handleClose}>
         <DialogContent>
+          {isLoading && <LinearProgress color="error" />}
+
           <Container maxWidth="xs">
             <Box
               sx={{
@@ -117,23 +156,31 @@ const Login = ({ openLogin, setOpenLogin }) => {
                       sm={field.sm}
                       key={`${new Date()}-${field.id}`}
                     >
-                      <TextField
-                        fullWidth
-                        label={field.label}
-                        name={field.name}
-                        id={field.id}
-                        type={field.type}
-                        required={field.required}
-                        value={formData[field.name] || ""}
-                        onChange={handleChange}
-                        onFocus={handleFocus}
-                        autoFocus={index === fieldToFocus}
-                      />
-                      <Typography color="red" fontSize="8pt">
-                        {formError[field.name] || ""}
-                      </Typography>
+                      {field.component ? (
+                        <field.component
+                          passwordRef={passwordRef}
+                          value={formData[field.name] || ""}
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          label={field.label}
+                          name={field.name}
+                          id={field.id}
+                          type={field.type}
+                          required={field.required}
+                          value={formData[field.name] || ""}
+                          onChange={handleChange}
+                          onFocus={handleFocus}
+                          autoFocus={index === fieldToFocus}
+                          error={!!formError[field.name]}
+                          helperText={formError[field.name] || ""}
+                        />
+                      )}
                     </Grid>
                   ))}
+
                   <Grid item xs={12}>
                     <Button
                       type="submit"
@@ -142,7 +189,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
                       sx={{ mt: 4 }}
                       color="error"
                     >
-                      Sign Up
+                      Sign in
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
@@ -162,13 +209,26 @@ const Login = ({ openLogin, setOpenLogin }) => {
             </Box>
                 
           </Container>
+          <RegisterPage
+            openRegister={openRegister}
+            setOpenRegister={setOpenRegister}
+          />
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleClick}>
+            <DialogContentText>Don't have an account?</DialogContentText>
+          </Button>
           <Button onClick={handleClose} color="primary">
             Close
           </Button>
         </DialogActions>
       </Dialog>
+      {openRegister && (
+        <RegisterPage
+          openRegister={openRegister}
+          setOpenRegister={setOpenRegister}
+        />
+      )}
     </React.Fragment>
   );
 };

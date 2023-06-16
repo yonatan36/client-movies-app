@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -9,10 +9,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { TextField } from "@mui/material";
+import { toast } from "react-toastify";
 import ROUTES from "../../routes/ROUTES";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Login from "../login/Login";
+import LinearProgress from "@mui/material/LinearProgress";
 import { feildValidation } from "../../validation/feildValidation";
 import { registerArray } from "../registerPage/ArrayInputs";
 import {
@@ -27,7 +29,27 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
+  const [formValid, setFormValid] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Handle input field focus
+  const handleFocus = (event) => {
+    setFieldToFocus(
+      registerArray.findIndex((field) => field.name === event.target.name)
+    );
+  };
+
+  // Validate the entire form
+  const validateForm = () => {
+    for (const field of registerArray) {
+      if (field.required && (!formData[field.name] || formError[field.name])) {
+        return false;
+      }
+    }
+    return true;
+  };
   const handleChange = (event) => {
     const { name, value, checked, type } = event.target;
     const fieldValue = type === "checkbox" ? checked : value;
@@ -39,22 +61,35 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.post("http://localhost:8181/api/auth/register", formData);
-      console.log(formData);
-      navigate(ROUTES.LOGIN);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    setFormValid(validateForm());
+  }, [formData, formError]);
 
-  const handleFocus = (event) => {
-    setFieldToFocus(
-      registerArray.findIndex((field) => field.name === event.target.name)
-    );
-  };
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  debugger
+
+  try {
+    if (!formValid) {
+      toast.info("Don't piss me off!");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const result = await axios.post("users/register", formData);
+
+    setIsLoading(false);
+    handleClose(false);
+    setOpenLogin(true);
+    toast.success(`Register success!`);
+  } catch (err) {
+    setIsLoading(false);
+    toast.error(`Oops! Registration failed. Please try again.`);
+    console.log("Register error:", err);
+  }
+};
+
 
   const resetForm = () => {
     setFormData({});
@@ -80,10 +115,17 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                 <HowToRegIcon />
               </Avatar>
-              <Typography component="h1" variant="h5">
+              <DialogTitle>
                 Sign up
-              </Typography>
-              <Box component="form" noValidate sx={{ mt: 3 }}>
+                {isLoading && <LinearProgress color="error" />}
+              </DialogTitle>
+
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 3 }}
+              >
                 <Grid container spacing={2}>
                   {registerArray.map((field, index) => (
                     <Grid
@@ -114,7 +156,6 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
                       type="submit"
                       fullWidth
                       variant="contained"
-                      onClick={handleSubmit}
                       sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
                       color="error"
                     >
@@ -140,11 +181,20 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
           </Container>
         </DialogContent>
         <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenLogin(true);
+              handleClose();
+            }}
+          >
+            <DialogContentText>alredy have acount?</DialogContentText>
+          </Button>
           <Button onClick={handleClose} color="primary">
             Close
           </Button>
         </DialogActions>
       </Dialog>
+      <Login openLogin={openLogin} setOpenLogin={setOpenLogin} />
     </React.Fragment>
   );
 };
