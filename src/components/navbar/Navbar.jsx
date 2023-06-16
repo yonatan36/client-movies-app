@@ -90,7 +90,10 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
     <>
       <AppBar
         position="static"
-        sx={{ backgroundColor: "#212121", boxShadow: "none" }}
+        sx={{
+          backgroundColor: darkMode ? "#212121" : "#9e9e9e",
+          boxShadow: "none",
+        }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>

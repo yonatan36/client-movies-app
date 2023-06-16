@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import CarouselComponent from "../components/Carousel";
 import ImageSlider from "../components/ImageSlider";
 import CardComponent from "../components/cardComp";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useState } from "react";
 import axios from "axios";
 import {
-  CardMedia,
   Grid,
   Container,
   Button,
@@ -21,6 +21,10 @@ function Home() {
   const [cardsArr, setCardArr] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState(null);
+  const payload = useSelector((bigPie) => bigPie.authSlice.payload);
+  const { isLoggedIn } = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice
+  );
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -95,6 +99,12 @@ function Home() {
                 likes={item.likes}
                 bizNumber={item.bizNumber}
                 onDelete={handleDeleteFromInitialCardsArr}
+                canDelete={
+                  (payload && payload.isAdmin) ||
+                  (payload &&
+                    payload.isBusiness &&
+                    payload._id === item.user_id)
+                }
               />
             </Grid>
           ))}

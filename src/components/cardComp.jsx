@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import DeleteIcon from "@mui/icons-material/Delete";
+import StarRating from "./StarRatingComp"
 
 import {
   Card,
@@ -20,16 +21,10 @@ import PropTypes from "prop-types";
 const CardComponent = ({
   img,
   title,
-  subTitle,
-  phone,
-  address,
   description,
-  email,
-  createdAt,
-  likes,
-  bizNumber,
   id,
   onDelete,
+  canDelete,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -40,14 +35,17 @@ const CardComponent = ({
   const handleClose = () => {
     setOpen(false);
   };
-  const handleDeleteBtnClick = ()=>{
-    onDelete(id)
-  }
+
+  const handleDeleteBtnClick = () => {
+    onDelete(id);
+  };
 
   return (
     <Card square raised>
       <CardActionArea onClick={handleOpen}>
         <CardMedia height="250" component="img" image={img} />
+        <StarRating />
+
         <CardHeader
           title={title}
           sx={{
@@ -69,10 +67,17 @@ const CardComponent = ({
         <Button sx={{ marginLeft: "auto" }}>
           <PlayCircleFilledIcon />
         </Button>
-        <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
-          <DeleteIcon />
-        </Button>
+        {canDelete ? (
+          <>
+            <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
+              <DeleteIcon />
+            </Button>
+
+            {/* Display random number of stars */}
+          </>
+        ) : null}
       </CardActions>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
         <CardMedia height="250" component="img" image={img} />
