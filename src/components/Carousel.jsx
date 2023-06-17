@@ -4,29 +4,52 @@ import { makeStyles } from "@material-ui/core/styles";
 import font from "../../src/assets/texure.jpg";
 import { Box, Button } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import ErrorIcon from "@mui/icons-material/Error";
+import Typography from "@mui/material/Typography";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   carouselImage: {
     position: "relative",
     width: "100%",
-    height: 460,
+    height: 560,
     objectFit: "cover",
+    animation: "$foggyEffect 1s ease-in forwards",
+  },
+  "@keyframes foggyEffect": {
+    "0%": {
+      filter: "blur(10px)",
+      opacity: 0,
+    },
+    "50%": {
+      filter: "blur(5px)",
+      opacity: 0.5,
+    },
+    "100%": {
+      filter: "blur(0)",
+      opacity: 1,
+    },
   },
   imageTitle: {
     position: "absolute",
-    top: 15,
-    left: 80,
-    fontSize: 90,
+    top: 150,
+    left: 50,
+    fontSize: 100,
     fontWeight: 800,
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-    backgroundImage: `url(${font})`,
-    backgroundClip: "text",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    WebkitFontSmoothing: "antialiased",
+    color: "white",
     [theme.breakpoints.down("sm")]: {
-      fontSize: 60,
+      fontSize: 70,
+      top: 170,
+      left: 30,
+    },
+  },
+  description: {
+    position: "absolute",
+    color: "white",
+    top: 280,
+    left: 60,
+    [theme.breakpoints.down("sm")]: {
+      top: 270,
       left: 40,
     },
   },
@@ -34,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CarouselComponent = () => {
   const [cardsArr, setCardArr] = useState(null);
+  const [description, setDescrption] = useState(null);
 
   const classes = useStyles();
 
@@ -42,6 +66,7 @@ const CarouselComponent = () => {
       .get("/cards")
       .then(({ data }) => {
         setCardArr(data);
+        setDescrption(data.description);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -52,23 +77,47 @@ const CarouselComponent = () => {
         cardsArr.map((item, index) => (
           <Box key={index}>
             <img src={item.image.url} className={classes.carouselImage} />
-            <h1 className={classes.imageTitle}>{item.title}</h1>
+            <Typography variant="h6" className={classes.description}>
+              {item.description}
+            </Typography>
+            <Typography className={classes.imageTitle}>{item.title}</Typography>
             <Button
-            color="error"
+              variant="contained"
+              color="error"
               sx={{
                 position: "absolute",
-                top: { xs: 300, sm: 280, md: 250,},
-                right: { xs: 80, sm: 150, md: 250,},
-                
+                top: 400,
+                left: { xs: 30, md: 50 },
               }}
             >
-              
               <PlayCircleIcon
                 sx={{
                   display: { xs: "block", lg: "flex" },
-                  fontSize: { xs: "90px", lg: "120px" },
+                  fontSize: { xs: "30px", lg: "40px" },
+                  marginRight: "12px",
+                  marginLeft: "5px",
                 }}
               />
+              Play
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "grey",
+                color: "white",
+                position: "absolute",
+                top: 400,
+                left: { xs: 160, md: 190 },
+              }}
+            >
+              <ErrorIcon
+                sx={{
+                  display: { xs: "block", lg: "flex" },
+                  fontSize: { xs: "30px", lg: "40px" },
+                  marginRight: "7px",
+                }}
+              />
+              More info
             </Button>
           </Box>
         ))}

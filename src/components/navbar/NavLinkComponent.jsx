@@ -6,7 +6,7 @@ const NavLinkComponent = ({ url, label }) => {
     <Typography
       sx={{
         my: 2,
-        color: isActive ? "#f44336" : "#64b5f6",
+        color: isActive ? "#f44336" : "#fafafa",
         display: "block",
         p: 2,
         fontWeight: "bold",

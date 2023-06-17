@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import DeleteIcon from "@mui/icons-material/Delete";
-import StarRating from "./StarRatingComp"
+import StarRating from "./StarRatingComp";
+
 
 import {
   Card,
@@ -15,6 +16,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Box,
 } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -28,6 +30,8 @@ const CardComponent = ({
 }) => {
   const [open, setOpen] = useState(false);
 
+
+ 
   const handleOpen = () => {
     setOpen(true);
   };
@@ -44,7 +48,6 @@ const CardComponent = ({
     <Card square raised>
       <CardActionArea onClick={handleOpen}>
         <CardMedia height="250" component="img" image={img} />
-        <StarRating />
 
         <CardHeader
           title={title}
@@ -60,13 +63,18 @@ const CardComponent = ({
           }}
         />
       </CardActionArea>
+      <Box sx={{ ml: 2,mt:1 }}>
+        <StarRating />
+      </Box>
       <CardActions>
-        <Button size="small" onClick={handleOpen}>
-          Button
+        <Button
+          size="medium"
+          onClick={handleOpen}
+          style={{ color: "inherit" }}
+        >
+          <PlayCircleFilledIcon sx={{ mr: 1 }} /> Play
         </Button>
-        <Button sx={{ marginLeft: "auto" }}>
-          <PlayCircleFilledIcon />
-        </Button>
+
         {canDelete ? (
           <>
             <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
@@ -77,12 +85,22 @@ const CardComponent = ({
           </>
         ) : null}
       </CardActions>
-
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
-        <CardMedia height="250" component="img" image={img} />
         <DialogContent>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/SqSiUVUvVCE"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
           <DialogContentText>{description}</DialogContentText>
+          <CardActionArea>
+            <CardMedia height="250" component="img" image={img} />
+          </CardActionArea>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

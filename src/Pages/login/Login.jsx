@@ -130,18 +130,21 @@ const Login = ({ openLogin, setOpenLogin }) => {
           <Container maxWidth="xs">
             <Box
               sx={{
-                marginTop: 3,
+           
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <HowToRegIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
+              <DialogTitle>
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <HowToRegIcon />
+                </Avatar>
+
+                <Typography component="h1" variant="h5">
+                  Sign in
+                </Typography>
+              </DialogTitle>
               <Box
                 component="form"
                 onSubmit={handleSubmit}

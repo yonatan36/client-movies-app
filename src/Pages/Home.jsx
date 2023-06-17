@@ -59,7 +59,7 @@ function Home() {
   };
 
   if (isLoading) {
-    return <LinearProgress color="error" />;
+    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md:11 } }} />;
   }
   if (!cardsArr) {
     return <LinearProgress color="error" />;
@@ -69,6 +69,7 @@ function Home() {
     <>
       <CarouselComponent />
 
+   
       <Container maxWidth="lg" sx={{ my: 2, display: "flex" }}>
         <Grid
           container

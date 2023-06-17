@@ -19,7 +19,7 @@ import BedtimeIcon from "@mui/icons-material/Bedtime";
 import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const pages = [
   {
@@ -44,13 +44,15 @@ const settings = [
 ];
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
+  const [backgroundColor, setBackgroundColor] = useState("transparent");
+
   const notAuthPages = [
     {
-      label: "Login",
+      label: "Sign In",
       url: () => setOpenLogin(true),
     },
     {
-      label: "Register",
+      label: "Sign Up",
       url: () => setOpenRegister(true),
     },
   ];
@@ -86,34 +88,44 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
     setAnchorElUser(null);
   };
 
+  const handleScroll = () => {
+    if (window.scrollY >= 80) {
+      setBackgroundColor("black");
+    } else {
+      setBackgroundColor("transparent");
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: darkMode ? "#212121" : "#9e9e9e",
-          boxShadow: "none",
-        }}
-      >
+      <AppBar style={{ backgroundColor }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
               component="a"
               href="/"
               sx={{
+                ml: 2,
                 mr: 2,
                 display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
+                fontFamily:
+                  "'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+                fontWeight: "bold",
+                fontSize: "32px",
+                letterSpacing: "-0.04em",
+                color: "#E50914",
               }}
             >
-              YOFIX
+              Yonifix
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -161,7 +173,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
                     ))}
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+
 
             <Typography
               variant="h5"
@@ -172,14 +184,16 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
                 mr: 2,
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
+                fontFamily:
+                  "'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+                fontWeight: "bold",
+                fontSize: "32px",
+                letterSpacing: "-0.04em",
+                color: "#E50914",
               }}
             >
-              YOFIX
+              Yonifix
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
