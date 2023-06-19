@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import {  useState, forwardRef } from "react";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarRating from "./StarRatingComp";
 
-
+import EditIcon from "@mui/icons-material/Edit";
+import Toolbar from "@mui/material/Toolbar";
+import { useEffect } from "react";
 import {
   Card,
   CardActionArea,
@@ -17,9 +19,19 @@ import {
   DialogContentText,
   DialogActions,
   Box,
+  Container,
+  Typography,
+  IconButton,
+  useTheme,
 } from "@mui/material";
+import Slide from "@mui/material/Slide";
+
 import PropTypes from "prop-types";
 
+// Transition component for the dialog
+const Transition = forwardRef((props, ref) => {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 const CardComponent = ({
   img,
   title,
@@ -27,11 +39,22 @@ const CardComponent = ({
   id,
   onDelete,
   canDelete,
+  onEdit,
+ 
 }) => {
   const [open, setOpen] = useState(false);
+  const [cardsState, setCardsState] = useState(null);
+
+  const theme = useTheme();
 
 
- 
+  const handleClickOpen = () => {
+    onEdit(id);
+   
+  };
+
+
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -63,18 +86,16 @@ const CardComponent = ({
           }}
         />
       </CardActionArea>
-      <Box sx={{ ml: 2,mt:1 }}>
+      <Box sx={{ ml: 2, mt: 1 }}>
         <StarRating />
       </Box>
       <CardActions>
-        <Button
-          size="medium"
-          onClick={handleOpen}
-          style={{ color: "inherit" }}
-        >
+        <Button size="medium" onClick={handleOpen} style={{ color: "inherit" }}>
           <PlayCircleFilledIcon sx={{ mr: 1 }} /> Play
         </Button>
-
+        <Button onClick={handleClickOpen}>
+          <EditIcon />
+        </Button>
         {canDelete ? (
           <>
             <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
@@ -106,16 +127,13 @@ const CardComponent = ({
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
+  
     </Card>
   );
 };
 
 CardComponent.propTypes = {
   img: PropTypes.string.isRequired,
-};
-
-CardComponent.defaultProps = {
-  img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",
 };
 
 export default CardComponent;

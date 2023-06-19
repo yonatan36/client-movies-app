@@ -26,7 +26,7 @@ const LogOut = () => {
       const firstName = response.data.name.firstName;
       localStorage.clear();
       dispatch(authActions.logout());
-      navigate(ROUTES.HOME);
+      navigate(ROUTES.ABOUT);
       toast.success(`Goodbye ${firstName}! We hope to see you again soon.`);
     } catch (error) {
       console.error(error);

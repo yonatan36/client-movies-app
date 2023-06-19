@@ -20,12 +20,10 @@ import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
+import SearchComp from "../SearchComp";
 
 const pages = [
-  {
-    label: "Home",
-    url: ROUTES.HOME,
-  },
+ 
   {
     label: "About",
     url: ROUTES.ABOUT,
@@ -51,12 +49,13 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
       label: "Sign In",
       url: () => setOpenLogin(true),
     },
-    {
-      label: "Sign Up",
-      url: () => setOpenRegister(true),
-    },
+  
   ];
   const authedPages = [
+    {
+      label: "Home",
+      url: ROUTES.HOME,
+    },
     {
       label: "Fav cards",
       url: ROUTES.FAV,
@@ -158,22 +157,67 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
                   display: { xs: "block", md: "none" },
                 }}
               >
+                {" "}
+                {isLoggedIn
+                  ? authedPages.map((page) => (
+                      <MenuItem
+                        key={"miniLinks" + page.url}
+                        onClick={handleCloseNavMenu}
+                      >
+                        <Typography
+                          textAlign="center"
+                          sx={{ fontSize: "1rem" }}
+                        >
+                          <NavLink
+                            to={page.url}
+                            label={page.label}
+                            style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                          >
+                            {page.label}
+                          </NavLink>
+                        </Typography>
+                      </MenuItem>
+                    ))
+                  : ""}
                 {pages.map((page) => (
                   <MenuItem
                     key={"miniLinks" + page.url}
                     onClick={handleCloseNavMenu}
                   >
-                    <NavLinkComponent url={page.url} label={page.label} />
+                    <Typography textAlign="center" sx={{ fontSize: "1rem" }}>
+                      <NavLink
+                        to={page.url}
+                        label={page.label}
+                        style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                      >
+                        {page.label}
+                      </NavLink>
+                    </Typography>
                   </MenuItem>
                 ))}
                 {isLoggedIn
                   ? ""
                   : notAuthPages.map((page) => (
-                      <NavLinkComponent key={page.url} {...page} />
+                      <MenuItem
+                        key={"miniLinks" + page.url}
+                        onClick={handleCloseNavMenu}
+                      >
+                        <Typography
+                          textAlign="center"
+                          sx={{ fontSize: "1rem" }}
+                        >
+                          <NavLink
+                            onClick={page.url}
+                            label={page.label}
+                            style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                          >
+                            {page.label}
+                          </NavLink>
+                        </Typography>
+                      </MenuItem>
                     ))}
               </Menu>
             </Box>
-
 
             <Typography
               variant="h5"
@@ -197,10 +241,16 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {isLoggedIn
+                ? authedPages.map((page) => (
+                    <NavLinkComponent key={page.url} {...page} />
+                  ))
+                : ""}{" "}
               {pages.map((page) => (
                 <NavLinkComponent key={page.url} {...page} />
               ))}
             </Box>
+            <SearchComp />
             <IconButton
               color="inherit"
               onClick={onThemeChange}
@@ -209,7 +259,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
               {darkMode ? <BedtimeIcon /> : <WbSunnyIcon />}
             </IconButton>
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              {" "}
               {isLoggedIn
                 ? ""
                 : notAuthPages.map((page) => (
@@ -224,7 +273,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
                     <Avatar alt="Remy Sharp" />
                   </IconButton>
                 </Tooltip>
-
                 <Menu
                   sx={{ mt: "45px" }}
                   id="menu-appbar"

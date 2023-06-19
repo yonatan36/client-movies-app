@@ -28,18 +28,7 @@ export const cardFormArray = [
     required: true,
     joi: Joi.string().required(),
   },
-  {
-    label: "Phone",
-    name: "phone",
-    id: "phone",
-    type: "tel",
-    sm: 6,
-    required: true,
-    joi: Joi.string()
-      .regex(/^[0-9]{10}$/)
-      .messages({ "string.pattern.base": `Phone number must have 10 digits.` })
-      .required(),
-  },
+
   {
     label: "Email",
     name: "email",
@@ -84,59 +73,5 @@ export const cardFormArray = [
       )
       .messages({ "string.pattern.base": `Image url is not vaild` })
       .allow(""),
-  },
-  {
-    label: "State",
-    name: "state",
-    id: "state",
-    type: "text",
-    sm: 4,
-    required: false,
-    joi: Joi.string().allow(""),
-  },
-  {
-    label: "Country",
-    name: "country",
-    id: "country",
-    type: "text",
-    sm: 4,
-    required: true,
-    joi: Joi.string().required(),
-  },
-  {
-    label: "City",
-    name: "city",
-    id: "city",
-    type: "text",
-    sm: 4,
-    required: true,
-    joi: Joi.string().required(),
-  },
-  {
-    label: "Street",
-    name: "street",
-    id: "street",
-    type: "text",
-    sm: 4,
-    required: true,
-    joi: Joi.string().required(),
-  },
-  {
-    label: "House Number",
-    name: "houseNumber",
-    id: "houseNumber",
-    type: "number",
-    sm: 4,
-    required: true,
-    joi: Joi.number().required(),
-  },
-  {
-    label: "Zip",
-    name: "zip",
-    id: "zip",
-    type: "text",
-    sm: 4,
-    required: false,
-    joi: Joi.string().allow(""),
   },
 ];

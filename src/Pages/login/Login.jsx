@@ -38,27 +38,22 @@ const Login = ({ openLogin, setOpenLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const passwordRef = useRef();
-    const confirmPasswordRef = useRef();
-
-
- 
+  const confirmPasswordRef = useRef();
 
   const navigate = useNavigate();
   const loggedIn = useLoggedIn();
 
+  const handleChange = (event) => {
+    const { name, value, checked, type } = event.target;
+    const fieldValue = type === "checkbox" ? checked : value;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: fieldValue }));
+    const fieldSchema = LoginArray.find((field) => field.name === name)?.joi;
+    if (fieldSchema) {
+      const error = feildValidation(fieldSchema, fieldValue, name);
+      setFormError((prevFormError) => ({ ...prevFormError, [name]: error }));
+    }
+  };
 
-  
- const handleChange = (event) => {
-   const { name, value, checked, type } = event.target;
-   const fieldValue = type === "checkbox" ? checked : value;
-   setFormData((prevFormData) => ({ ...prevFormData, [name]: fieldValue }));
-   const fieldSchema = LoginArray.find((field) => field.name === name)?.joi;
-   if (fieldSchema) {
-     const error = feildValidation(fieldSchema, fieldValue, name);
-     setFormError((prevFormError) => ({ ...prevFormError, [name]: error }));
-   }
- };
-  
   // Validate the entire form
   const validateForm = () => {
     for (const field of LoginArray) {
@@ -130,7 +125,6 @@ const Login = ({ openLogin, setOpenLogin }) => {
           <Container maxWidth="xs">
             <Box
               sx={{
-           
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -140,10 +134,8 @@ const Login = ({ openLogin, setOpenLogin }) => {
                 <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                   <HowToRegIcon />
                 </Avatar>
-
-                <Typography component="h1" variant="h5">
-                  Sign in
-                </Typography>
+                Sign up
+                {isLoading && <LinearProgress color="error" />}
               </DialogTitle>
               <Box
                 component="form"
