@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import CarouselComponent from "../components/Carousel";
-import ImageSlider from "../components/ImageSlider";
-import { useNavigate } from "react-router-dom";
-
+import CarouselComponent from "../components/CarouselComp";
+import ImageSlider from "../components/ImageSliderComp";
+import DeleteDialog from "../components/DialogsPopups/DeleteDialog";
+import EditCardDialog from "../components/DialogsPopups/EditCardDialog";
 import CardComponent from "../components/cardComp";
 import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
@@ -13,12 +13,6 @@ import axios from "axios";
 import {
   Grid,
   Container,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
 } from "@mui/material";
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,11 +20,11 @@ function Home() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
+  
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
   let qparams = useQueryParams();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
-
 
   const { isLoggedIn } = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice
@@ -68,12 +62,13 @@ function Home() {
     }
   };
 
-  const handleEditFromInitialCardsArr = (id) => {
-    const card = cardsArr.find((item) => item._id === id);
-    setOpenEditDialog(true);
-    setCardToEdit(card);
-  };
+  // const handleEditFromInitialCardsArr = (id) => {
+  //   const card = cardsArr.find((item) => item._id === id);
+  //   setCardToEdit(card);
+  //   setOpenEditDialog(true);
+  // };
 
+  
   const handleEditDialogClose = () => {
     setOpenEditDialog(false);
     setCardToEdit(null);
@@ -122,12 +117,20 @@ function Home() {
     }
   };
 
+
+  const handleEditFromInitialCardsArr = (id) => {
+    const card = cardsArr.find((item) => item._id === id);
+       setCardToEdit(card);
+       setOpenEditDialog(true);
+    console.log(`${id}`);
+  };
+
   if (isLoading) {
     return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
   }
 
   if (!cardsArr) {
-    return <LinearProgress color="error" />;
+    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
   }
 
   return (
@@ -170,103 +173,24 @@ function Home() {
             </Grid>
           ))}
         </Grid>
-        <Dialog
+        <DeleteDialog
           open={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
-        >
-          <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
-          <DialogContent>
-            Deleting a card is permanent and cannot be undone.
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleDeleteCard} color="secondary">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog
+          cardToDelete={handleDeleteCard}
+        />
+        <EditCardDialog
           open={openEditDialog}
           onClose={handleEditDialogClose}
-          fullWidth
-          maxWidth="sm"
-        >
-          {" "}
-          <DialogTitle>Edit Card</DialogTitle>
-          {cardToEdit && (
-            <DialogContent>
-              <DialogContent>
-                <TextField
-                  label="Title"
-                  value={cardToEdit.title}
-                  fullWidth
-                  
-                />
-              </DialogContent>
-              <DialogContent>
-                <TextField
-                  label="Description"
-                  value={cardToEdit.description}
-                  fullWidth
-                  onChange={(e) =>
-                    setCardToEdit({
-                      ...cardToEdit,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </DialogContent>
-              <DialogContent>
-                <TextField
-                  label="Email"
-                  value={cardToEdit.email}
-                  fullWidth
-                  onChange={(e) =>
-                    setCardToEdit({ ...cardToEdit, email: e.target.value })
-                  }
-                />
-              </DialogContent>
-              <DialogContent>
-                <TextField
-                  label="Web"
-                  value={cardToEdit.web}
-                  fullWidth
-                  onChange={(e) =>
-                    setCardToEdit({ ...cardToEdit, web: e.target.value })
-                  }
-                />
-              </DialogContent>
-              <DialogContent>
-                <TextField
-                  label="Image Alt"
-                  value={cardToEdit.imageAlt}
-                  fullWidth
-                  onChange={(e) =>
-                    setCardToEdit({ ...cardToEdit, imageAlt: e.target.value })
-                  }
-                />
-              </DialogContent>
-              <DialogContent>
-                <TextField
-                  label="Image URL"
-                  value={cardToEdit.imageUrl}
-                  fullWidth
-                  onChange={(e) =>
-                    setCardToEdit({ ...cardToEdit, imageUrl: e.target.value })
-                  }
-                />
-              </DialogContent>
-            </DialogContent>
-          )}
-          <DialogActions>
-            <Button onClick={handleEditDialogClose}>Cancel</Button>
-            <Button color="primary">Save</Button>
-          </DialogActions>
-        </Dialog>
+          cardToEdit={cardToEdit}
+          
+          setCardToEdit={setCardToEdit}
+        />
       </Container>
     </>
   );
 }
 
 export default Home;
+
+
+

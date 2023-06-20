@@ -1,11 +1,10 @@
-import {  useState, forwardRef } from "react";
+import { useState, forwardRef } from "react";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarRating from "./StarRatingComp";
-
+import CardDialog from "../components/DialogsPopups/CardDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import Toolbar from "@mui/material/Toolbar";
-import { useEffect } from "react";
+
 import {
   Card,
   CardActionArea,
@@ -13,25 +12,10 @@ import {
   CardHeader,
   CardActions,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   Box,
-  Container,
-  Typography,
-  IconButton,
-  useTheme,
 } from "@mui/material";
-import Slide from "@mui/material/Slide";
-
 import PropTypes from "prop-types";
 
-// Transition component for the dialog
-const Transition = forwardRef((props, ref) => {
-  return <Slide direction="down" ref={ref} {...props} />;
-});
 const CardComponent = ({
   img,
   title,
@@ -40,20 +24,12 @@ const CardComponent = ({
   onDelete,
   canDelete,
   onEdit,
- 
 }) => {
   const [open, setOpen] = useState(false);
-  const [cardsState, setCardsState] = useState(null);
-
-  const theme = useTheme();
-
 
   const handleClickOpen = () => {
     onEdit(id);
-   
   };
-
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -102,32 +78,17 @@ const CardComponent = ({
               <DeleteIcon />
             </Button>
 
-            {/* Display random number of stars */}
           </>
         ) : null}
       </CardActions>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/SqSiUVUvVCE"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-          <DialogContentText>{description}</DialogContentText>
-          <CardActionArea>
-            <CardMedia height="250" component="img" image={img} />
-          </CardActionArea>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
-  
+
+      <CardDialog
+        open={open}
+        onClose={handleClose}
+        img={img}
+        title={title}
+        description={description}
+      />
     </Card>
   );
 };
