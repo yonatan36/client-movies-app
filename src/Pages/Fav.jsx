@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CardComponent from "../components/cardComp";
 import { Box, Grid, Container, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import EditCardDialog from "../components/DialogsPopups/EditCardDialog";
 import DeleteDialog from "../components/DialogsPopups/DeleteDialog";
 
 const Fav = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [cardsArr, setCardArr] = useState(null);
+  const [cardsArr, setCardArr] = useState([]);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
   const [cardToDelete, setCardToDelete] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
@@ -22,7 +20,7 @@ const Fav = () => {
 
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
-  const navigate = useNavigate();
+
 
 useEffect(() => {
   axios
@@ -78,11 +76,13 @@ setIsLoading(false)
   };
   //likes function
   const handlelikedCard = (id) => {
-    setCardArr(cardsArr.filter((card) => card[1]._id !== id));
+    setCardArr((prevCardsArr) =>
+      prevCardsArr.filter((card) => card._id !== id)
+    );
+   
   };
 
    const handleEditFromInitialCardsArr = (id) => {
-     
      const card = cardsArr.find((item) => item._id === id);
      setCardToEdit(card);
      setOpenEditDialog(true);
@@ -95,12 +95,20 @@ setIsLoading(false)
     return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
   }
   return (
-    <>
-      <Box mt={15} sx={{ left: { xs: 5, md: 10 } }} mb={9}>
-        <Typography variant="h5" component="h2" gutterBottom>
-          Your favorite movies!
+    <Fragment>
+      <Container
+        maxWidth="md"
+        sx={{
+          mt: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography component="h1" variant="h4" align="left" sx={{ mt: 5 }}>
+          Your favorite Movies
         </Typography>
-      </Box>
+      </Container>
       <Container maxWidth="lg" mt={8} sx={{ my: 2, display: "flex" }}>
         <Grid
           container
@@ -157,7 +165,7 @@ setIsLoading(false)
           setCardToEdit={setCardToEdit}
         />
       </Container>
-    </>
+    </Fragment>
   );
 };
 

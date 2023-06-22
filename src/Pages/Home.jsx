@@ -133,17 +133,13 @@ function Home() {
 
   const handleEditFromInitialCardsArr = (id) => {
     const card = cardsArr.find((item) => item._id === id);
-    const imageUrl = card && card.image && card.image.url ? card.image.url : "";
-    const imageAlt = card && card.image && card.image.alt ? card.image.alt : "";
-
-    // Copy the imageUrl to the card object
+    const url = card && card.image && card.image.url ? card.image.url : "";
+    const alt = card && card.image && card.image.alt ? card.image.alt : "";
     const updatedCard = {
       ...card,
-
-      imageUrl,
-      imageAlt,
+      url,
+      alt,
     };
-
     setCardToEdit(updatedCard);
     setOpenEditDialog(true);
   };

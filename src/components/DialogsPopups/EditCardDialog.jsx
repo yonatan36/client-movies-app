@@ -47,6 +47,7 @@ const EditCardDialog = ({ open, onClose, cardToEdit, setCardToEdit }) => {
   };
 
   const handleSaveCard = async () => {
+    debugger
     try {
       if (!cardToEdit) {
         console.log("No card to update");

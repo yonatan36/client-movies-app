@@ -11,7 +11,6 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
@@ -21,6 +20,7 @@ import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import SearchComp from "../SearchComp";
+import axios from "axios";
 
 const pages = [
  
@@ -41,7 +41,7 @@ const settings = [
   },
 ];
 
-const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
+const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const [backgroundColor, setBackgroundColor] = useState("transparent");
 
   const notAuthPages = [
@@ -61,6 +61,12 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
       url: ROUTES.FAV,
     },
   ];
+  const BizAdminPages = [
+    {
+      label: "My Movies",
+      url: ROUTES.MYCARDS,
+    },
+  ];
 
   const { isLoggedIn } = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice
@@ -71,6 +77,8 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
+    const [avatar, setAvatar] = useState([]);
+    const [name, setName] = useState([]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -89,7 +97,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
 
   const handleScroll = () => {
     if (window.scrollY >= 80) {
-      setBackgroundColor("black");
+      setBackgroundColor( "black" );
     } else {
       setBackgroundColor("transparent");
     }
@@ -101,6 +109,22 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  
+useEffect(() => {
+  axios
+    .get("/users/userInfo/")
+    .then((userInfo) => {
+      setAvatar({
+        url: userInfo.data.image.url,
+        alt: userInfo.data.image.alt,
+      });
+      setName({
+        name: userInfo.data.name.firstName,
+      });
+    })
+    .catch((err) => {});
+}, [isLoggedIn]);
+
 
   return (
     <>
@@ -249,6 +273,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
               {pages.map((page) => (
                 <NavLinkComponent key={page.url} {...page} />
               ))}
+              {(isLoggedIn && payload && payload.isBusiness) || payload?.isAdmin
+                ? BizAdminPages.map((page) => (
+                    <NavLinkComponent key={page.url} {...page} />
+                  ))
+                : ""}
             </Box>
             <SearchComp />
             <IconButton
@@ -270,7 +299,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
               <Box sx={{ flexGrow: 0, ml: 1, mr: 1.5 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" />
+                    <Avatar alt={avatar.alt} src={avatar.url} />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -300,7 +329,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
                     }}
                     color={"white"}
                   >
-                    Hi {name}!
+                    Hi {name.name}!
                   </Typography>
                   {settings.map((setting, index) => (
                     <MenuItem key={index} onClick={handleCloseUserMenu}>

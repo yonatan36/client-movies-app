@@ -3,6 +3,7 @@ import { Container, CssBaseline } from "@mui/material";
 import ResponsiveAppBar from "./components/navbar/Navbar";
 import Router from "./routes/Router";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Footer from "./components/FotterComp";
 /*toast*/
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -54,6 +55,7 @@ function App() {
           maxWidth={false}
           disableGutters
           style={{ height: "100vh", position: "relative" }}
+          sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
         >
           <header>
             <ResponsiveAppBar onThemeChange={changeTheme} darkMode={darkMode} />
@@ -61,7 +63,7 @@ function App() {
           <main>
             <Router />
           </main>
-          <footer></footer>
+          {/* <Footer /> */}
         </Container>
       </ThemeProvider>
     </>
