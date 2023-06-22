@@ -40,18 +40,10 @@ export const cardFormArray = [
       .email({ tlds: { allow: false } })
       .required(),
   },
-  {
-    label: "Web",
-    name: "web",
-    id: "web",
-    type: "url",
-    sm: 12,
-    required: false,
-    joi: Joi.string().allow(""),
-  },
+
   {
     label: "Image Alt",
-    name: "alt",
+    name: "imageAlt",
     id: "imageAlt",
     type: "text",
     sm: 6,
@@ -60,18 +52,27 @@ export const cardFormArray = [
   },
   {
     label: "Image URL",
-    name: "url",
+    name: "imageUrl",
     id: "imageUrl",
     type: "url",
     sm: 6,
     required: false,
     joi: Joi.string()
-      .pattern(
-        new RegExp(
-          "^(https?://)?[^\\s/]+\\.[^\\s/]+/\\S+\\.(jpg|jpeg|png|gif)$"
-        )
-      )
+      // .pattern(
+      //   new RegExp(
+      //     "^(https?://)?[^\\s/]+\\.[^\\s/]+/\\S+\\.(jpg|jpeg|png|gif)$"
+      //   )
+      // )
       .messages({ "string.pattern.base": `Image url is not vaild` })
       .allow(""),
+  },
+  {
+    label: "Web",
+    name: "web",
+    id: "web",
+    type: "url",
+    sm: 12,
+    required: false,
+    joi: Joi.string().allow(""),
   },
 ];

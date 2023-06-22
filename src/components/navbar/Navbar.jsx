@@ -57,7 +57,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange, name }) => {
       url: ROUTES.HOME,
     },
     {
-      label: "Fav cards",
+      label: "My List",
       url: ROUTES.FAV,
     },
   ];

@@ -135,7 +135,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
                   <HowToRegIcon />
                 </Avatar>
                 Sign up
-                {isLoading && <LinearProgress color="error" />}
+             
               </DialogTitle>
               <Box
                 component="form"

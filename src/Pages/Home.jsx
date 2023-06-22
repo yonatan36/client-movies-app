@@ -8,21 +8,20 @@ import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import LinearProgress from "@mui/material/LinearProgress";
+import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import axios from "axios";
-import {
-  Grid,
-  Container,
-} from "@mui/material";
+import { Grid, Container } from "@mui/material";
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [cardsArr, setCardArr] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
-  
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
+  const [myCardIds, setMyCardIds] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
   let qparams = useQueryParams();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
@@ -39,10 +38,21 @@ function Home() {
           setIsLoading(false);
         })
         .catch((err) => console.log(err));
-    }, 2000);
+    }, 1700);
 
     return () => clearTimeout(delay);
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      axios
+        .get("/cards/my-cards")
+        .then(({ data }) => {
+          setMyCardIds(data.map((item) => item._id));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
   const handleDeleteFromInitialCardsArr = async (id) => {
     setCardToDelete(id);
@@ -68,7 +78,6 @@ function Home() {
   //   setOpenEditDialog(true);
   // };
 
-  
   const handleEditDialogClose = () => {
     setOpenEditDialog(false);
     setCardToEdit(null);
@@ -117,12 +126,26 @@ function Home() {
     }
   };
 
+  //likes function
+  const handlelikedCard = (id) => {
+    setCardArr(cardsArr.filter((card) => card[1]._id !== id));
+  };
 
   const handleEditFromInitialCardsArr = (id) => {
     const card = cardsArr.find((item) => item._id === id);
-       setCardToEdit(card);
-       setOpenEditDialog(true);
-    console.log(`${id}`);
+    const imageUrl = card && card.image && card.image.url ? card.image.url : "";
+    const imageAlt = card && card.image && card.image.alt ? card.image.alt : "";
+
+    // Copy the imageUrl to the card object
+    const updatedCard = {
+      ...card,
+
+      imageUrl,
+      imageAlt,
+    };
+
+    setCardToEdit(updatedCard);
+    setOpenEditDialog(true);
   };
 
   if (isLoading) {
@@ -154,20 +177,29 @@ function Home() {
                 title={item.title}
                 subTitle={item.subTitle}
                 phone={item.phone}
-                address={`${item.country}, ${item.city}, ${item.street} ${item.houseNumber}`}
                 img={item.image ? item.image.url : ""}
                 description={item.description}
                 email={item.email}
                 createdAt={item.createdAt}
                 likes={item.likes}
                 bizNumber={item.bizNumber}
+                notConnected={!payload}
+                isMyCard={myCardIds.includes(item._id)}
                 onDelete={handleDeleteFromInitialCardsArr}
                 onEdit={handleEditFromInitialCardsArr}
+                canEdit={
+                  payload && payload.isBusiness && payload._id === item.user_id
+                }
                 canDelete={
                   (payload && payload.isAdmin) ||
                   (payload &&
                     payload.isBusiness &&
                     payload._id === item.user_id)
+                }
+                onRemoveLikes={handlelikedCard}
+                isLiked={
+                  localStorage.token &&
+                  item.likes.includes(jwt_decode(localStorage.token)._id)
                 }
               />
             </Grid>
@@ -182,7 +214,6 @@ function Home() {
           open={openEditDialog}
           onClose={handleEditDialogClose}
           cardToEdit={cardToEdit}
-          
           setCardToEdit={setCardToEdit}
         />
       </Container>
@@ -191,6 +222,3 @@ function Home() {
 }
 
 export default Home;
-
-
-

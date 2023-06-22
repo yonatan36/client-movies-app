@@ -3,7 +3,7 @@ import { cardFormArray } from "../cardForm/ArrayCardInputs";
 import { useState, useEffect } from "react";
 import { feildValidation } from "../../validation/feildValidation";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   Dialog,
   DialogTitle,
@@ -14,19 +14,12 @@ import {
   Grid,
 } from "@mui/material";
 
-const EditCardDialog = ({
-  open,
-  onClose,
-  cardToEdit,
-
-  setCardToEdit,
-}) => {
+const EditCardDialog = ({ open, onClose, cardToEdit, setCardToEdit }) => {
   // const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
   const [formValid, setFormValid] = useState(false);
   const [inputState, setInputState] = useState();
-
 
   useEffect(() => {
     // Update form validity whenever form data or errors change
@@ -52,17 +45,15 @@ const EditCardDialog = ({
     }
     return true;
   };
+
   const handleSaveCard = async () => {
-    debugger;
     try {
       if (!cardToEdit) {
         console.log("No card to update");
         return;
       }
 
-      const { _id } = cardToEdit; // Access the id of the card to be updated
-
-      // Create a new object without the properties to be deleted
+      const { _id } = cardToEdit;
       const updatedCard = {
         ...cardToEdit,
         image: undefined,
@@ -79,7 +70,8 @@ const EditCardDialog = ({
         ...data,
       };
       setInputState(newInputState);
-      console.log("Card updated successfully");
+      toast.info("Card updated!");
+      onClose(onClose);
     } catch (err) {
       console.log("Error updating card:", err);
     }
