@@ -20,38 +20,35 @@ const Fav = () => {
 
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
+  useEffect(() => {
+    axios
+      .get("/cards/my-cards")
+      .then(({ data }) => {
+        setMyCardIds(data.map((item) => item._id));
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
+  useEffect(() => {
+    const fetchLikedCards = async () => {
+      try {
+        // Simulate a delay of 1 second
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-useEffect(() => {
-  axios
-    .get("/cards/my-cards")
-    .then(({ data }) => {
-      setMyCardIds(data.map((item) => item._id));
-    })
-    .catch((err) => console.log(err));
-}, []);
+        const { data } = await axios.get("/cards");
 
-useEffect(() => {
-  const fetchLikedCards = async () => {
-    try {
-      // Simulate a delay of 1 second
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+        const filterdData = data.filter((card) =>
+          card.likes.includes(payload && payload._id)
+        );
+        setIsLoading(false);
+        setCardArr(filterdData); // Update the value of cardsArr
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-      const { data } = await axios.get("/cards");
-
-      const filterdData = data.filter((card) =>
-        card.likes.includes(payload && payload._id)
-      );
-setIsLoading(false)
-      setCardArr(filterdData); // Update the value of cardsArr
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  fetchLikedCards();
-}, []);
-
+    fetchLikedCards();
+  }, []);
 
   const handleDeleteFromInitialCardsArr = async (id) => {
     setCardToDelete(id);
@@ -79,14 +76,13 @@ setIsLoading(false)
     setCardArr((prevCardsArr) =>
       prevCardsArr.filter((card) => card._id !== id)
     );
-   
   };
 
-   const handleEditFromInitialCardsArr = (id) => {
-     const card = cardsArr.find((item) => item._id === id);
-     setCardToEdit(card);
-     setOpenEditDialog(true);
-   };
+  const handleEditFromInitialCardsArr = (id) => {
+    const card = cardsArr.find((item) => item._id === id);
+    setCardToEdit(card);
+    setOpenEditDialog(true);
+  };
 
   if (isLoading) {
     return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
@@ -134,7 +130,10 @@ setIsLoading(false)
                 onDelete={handleDeleteFromInitialCardsArr}
                 onEdit={handleEditFromInitialCardsArr}
                 canEdit={
-                  payload && payload.isBusiness && payload._id === item.user_id
+                  (payload && payload.isAdmin) ||
+                  (payload &&
+                    payload.isBusiness &&
+                    payload._id === item.user_id)
                 }
                 canDelete={
                   (payload && payload.isAdmin) ||

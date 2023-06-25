@@ -184,7 +184,10 @@ function Home() {
                 onDelete={handleDeleteFromInitialCardsArr}
                 onEdit={handleEditFromInitialCardsArr}
                 canEdit={
-                  payload && payload.isBusiness && payload._id === item.user_id
+                  (payload && payload.isAdmin) ||
+                  (payload &&
+                    payload.isBusiness &&
+                    payload._id === item.user_id)
                 }
                 canDelete={
                   (payload && payload.isAdmin) ||

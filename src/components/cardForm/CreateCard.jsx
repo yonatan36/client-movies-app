@@ -9,13 +9,12 @@ import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 
-
 const CardForm = () => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
   const [formValid, setFormValid] = useState(false);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     // Update form validity whenever form data or errors change
     setFormValid(validateForm());
@@ -60,27 +59,25 @@ const navigate = useNavigate()
     setFormValid(false);
   };
 
-const createCard = async (event) => {
-  event.preventDefault();
+  const createCard = async (event) => {
+    event.preventDefault();
 
-  if (!formValid) {
-    toast.info("Please fill in all required fields correctly.");
-    return;
-  }
+    if (!formValid) {
+      toast.info("Please fill in all required fields correctly.");
+      return;
+    }
 
-  try {
-    await axios.post("/cards", formData);
-    navigate(ROUTES.HOME)
-    toast.success("card created!")
-
-  } catch (err) {
-    toast.error(err.message);
-  }
-};
-
+    try {
+      await axios.post("/cards", formData);
+      navigate(ROUTES.HOME);
+      toast.success("movie created!");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   return (
-    <Box component={"form" } onSubmit={createCard}>
+    <Box component={"form"} onSubmit={createCard}>
       <Grid container spacing={2}>
         {cardFormArray.map((field, index) => (
           <Grid item xs={12} sm={field.sm} key={`${new Date()}-${field.id}`}>
@@ -98,7 +95,6 @@ const createCard = async (event) => {
               error={!!formError[field.name]}
               helperText={formError[field.name] || ""}
             />
-          
           </Grid>
         ))}
         <Grid item xs={12} sm={6}>

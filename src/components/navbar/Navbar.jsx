@@ -15,6 +15,7 @@ import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
+import Profile from "../../Pages/Profile";
 import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";
@@ -23,33 +24,33 @@ import SearchComp from "../SearchComp";
 import axios from "axios";
 
 const pages = [
- 
   {
     label: "About",
     url: ROUTES.ABOUT,
   },
 ];
 
-//not logged in users
-const settings = [
-  {
-    label: "Profile",
-  },
-  {
-    label: "LOGOUT",
-    url: ROUTES.LOGOUT,
-  },
-];
-
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const [backgroundColor, setBackgroundColor] = useState("transparent");
+
+  //not logged in users
+  const settings = [
+    {
+      label: "Profile",
+      url: () => setOpenProfile(true),
+    },
+
+    {
+      label: "LOGOUT",
+      url: ROUTES.LOGOUT,
+    },
+  ];
 
   const notAuthPages = [
     {
       label: "Sign In",
       url: () => setOpenLogin(true),
     },
-  
   ];
   const authedPages = [
     {
@@ -77,8 +78,9 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
-    const [avatar, setAvatar] = useState([]);
-    const [name, setName] = useState([]);
+  const [openProfile, setOpenProfile] = useState(false);
+  const [avatar, setAvatar] = useState([]);
+  const [name, setName] = useState([]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -97,7 +99,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
 
   const handleScroll = () => {
     if (window.scrollY >= 80) {
-      setBackgroundColor( "black" );
+      setBackgroundColor("black");
     } else {
       setBackgroundColor("transparent");
     }
@@ -109,22 +111,21 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
-useEffect(() => {
-  axios
-    .get("/users/userInfo/")
-    .then((userInfo) => {
-      setAvatar({
-        url: userInfo.data.image.url,
-        alt: userInfo.data.image.alt,
-      });
-      setName({
-        name: userInfo.data.name.firstName,
-      });
-    })
-    .catch((err) => {});
-}, [isLoggedIn]);
 
+  useEffect(() => {
+    axios
+      .get("/users/userInfo/")
+      .then((userInfo) => {
+        setAvatar({
+          url: userInfo.data.image.url,
+          alt: userInfo.data.image.alt,
+        });
+        setName({
+          name: userInfo.data.name.firstName,
+        });
+      })
+      .catch((err) => {});
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -336,8 +337,10 @@ useEffect(() => {
                       <Typography textAlign="center" sx={{ fontSize: "1rem" }}>
                         <NavLink
                           key={setting.url}
-                          to={setting.url}
                           style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                          {...(typeof setting.url === "string"
+                            ? { to: setting.url }
+                            : { onClick: setting.url })}
                         >
                           {setting.label}
                         </NavLink>
@@ -357,6 +360,7 @@ useEffect(() => {
         setOpenRegister={setOpenRegister}
       />
       <Login openLogin={openLogin} setOpenLogin={setOpenLogin} />
+      <Profile openProfile={openProfile} setOpenProfile={setOpenProfile} />
     </>
   );
 };

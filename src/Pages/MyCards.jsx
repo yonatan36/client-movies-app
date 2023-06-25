@@ -31,12 +31,10 @@ const MyCards = () => {
   const [cardsArr, setCardArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
   const [myCardIds, setMyCardIds] = useState([]);
-  const [imageUrl, setImageUrl] = useState("");
 
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
@@ -169,40 +167,47 @@ const MyCards = () => {
           justifyContent={"flex-start"}
           alignItems={"center"}
         >
-          {cardsArr.map((item) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
-              <CardComponent
-                id={item._id}
-                title={item.title}
-                subTitle={item.subTitle}
-                phone={item.phone}
-                img={item.image ? item.image.url : ""}
-                description={item.description}
-                email={item.email}
-                createdAt={item.createdAt}
-                likes={item.likes}
-                bizNumber={item.bizNumber}
-                notConnected={!payload}
-                isMyCard={myCardIds.includes(item._id)}
-                onDelete={handleDeleteFromInitialCardsArr}
-                onEdit={handleEditFromInitialCardsArr}
-                canEdit={
-                  payload && payload.isBusiness && payload._id === item.user_id
-                }
-                canDelete={
-                  (payload && payload.isAdmin) ||
-                  (payload &&
-                    payload.isBusiness &&
-                    payload._id === item.user_id)
-                }
-                onRemoveLikes={handlelikedCard}
-                isLiked={
-                  localStorage.token &&
-                  item.likes.includes(jwt_decode(localStorage.token)._id)
-                }
-              />
-            </Grid>
-          ))}
+          {Array.isArray(cardsArr) && cardsArr.length > 0 ? (
+            cardsArr.map((item) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
+                <CardComponent
+                  id={item._id}
+                  title={item.title}
+                  subTitle={item.subTitle}
+                  phone={item.phone}
+                  img={item.image ? item.image.url : ""}
+                  description={item.description}
+                  email={item.email}
+                  createdAt={item.createdAt}
+                  likes={item.likes}
+                  bizNumber={item.bizNumber}
+                  notConnected={!payload}
+                  isMyCard={myCardIds.includes(item._id)}
+                  onDelete={handleDeleteFromInitialCardsArr}
+                  onEdit={handleEditFromInitialCardsArr}
+                  canEdit={
+                    (payload && payload.isAdmin) ||
+                    (payload &&
+                      payload.isBusiness &&
+                      payload._id === item.user_id)
+                  }
+                  canDelete={
+                    (payload && payload.isAdmin) ||
+                    (payload &&
+                      payload.isBusiness &&
+                      payload._id === item.user_id)
+                  }
+                  onRemoveLikes={handlelikedCard}
+                  isLiked={
+                    localStorage.token &&
+                    item.likes.includes(jwt_decode(localStorage.token)._id)
+                  }
+                />
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="body1">No cards found.</Typography>
+          )}
         </Grid>
         <DeleteDialog
           open={isDeleteDialogOpen}
