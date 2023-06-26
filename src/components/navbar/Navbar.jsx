@@ -15,7 +15,7 @@ import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
-import Profile from "../../Pages/Profile";
+import Profile from "../../Pages/profile/Profile";
 import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";

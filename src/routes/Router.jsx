@@ -5,7 +5,7 @@ import Login from "../Pages/login/Login";
 import About from "../Pages/About";
 import ROUTES from "./ROUTES.js";
 import Fav from "../Pages/Fav";
-import Profile from "../Pages/Profile";
+import Profile from "../Pages/profile/Profile";
 import LogOut from "../components/LogOut";
 import MyCards from "../Pages/MyCards";
 const Router = () => {
