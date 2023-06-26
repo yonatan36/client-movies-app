@@ -29,6 +29,7 @@ const Profile = ({ openProfile, setOpenProfile }) => {
   const [formValid, setFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inputState, setInputState] = useState({});
+  const [avatar, setAvatar] = useState([]);
 
   // Handle input field focus
   const handleFocus = (event) => {
@@ -121,18 +122,33 @@ const Profile = ({ openProfile, setOpenProfile }) => {
     setFormValid(validateForm());
   }, [formData, formError]);
 
+  const getUserInfo = async () => {
+    const { data } = await axios.get("/users/userInfo");
+    return data.name.firstName;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    debugger;
+
     try {
-      const { _id, ...requestData } = inputState;
-      await axios.put(`/users/${_id}`, requestData);
+      const { _id } = inputState;
+
+      const updatedCard = {
+        ...inputState,
+        image: undefined,
+        name: undefined,
+        _id: undefined,
+        address: undefined,
+      };
+
+      await axios.put(`/users/${_id}`, updatedCard);
       setIsLoading(false);
       handleClose(false);
-      toast.success(`Register success!`);
+      const firstName = await getUserInfo();
+      toast.success(`Update successful! Hello, ${firstName}!`);
     } catch (err) {
       setIsLoading(false);
-      toast.error(`Oops! Registration failed. Please try again.`);
+      toast.error(`Oops! update failed. Please try again.`);
       console.log("Register error:", err);
     }
   };
@@ -142,6 +158,17 @@ const Profile = ({ openProfile, setOpenProfile }) => {
     setFormError({});
   };
 
+  useEffect(() => {
+    axios
+      .get("/users/userInfo/")
+      .then((userInfo) => {
+        setAvatar({
+          url: userInfo.data.image.url,
+          alt: userInfo.data.image.alt,
+        });
+      })
+      .catch((err) => {});
+  }, []);
   const handleClose = () => setOpenProfile(false);
 
   return (
@@ -157,9 +184,14 @@ const Profile = ({ openProfile, setOpenProfile }) => {
                 alignItems: "center",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <HowToRegIcon />
-              </Avatar>
+              <Avatar
+                alt={avatar.alt}
+                src={avatar.url}
+                sx={{
+                  width: 80,
+                  height: 80,
+                }}
+              />
               <DialogTitle>
                 profile
                 {isLoading && <LinearProgress color="error" />}
@@ -204,7 +236,7 @@ const Profile = ({ openProfile, setOpenProfile }) => {
                       sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
                       color="error"
                     >
-                      Sign Up
+                      update me
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={6}>

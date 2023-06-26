@@ -12,11 +12,8 @@ const authmw = require("../../middleware/authMiddleware");
 //created
 router.post("/", authmw, async (req, res) => {
   try {
- 
     let normalCard = await normalizeCard(req.body, req.userData._id);
-    await cardsValidationServise.createCardValidation(
-      req.body
-    );
+    await cardsValidationServise.createCardValidation(req.body);
     await normalizeCard(req.body, req.userData._id);
     await cardAccessDataService.createCard(normalCard);
     console.log(chalk.greenBright("card created!"));
@@ -32,8 +29,8 @@ router.post("/", authmw, async (req, res) => {
 router.put(
   "/:id",
   authmw,
+  permissionsMiddleware(true, false, true),
   async (req, res) => {
-   
     try {
       const id = req.params.id;
       await idValidationServise.idValidation(id);
@@ -54,25 +51,21 @@ router.put(
 
 //http://localhost:8181/api/cards/my-cards
 //get my-cards
-router.get(
-  "/my-cards",
-  authmw,
-  async (req, res) => {
-    try {
-      const userId = req.userData._id;
-      const userCards = await cardAccessDataService.myCards(userId);
-      console.log(chalk.greenBright("get my cards!"));
-      if (userCards == 0) {
-        res.json({ msg: "You don't have any cards you've created" });
-      } else {
-        res.json(userCards);
-      }
-    } catch (err) {
-      console.log(err);
-      res.status(400).json(err);
+router.get("/my-cards", authmw, async (req, res) => {
+  try {
+    const userId = req.userData._id;
+    const userCards = await cardAccessDataService.myCards(userId);
+    console.log(chalk.greenBright("get my cards!"));
+    if (userCards == 0) {
+      res.json({ msg: "You don't have any cards you've created" });
+    } else {
+      res.json(userCards);
     }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
   }
-);
+});
 
 //http://localhost:8181/api/cards
 //get all cards

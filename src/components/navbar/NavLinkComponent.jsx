@@ -6,7 +6,12 @@ const NavLinkComponent = ({ url, label }) => {
     <Typography
       sx={{
         my: 2,
-        color: isActive ? "#f44336" : "#fafafa",
+        backgroundColor: isActive ? "red" : "transparent",
+        borderRadius: "5px",
+        color: "#fafafa",
+        transform: isActive ? "scale(0.98)" : "scale(1)",
+        display: "inline-block",
+        lineHeight: "11px",
         display: "block",
         p: 2,
         fontWeight: "bold",
@@ -52,9 +57,17 @@ const NavLinkComponent = ({ url, label }) => {
   return (
     <>
       {typeof url === "string" ? (
-        <NavLink to={url}>{typography}</NavLink>
+        <NavLink to={url} style={{ textDecoration: "none" }}>
+          {typography}
+        </NavLink>
       ) : (
-        <Link onClick={url}>{typography(true)}</Link>
+        <Link
+         
+          onClick={url}
+          style={{ textDecoration: "none" }}
+        >
+          {typography(true)}
+        </Link>
       )}
     </>
   );

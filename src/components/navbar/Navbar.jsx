@@ -292,7 +292,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               {isLoggedIn
                 ? ""
                 : notAuthPages.map((page) => (
-                    <NavLinkComponent key={page.url} {...page} />
+                    <NavLinkComponent
+                    
+                      key={page.url}
+                      {...page}
+                    />
                   ))}
             </Box>
 

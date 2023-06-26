@@ -17,6 +17,8 @@ import DeleteDialog from "../components/DialogsPopups/DeleteDialog";
 import jwt_decode from "jwt-decode";
 import { useSelector } from "react-redux";
 import CardForm from "../components/cardForm/CreateCard";
+import LinearProgress from "@mui/material/LinearProgress";
+
 import CardComponent from "../components/cardComp";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -44,12 +46,17 @@ const MyCards = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    axios
-      .get("/cards/my-cards")
-      .then(({ data }) => {
-        setCardArr(data);
-      })
-      .catch((err) => console.log(err));
+    const delay = setTimeout(() => {
+      axios
+        .get("/cards/my-cards")
+        .then(({ data }) => {
+          setCardArr(data);
+          setIsLoading(false);
+        })
+        .catch((err) => console.log(err));
+    }, 1700);
+
+    return () => clearTimeout(delay);
   }, []);
 
   const handleEditDialogClose = () => {
@@ -90,6 +97,15 @@ const MyCards = () => {
       console.log("error delete", err.response.data);
     }
   };
+  const replaceEditedCard = (editedCard) =>
+    setCardArr(
+      cardsArr.map((x) => {
+        if (x._id !== editedCard._id) {
+          return x;
+        }
+        return editedCard;
+      })
+    );
   const handlelikedCard = (id) => {
     setCardArr(cardsArr.filter((card) => card[1]._id !== id));
   };
@@ -102,7 +118,6 @@ const MyCards = () => {
     // Copy the imageUrl to the card object
     const updatedCard = {
       ...card,
-
       url,
       alt,
     };
@@ -110,6 +125,14 @@ const MyCards = () => {
     setCardToEdit(updatedCard);
     setOpenEditDialog(true);
   };
+
+  if (isLoading) {
+    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
+  }
+
+  if (!cardsArr) {
+    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
+  }
 
   return (
     <Fragment>
@@ -219,6 +242,7 @@ const MyCards = () => {
           onClose={handleEditDialogClose}
           cardToEdit={cardToEdit}
           setCardToEdit={setCardToEdit}
+          replaceEditedCard={replaceEditedCard}
         />
       </Container>
     </Fragment>

@@ -47,7 +47,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchComp= () => {
+const SearchComp = () => {
   const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const handleSearchChange = (e) => {

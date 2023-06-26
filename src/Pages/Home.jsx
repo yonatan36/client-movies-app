@@ -72,12 +72,6 @@ function Home() {
     }
   };
 
-  // const handleEditFromInitialCardsArr = (id) => {
-  //   const card = cardsArr.find((item) => item._id === id);
-  //   setCardToEdit(card);
-  //   setOpenEditDialog(true);
-  // };
-
   const handleEditDialogClose = () => {
     setOpenEditDialog(false);
     setCardToEdit(null);
@@ -125,6 +119,16 @@ function Home() {
       );
     }
   };
+
+  const replaceEditedCard = (editedCard) =>
+    setCardArr(
+      cardsArr.map((x) => {
+        if (x._id !== editedCard._id) {
+          return x;
+        }
+        return editedCard;
+      })
+    );
 
   //likes function
   const handlelikedCard = (id) => {
@@ -214,6 +218,7 @@ function Home() {
           onClose={handleEditDialogClose}
           cardToEdit={cardToEdit}
           setCardToEdit={setCardToEdit}
+          replaceEditedCard={replaceEditedCard}
         />
       </Container>
     </>

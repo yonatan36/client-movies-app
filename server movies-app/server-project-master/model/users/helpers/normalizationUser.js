@@ -17,6 +17,9 @@ const normalizeUser = (userData) => {
     alt: userData.image.alt || userData.alt || "yellow fluffy chickens",
   };
 
+  delete userData.url;
+  delete userData.alt;
+
   userData.name = {
     firstName: userData.name.firstName || userData.firstName,
     lastName: userData.name.lastName || userData.lastName,
@@ -30,6 +33,7 @@ const normalizeUser = (userData) => {
     city: userData.address.city || userData.city,
     street: userData.address.street || userData.street,
     houseNumber: userData.address.houseNumber || userData.houseNumber,
+    zip: userData.address.zip || userData.zip,
     state: userData.address.state || userData.state || "",
   };
   delete userData.country;
@@ -37,6 +41,7 @@ const normalizeUser = (userData) => {
   delete userData.street;
   delete userData.houseNumber;
   delete userData.state;
+  delete userData.zip;
 
   return userData;
 };

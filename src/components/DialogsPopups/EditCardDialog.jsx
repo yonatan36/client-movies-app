@@ -14,7 +14,13 @@ import {
   Grid,
 } from "@mui/material";
 
-const EditCardDialog = ({ open, onClose, cardToEdit, setCardToEdit }) => {
+const EditCardDialog = ({
+  open,
+  onClose,
+  cardToEdit,
+  setCardToEdit,
+  replaceEditedCard,
+}) => {
   // const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
@@ -47,7 +53,6 @@ const EditCardDialog = ({ open, onClose, cardToEdit, setCardToEdit }) => {
   };
 
   const handleSaveCard = async () => {
-    debugger
     try {
       if (!cardToEdit) {
         console.log("No card to update");
@@ -71,7 +76,8 @@ const EditCardDialog = ({ open, onClose, cardToEdit, setCardToEdit }) => {
         ...data,
       };
       setInputState(newInputState);
-      toast.info("Card updated!");
+      toast.info("movie updated!");
+      replaceEditedCard(cardToEdit);
       onClose(onClose);
     } catch (err) {
       console.log("Error updating card:", err);

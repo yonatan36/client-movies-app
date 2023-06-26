@@ -21,33 +21,38 @@ const Fav = () => {
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
   useEffect(() => {
-    axios
-      .get("/cards/my-cards")
-      .then(({ data }) => {
-        setMyCardIds(data.map((item) => item._id));
-      })
-      .catch((err) => console.log(err));
+    const delay = setTimeout(() => {
+      axios
+        .get("/cards/my-cards")
+        .then(({ data }) => {
+          setIsLoading(false);
+          setMyCardIds(data.map((item) => item._id));
+        })
+        .catch((err) => console.log(err));
+    }, 1700);
+
+    return () => clearTimeout(delay);
   }, []);
 
   useEffect(() => {
-    const fetchLikedCards = async () => {
-      try {
-        // Simulate a delay of 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+    const delay = setTimeout(() => {
+      axios
 
-        const { data } = await axios.get("/cards");
+        .get("/cards")
+        .then((response) => {
+          const data = response.data;
 
-        const filterdData = data.filter((card) =>
-          card.likes.includes(payload && payload._id)
-        );
-        setIsLoading(false);
-        setCardArr(filterdData); // Update the value of cardsArr
-      } catch (err) {
-        console.log(err);
-      }
-    };
+          const filteredData = data.filter((card) =>
+            card.likes.includes(payload && payload._id)
+          );
 
-    fetchLikedCards();
+          setIsLoading(false);
+          setCardArr(filteredData); // Update the value of cardsArr
+        })
+        .catch((err) => console.log(err));
+    }, 1700);
+
+    return () => clearTimeout(delay);
   }, []);
 
   const handleDeleteFromInitialCardsArr = async (id) => {
@@ -91,7 +96,7 @@ const Fav = () => {
     return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
   }
   return (
-    <Fragment>
+    <>
       <Container
         maxWidth="md"
         sx={{
@@ -164,7 +169,7 @@ const Fav = () => {
           setCardToEdit={setCardToEdit}
         />
       </Container>
-    </Fragment>
+    </>
   );
 };
 
