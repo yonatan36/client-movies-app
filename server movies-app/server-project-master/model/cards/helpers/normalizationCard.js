@@ -13,6 +13,8 @@ const normalizeCard = async (card, userId) => {
     alt: card.image.alt || card.alt || "yellow fluffy chickens",
   };
 
+  delete card.url;
+  delete card.alt;
   return {
     ...card,
     bizNumber: card.bizNumber || (await generateBizNumber()),

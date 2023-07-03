@@ -17,15 +17,12 @@ const createCardSchema = Joi.object({
     )
     .allow(""),
 
-
-    url: Joi.string().allow(""),
-    alt: Joi.string().allow(""),
-
+  url: Joi.string().allow(""),
+  alt: Joi.string().allow(""),
 
   bizNumber: Joi.number().min(1000000).max(9999999).allow(""),
   user_id: Joi.string().hex().length(24),
 });
-
 
 const validateCardSchema = (userInput) => {
   return createCardSchema.validateAsync(userInput);

@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
 import CarouselComponent from "../components/CarouselComp";
-import ImageSlider from "../components/ImageSliderComp";
+import CircularProgress from "@mui/material/CircularProgress";
 import DeleteDialog from "../components/DialogsPopups/DeleteDialog";
 import EditCardDialog from "../components/DialogsPopups/EditCardDialog";
 import CardComponent from "../components/cardComp";
 import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import LinearProgress from "@mui/material/LinearProgress";
 import jwt_decode from "jwt-decode";
 import { useState } from "react";
+import Logo from "../components/Logo";
 import axios from "axios";
-import { Grid, Container } from "@mui/material";
+import MyLinearProgress from "../components/MyLinearProgress";
+import NoCards from "../components/NoCards";
+import { Grid, Container, Typography } from "@mui/material";
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [cardsArr, setCardArr] = useState(null);
@@ -21,7 +23,7 @@ function Home() {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [cardToEdit, setCardToEdit] = useState(null);
   const [myCardIds, setMyCardIds] = useState([]);
-  const [imageUrl, setImageUrl] = useState("");
+  const [firstLoggedIn, setFirstLoggedIn] = useState(true);
   let qparams = useQueryParams();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
@@ -36,8 +38,9 @@ function Home() {
         .then(({ data }) => {
           setCardArr(data);
           setIsLoading(false);
+          setFirstLoggedIn(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error("Oops check the server"));
     }, 1700);
 
     return () => clearTimeout(delay);
@@ -50,7 +53,7 @@ function Home() {
         .then(({ data }) => {
           setMyCardIds(data.map((item) => item._id));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {});
     }
   }, [isLoggedIn]);
 
@@ -87,10 +90,7 @@ function Home() {
       .then(({ data }) => {
         filterFunc(data);
       })
-      .catch((err) => {
-        console.log("err from axios", err);
-        toast.error("Oops");
-      });
+      .catch((err) => {});
   }, []);
 
   const filterFunc = (data) => {
@@ -147,18 +147,56 @@ function Home() {
     setCardToEdit(updatedCard);
     setOpenEditDialog(true);
   };
+  useEffect(() => {
+    if (!firstLoggedIn || !isLoggedIn) {
+      return;
+    }
+    setFirstLoggedIn(false);
+  }, [firstLoggedIn, isLoggedIn]);
+
+  if (firstLoggedIn && isLoggedIn) {
+    return <CircularProgress sx={{ mt: { xs: 7.5, md: 9.5 } }} />;
+  }
 
   if (isLoading) {
-    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
+    return (
+      <>
+        <MyLinearProgress />
+        <Logo />
+      </>
+    );
   }
 
   if (!cardsArr) {
-    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
+    return (
+      <>
+        <MyLinearProgress />;
+        <NoCards />
+      </>
+    );
   }
 
   return (
     <>
       {qparams.filter ? "" : <CarouselComponent />}
+      {qparams.filter ? (
+        ""
+      ) : (
+        <Container
+          maxWidth="lg"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mt: 3,
+            mb: 3,
+          }}
+        >
+          <Typography component="h1" variant="h5" align="left">
+            Welcome to a World of Movies
+          </Typography>
+        </Container>
+      )}
 
       <Container
         maxWidth="lg"
@@ -166,7 +204,7 @@ function Home() {
       >
         <Grid
           container
-          spacing={3.5}
+          spacing={2.5}
           justifyContent={"flex-start"}
           alignItems={"center"}
         >
@@ -208,17 +246,23 @@ function Home() {
             </Grid>
           ))}
         </Grid>
+        {/* {cardsArr.map((x) => ( */}
         <DeleteDialog
+          // key={x._id}
           open={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           cardToDelete={handleDeleteCard}
+          // title={x.title}
         />
+        {/*  ))} */}
+
         <EditCardDialog
           open={openEditDialog}
           onClose={handleEditDialogClose}
           cardToEdit={cardToEdit}
           setCardToEdit={setCardToEdit}
           replaceEditedCard={replaceEditedCard}
+          onEdit={handleEditFromInitialCardsArr}
         />
       </Container>
     </>

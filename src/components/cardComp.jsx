@@ -16,7 +16,7 @@ import {
   Typography,
   Button,
   Box,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -71,7 +71,29 @@ const CardComponent = ({
     <Card square raised>
       <CardActionArea onClick={handleOpen}>
         <CardMedia height="250" component="img" image={img} />
-
+        {isMyCard ? (
+          <Typography
+            sx={{
+              position: "absolute",
+              top: "90%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "red",
+              color: "white",
+              padding: "5px 8px",
+              borderRadius: "5px",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                transform: "translate(-50%, -50%) scale(1.1)",
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+              },
+            }}
+          >
+            Your movie!
+          </Typography>
+        ) : (
+          <></>
+        )}
         <CardHeader
           title={title}
           sx={{
@@ -86,28 +108,7 @@ const CardComponent = ({
           }}
         />
       </CardActionArea>
-      {isMyCard ? (
-        <Typography
-          sx={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "2px 6px",
-            borderRadius: "5px",
-            marginTop: "5px",
-            width: "max-content",
-            marginX: "auto",
-            transition: "all 0.2s ease-in-out",
-            "&:hover": {
-              transform: "scale(1.1)",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-            },
-          }}
-        >
-          Your movie!
-        </Typography>
-      ) : (
-        <></>
-      )}
+
       <Box sx={{ ml: 2, mt: 1 }}>
         <StarRating />
       </Box>
@@ -133,7 +134,7 @@ const CardComponent = ({
         ) : null}
         {canDelete ? (
           <>
-            <IconButton  onClick={handleDeleteBtnClick}>
+            <IconButton onClick={handleDeleteBtnClick}>
               <DeleteIcon />
             </IconButton>
           </>

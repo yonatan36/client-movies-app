@@ -8,7 +8,6 @@ import Footer from "./components/FotterComp";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
-
 import useLoggedIn from "./hooks/useLoggedIn";
 
 const light = {
@@ -22,19 +21,15 @@ const dark = {
   },
 };
 
-
-  
-  
-
 function App() {
   const loggIn = useLoggedIn();
   useEffect(() => {
     loggIn();
   }, []);
-    const [darkMode, setDarkMode] = useState(true);
-    const changeTheme = () => {
-      setDarkMode(!darkMode);
-    };
+  const [darkMode, setDarkMode] = useState(true);
+  const changeTheme = () => {
+    setDarkMode(!darkMode);
+  };
   return (
     <>
       <ThemeProvider theme={darkMode ? createTheme(dark) : createTheme(light)}>

@@ -7,10 +7,11 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-function DeleteDialog({ open, onClose, cardToDelete }) {
+function DeleteDialog({ open, onClose, cardToDelete, title }) {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+     <DialogTitle>Are you sure you want to delete {title} card?</DialogTitle>
+
       <DialogContent>
         Deleting a card is permanent and cannot be undone.
       </DialogContent>

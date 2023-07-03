@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -28,12 +28,11 @@ import {
   DialogActions,
 } from "@mui/material";
 
-const Login = ({ openLogin, setOpenLogin }) => {
+const Login = ({ openLogin, setOpenLogin, avatar }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
   const [formValid, setFormValid] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
@@ -79,23 +78,55 @@ const Login = ({ openLogin, setOpenLogin }) => {
     try {
       if (!formValid) {
         toast.info("Please fill in all the required fields correctly.");
-
         return;
       }
+
       setIsLoading(true);
       const { data } = await axios.post("/users/login", formData);
       localStorage.setItem("token", data.token);
+
       setIsLoading(false);
+
       loggedIn();
+
       const firstName = await getUserInfo();
       toast.success(`Welcome ${firstName}! Good to see you`);
       navigate(ROUTES.HOME);
       handleClose(true);
     } catch (err) {
       setIsLoading(false);
-      toast.error("erorrr");
+      toast.error("An error occurred. Please try again.");
     }
   };
+
+  // if (isLoading) {
+  //   return (
+  //     <div
+  //       style={{
+  //         position: "relative",
+  //         display: "inline-block",
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //         marginTop: "200px",
+  //       }}
+  //     >
+  //       <CircularProgress
+  //         color="error"
+  //         style={{ position: "absolute", zIndex: 1 }}
+  //         size={100}
+  //       />
+  //       <Avatar
+  //         alt={avatar.alt}
+  //         src={avatar.url}
+  //         sx={{
+  //           width: 70,
+  //           height: 70,
+  //         }}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   const handleFocus = (event) => {
     setFieldToFocus(
@@ -135,7 +166,6 @@ const Login = ({ openLogin, setOpenLogin }) => {
                   <HowToRegIcon />
                 </Avatar>
                 Sign up
-             
               </DialogTitle>
               <Box
                 component="form"

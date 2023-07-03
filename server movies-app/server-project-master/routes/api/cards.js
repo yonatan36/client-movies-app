@@ -40,7 +40,9 @@ router.put(
         id,
         updatenormalCard
       );
-      res.status(200).json({ msg: `card - ${updateCard.title} update!` });
+      res
+        .status(200)
+        .json({ msg: `card - ${updateCard.title} update!`, card: updateCard });
       console.log(chalk.greenBright(`card - ${updateCard.title} update!`));
     } catch (err) {
       res.status(400).json(err.message);

@@ -17,8 +17,8 @@ import DeleteDialog from "../components/DialogsPopups/DeleteDialog";
 import jwt_decode from "jwt-decode";
 import { useSelector } from "react-redux";
 import CardForm from "../components/cardForm/CreateCard";
-import LinearProgress from "@mui/material/LinearProgress";
-
+import Logo from "../components/Logo";
+import MyLinearProgress from "../components/MyLinearProgress";
 import CardComponent from "../components/cardComp";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -53,7 +53,7 @@ const MyCards = () => {
           setCardArr(data);
           setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error("Oops check the server"));
     }, 1700);
 
     return () => clearTimeout(delay);
@@ -114,8 +114,6 @@ const MyCards = () => {
     const card = cardsArr.find((item) => item._id === id);
     const url = card && card.image && card.image.url ? card.image.url : "";
     const alt = card && card.image && card.image.alt ? card.image.alt : "";
-
-    // Copy the imageUrl to the card object
     const updatedCard = {
       ...card,
       url,
@@ -127,11 +125,16 @@ const MyCards = () => {
   };
 
   if (isLoading) {
-    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
+    return (
+      <>
+        <MyLinearProgress />
+        <Logo />
+      </>
+    );
   }
 
   if (!cardsArr) {
-    return <LinearProgress color="error" sx={{ mt: { xs: 7.5, md: 11 } }} />;
+    return <MyLinearProgress />;
   }
 
   return (
@@ -229,7 +232,26 @@ const MyCards = () => {
               </Grid>
             ))
           ) : (
-            <Typography variant="body1">No cards found.</Typography>
+            <Container
+              maxWidth="md"
+              sx={{
+                mt: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {" "}
+              <Typography
+                component="h1"
+                variant="h6"
+                align="left"
+                sx={{ mt: 1, ml: 2 }}
+              >
+                You haven't created any movies yet. Start by adding your own
+                movies and share your passion with others!
+              </Typography>
+            </Container>
           )}
         </Grid>
         <DeleteDialog

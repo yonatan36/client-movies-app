@@ -8,10 +8,10 @@ const NavLinkComponent = ({ url, label }) => {
         my: 2,
         backgroundColor: isActive ? "red" : "transparent",
         borderRadius: "5px",
-        color: "#fafafa",
+
         transform: isActive ? "scale(0.98)" : "scale(1)",
         display: "inline-block",
-        lineHeight: "11px",
+        lineHeight: "9px",
         display: "block",
         p: 2,
         fontWeight: "bold",
@@ -57,14 +57,13 @@ const NavLinkComponent = ({ url, label }) => {
   return (
     <>
       {typeof url === "string" ? (
-        <NavLink to={url} style={{ textDecoration: "none" }}>
+        <NavLink to={url} style={{ textDecoration: "none", color: "inherit" }}>
           {typography}
         </NavLink>
       ) : (
         <Link
-         
           onClick={url}
-          style={{ textDecoration: "none" }}
+          style={{ textDecoration: "none", color: "inherit" }}
         >
           {typography(true)}
         </Link>

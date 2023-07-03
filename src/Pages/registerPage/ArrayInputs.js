@@ -82,8 +82,8 @@ export const registerArray = [
   },
   {
     label: "Image URL",
-    name: "imageUrl",
-    id: "imageUrl",
+    name: "url",
+    id: "url",
     type: "url",
     sm: 12,
     required: false,

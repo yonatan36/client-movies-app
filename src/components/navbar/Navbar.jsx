@@ -19,10 +19,10 @@ import Profile from "../../Pages/profile/Profile";
 import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import SearchComp from "../SearchComp";
 import axios from "axios";
-
+import { useTheme } from "@mui/material";
 const pages = [
   {
     label: "About",
@@ -31,8 +31,6 @@ const pages = [
 ];
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
-  const [backgroundColor, setBackgroundColor] = useState("transparent");
-
   //not logged in users
   const settings = [
     {
@@ -74,6 +72,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   );
   const { payload } = useSelector((bigPieBigState) => bigPieBigState.authSlice);
 
+  const [backgroundColor, setBackgroundColor] = useState();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openLogin, setOpenLogin] = useState(false);
@@ -105,13 +104,23 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
     }
   };
 
+  const onUpdate = (url, alt, firstName) => {
+    setAvatar({
+      url,
+      alt,
+    });
+    setName({
+      name: firstName,
+    });
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+  const theme = useTheme();
   useEffect(() => {
     axios
       .get("/users/userInfo/")
@@ -129,27 +138,21 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
 
   return (
     <>
-      <AppBar style={{ backgroundColor }}>
+      <AppBar
+        style={{
+          backgroundColor: darkMode ? backgroundColor : "#fafafa",
+          color: darkMode ? "" : "black",
+        }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                ml: 2,
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily:
-                  "'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-                fontWeight: "bold",
-                fontSize: "32px",
-                letterSpacing: "-0.04em",
-                color: "#E50914",
-              }}
+              fontWeight="700"
+              fontSize="1.7rem"
+              sx={{ mr: 2.4, ml: 0.6, display: { xs: "none", md: "flex" } }}
             >
-              Yonifix
+              Yoon
+              <span style={{ color: theme.palette.error.main }}>Flix</span>
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -196,7 +199,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                           <NavLink
                             to={page.url}
                             label={page.label}
-                            style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                            style={{
+                              color: darkMode ? "#e8f5e9" : "#212121",
+                              textDecoration: "none",
+                              fontWeight: "bold",
+                            }}
                           >
                             {page.label}
                           </NavLink>
@@ -213,7 +220,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                       <NavLink
                         to={page.url}
                         label={page.label}
-                        style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                        style={{
+                          color: darkMode ? "#e8f5e9" : "#212121",
+                          textDecoration: "none",
+                          fontWeight: "bold",
+                        }}
                       >
                         {page.label}
                       </NavLink>
@@ -234,7 +245,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                           <NavLink
                             onClick={page.url}
                             label={page.label}
-                            style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                            style={{
+                              color: darkMode ? "#e8f5e9" : "#212121",
+                              textDecoration: "none",
+                              fontWeight: "bold",
+                            }}
                           >
                             {page.label}
                           </NavLink>
@@ -245,24 +260,17 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
             </Box>
 
             <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
+              fontWeight="700"
+              fontSize="1.7rem"
               sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
+                mr: 3,
+                ml: 1,
                 flexGrow: 1,
-                letterSpacing: ".3rem",
-                fontFamily:
-                  "'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-                fontWeight: "bold",
-                fontSize: "32px",
-                letterSpacing: "-0.04em",
-                color: "#E50914",
+                display: { xs: "flex", md: "none" },
               }}
             >
-              Yonifix
+              Yoon
+              <span style={{ color: theme.palette.error.main }}>Flix</span>
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -292,11 +300,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               {isLoggedIn
                 ? ""
                 : notAuthPages.map((page) => (
-                    <NavLinkComponent
-                    
-                      key={page.url}
-                      {...page}
-                    />
+                    <NavLinkComponent key={page.url} {...page} />
                   ))}
             </Box>
 
@@ -304,7 +308,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               <Box sx={{ flexGrow: 0, ml: 1, mr: 1.5 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={avatar.alt} src={avatar.url} />
+                    <Avatar
+                      alt={avatar.alt}
+                      src={avatar.url}
+                      sx={{ borderRadius: 0 }}
+                    />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -331,8 +339,9 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                       textAlign: "center",
                       textTransform: "none",
                       fontWeight: 600,
+                      color: "inherit",
+                      fontWeight: "bold",
                     }}
-                    color={"white"}
                   >
                     Hi {name.name}!
                   </Typography>
@@ -341,7 +350,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                       <Typography textAlign="center" sx={{ fontSize: "1rem" }}>
                         <NavLink
                           key={setting.url}
-                          style={{ color: darkMode ? "#e8f5e9" : "#212121" }}
+                          style={{
+                            color: darkMode ? "#e8f5e9" : "#212121",
+                            textDecoration: "none",
+                            fontWeight: "bold",
+                          }}
                           {...(typeof setting.url === "string"
                             ? { to: setting.url }
                             : { onClick: setting.url })}
@@ -363,8 +376,17 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
         openRegister={openRegister}
         setOpenRegister={setOpenRegister}
       />
-      <Login openLogin={openLogin} setOpenLogin={setOpenLogin} />
-      <Profile openProfile={openProfile} setOpenProfile={setOpenProfile} />
+      <Login
+        openLogin={openLogin}
+        setOpenLogin={setOpenLogin}
+        avatar={avatar}
+      />
+      <Profile
+        openProfile={openProfile}
+        setOpenProfile={setOpenProfile}
+        avatar={avatar}
+        onUpdate={onUpdate}
+      />
     </>
   );
 };

@@ -4,7 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
+import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
@@ -22,15 +22,17 @@ import {
   DialogActions,
 } from "@mui/material";
 
-const Profile = ({ openProfile, setOpenProfile }) => {
+const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
   const [formValid, setFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inputState, setInputState] = useState({});
-  const [avatar, setAvatar] = useState([]);
 
+  const { isLoggedIn } = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice
+  );
   // Handle input field focus
   const handleFocus = (event) => {
     const fieldIndex = profileArray.findIndex(
@@ -110,13 +112,12 @@ const Profile = ({ openProfile, setOpenProfile }) => {
       delete newInputState.password;
 
       setInputState(newInputState);
-    } catch (err) {
-      console.log("error from axios", err);
-    }
+    } catch (err) {}
   };
   useEffect(() => {
     fetchData();
-  }, []);
+    setFormError({});
+  }, [openProfile]);
 
   useEffect(() => {
     setFormValid(validateForm());
@@ -144,6 +145,8 @@ const Profile = ({ openProfile, setOpenProfile }) => {
       await axios.put(`/users/${_id}`, updatedCard);
       setIsLoading(false);
       handleClose(false);
+      onUpdate(inputState.url, inputState.alt, inputState.firstName);
+
       const firstName = await getUserInfo();
       toast.success(`Update successful! Hello, ${firstName}!`);
     } catch (err) {
@@ -158,17 +161,18 @@ const Profile = ({ openProfile, setOpenProfile }) => {
     setFormError({});
   };
 
-  useEffect(() => {
-    axios
-      .get("/users/userInfo/")
-      .then((userInfo) => {
-        setAvatar({
-          url: userInfo.data.image.url,
-          alt: userInfo.data.image.alt,
-        });
-      })
-      .catch((err) => {});
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("/users/userInfo/")
+  //     .then((userInfo) => {
+  //       setAvatar({
+  //         url: userInfo.data.image.url,
+  //         alt: userInfo.data.image.alt,
+  //       });
+  //     })
+  //     .catch((err) => {});
+  // }, [openProfile]);
+
   const handleClose = () => setOpenProfile(false);
 
   return (
@@ -188,8 +192,8 @@ const Profile = ({ openProfile, setOpenProfile }) => {
                 alt={avatar.alt}
                 src={avatar.url}
                 sx={{
-                  width: 80,
-                  height: 80,
+                  width: 70,
+                  height: 70,
                 }}
               />
               <DialogTitle>
@@ -222,10 +226,9 @@ const Profile = ({ openProfile, setOpenProfile }) => {
                         onChange={handleChange}
                         onFocus={handleFocus}
                         autoFocus={index === fieldToFocus}
+                        error={!!formError[field.name]}
+                        helperText={formError[field.name] || ""}
                       />
-                      <Typography color="red" fontSize="8pt">
-                        {formError[field.name] || ""}
-                      </Typography>
                     </Grid>
                   ))}
                   <Grid item xs={12} sm={6}>

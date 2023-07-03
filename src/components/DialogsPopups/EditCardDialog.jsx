@@ -28,9 +28,12 @@ const EditCardDialog = ({
   const [inputState, setInputState] = useState();
 
   useEffect(() => {
+    setFormError({});
+  }, [open]);
+  useEffect(() => {
     // Update form validity whenever form data or errors change
     setFormValid(validateForm());
-  }, [cardToEdit, formError]);
+  }, [cardToEdit, formError, open]);
 
   // Handle input field focus
   const handleFocus = (event) => {
@@ -54,17 +57,16 @@ const EditCardDialog = ({
 
   const handleSaveCard = async () => {
     try {
-      if (!cardToEdit) {
-        console.log("No card to update");
+      if (!formValid) {
+        toast.info("Don't piss me off!");
         return;
       }
-
       const { _id } = cardToEdit;
+
       const updatedCard = {
         ...cardToEdit,
         image: undefined,
         likes: undefined,
-        user_id: undefined,
         bizNumber: undefined,
         createdAt: undefined,
         _id: undefined,
@@ -77,7 +79,7 @@ const EditCardDialog = ({
       };
       setInputState(newInputState);
       toast.info("movie updated!");
-      replaceEditedCard(cardToEdit);
+      replaceEditedCard(data.card);
       onClose(onClose);
     } catch (err) {
       console.log("Error updating card:", err);
@@ -88,30 +90,28 @@ const EditCardDialog = ({
   const handleChange = (event) => {
     const { name, value, id } = event.target;
     const { joi, label } = cardFormArray.find((field) => field.id === id);
-    setFormError({
-      ...formError,
-      [name]: feildValidation(joi, value, label),
-    });
-    setCardToEdit({
-      ...cardToEdit,
-      [name]: value,
-    });
-  };
 
-  // Reset the form
-  const resetForm = () => {
-    setFieldToFocus(0);
-    setFormError({});
-    setFormValid(false);
+    setFormError((prevFormError) => ({
+      ...prevFormError,
+      [cardToEdit._id]: {
+        ...prevFormError[cardToEdit._id],
+        [id]: feildValidation(joi, value, label),
+      },
+    }));
+
+    setCardToEdit((prevCardToEdit) => ({
+      ...prevCardToEdit,
+      [name]: value,
+    }));
   };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Edit Card</DialogTitle>
+      <DialogTitle>Edit Movie</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           {cardFormArray.map((field, index) => (
-            <Grid item xs={12} key={`${new Date()}-${field.id}`}>
+            <Grid item xs={12} sm={field.sm} key={`${new Date()}-${field.id}`}>
               <TextField
                 fullWidth
                 label={field.label}
@@ -123,8 +123,10 @@ const EditCardDialog = ({
                 onChange={handleChange}
                 onFocus={handleFocus}
                 autoFocus={index === fieldToFocus}
-                error={!!formError[field.name]}
-                helperText={formError[field.name] || ""}
+                error={cardToEdit && !!formError[cardToEdit._id]?.[field.id]}
+                helperText={
+                  (cardToEdit && formError[cardToEdit._id]?.[field.id]) || ""
+                }
               />
             </Grid>
           ))}

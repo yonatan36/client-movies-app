@@ -8,11 +8,17 @@ import Fav from "../Pages/Fav";
 import Profile from "../Pages/profile/Profile";
 import LogOut from "../components/LogOut";
 import MyCards from "../Pages/MyCards";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 const Router = () => {
   return (
     <Routes>
-      <Route exact path={ROUTES.HOME} element={<Home />} />
-      <Route path={ROUTES.FAKEHOME} element={<Navigate to={ROUTES.HOME} />} />
+      <Route
+        exact
+        path={ROUTES.HOME}
+        element={<ProtectedRoute element={<Home />} />}
+      />
+
+      <Route path={ROUTES.FAKEHOME} element={<Home />} />
       <Route exact path={ROUTES.REGISTER} element={<Register />} />
       <Route exact path={ROUTES.LOGIN} element={<Login />} />
       <Route exact path={ROUTES.ABOUT} element={<About />} />
