@@ -1,5 +1,5 @@
-import { useState, forwardRef } from "react";
-import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
+import { useState } from "react";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarRating from "./StarRatingComp";
 import CardDialog from "../components/DialogsPopups/CardDialog";
@@ -36,26 +36,30 @@ const CardComponent = ({
   isMyCard,
 }) => {
   const [open, setOpen] = useState(false);
-  const [likeState, setlikesState] = useState(isLiked);
+  const [likeState, setLikesState] = useState(isLiked);
   const [like, setLikes] = useState(likes.length);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const handleLikeBtnClick = async () => {
+  const handleLikeBtnClick = async (event) => {
+    event.stopPropagation(); // Stop event propagation
     try {
       const response = await axios.patch("/cards/card-likes/" + id);
       const updatedLikes = response.data.likes.length;
       setLikes(updatedLikes);
-      setlikesState((prevState) => !prevState);
+      setLikesState((prevState) => !prevState);
       onRemoveLikes(id);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleEditBtnClick = () => {
+  const handleEditBtnClick = (event) => {
+    event.stopPropagation(); // Stop event propagation
     onEdit(id);
   };
 
-  const handleDeleteBtnClick = () => {
+  const handleDeleteBtnClick = (event) => {
+    event.stopPropagation(); // Stop event propagation
     onDelete(id);
   };
 
@@ -67,11 +71,32 @@ const CardComponent = ({
     setOpen(false);
   };
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <Card square raised>
+    <Card
+      square
+      raised
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <CardActionArea onClick={handleOpen}>
-        <CardMedia height="250" component="img" image={img} />
-        {isMyCard ? (
+        <CardMedia
+          height="400"
+          component="img"
+          image={img}
+          sx={{
+            filter: isHovered ? "brightness(70%)" : "none",
+            transition: "filter 0.3s ease-in-out",
+          }}
+        />
+        {isMyCard && (
           <Typography
             sx={{
               position: "absolute",
@@ -85,62 +110,134 @@ const CardComponent = ({
               transition: "all 0.2s ease-in-out",
               "&:hover": {
                 transform: "translate(-50%, -50%) scale(1.1)",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                boxShadow: "0px 2px 4px rgba(0, 0, 1, 0.95)",
               },
             }}
           >
             Your movie!
           </Typography>
-        ) : (
-          <></>
         )}
-        <CardHeader
-          title={title}
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
-            color: "#fff",
-            padding: "8px",
-            zIndex: 1,
-          }}
-        />
-      </CardActionArea>
 
-      <Box sx={{ ml: 2, mt: 1 }}>
-        <StarRating />
-      </Box>
-      <CardActions>
-        <Button size="medium" onClick={handleOpen} style={{ color: "inherit" }}>
-          <PlayCircleFilledIcon sx={{ mr: 1 }} /> Play
-        </Button>
-
-        {notConnected ? (
-          ""
-        ) : (
-          <IconButton color="primary" onClick={handleLikeBtnClick}>
-            <FavoriteIcon
-              className="fav"
-              sx={likeState ? { color: "red" } : { color: "primary" }}
-            />
-          </IconButton>
-        )}
-        {canEdit ? (
-          <IconButton onClick={handleEditBtnClick}>
-            <EditIcon />
-          </IconButton>
-        ) : null}
-        {canDelete ? (
+        {isHovered && (
           <>
-            <IconButton onClick={handleDeleteBtnClick}>
-              <DeleteIcon />
-            </IconButton>
-          </>
-        ) : null}
-      </CardActions>
+            <CardHeader
+              title={title}
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 5,
+                width: "100%",
+                color: "#fff",
+                padding: "8px",
+                zIndex: 1,
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            />
+            <Typography
+              sx={{
+                position: "absolute",
+                top: "10%",
 
+                width: "100%",
+                color: "#fff",
+                padding: "8px",
+                zIndex: 1,
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              {description}
+            </Typography>
+            <Button
+              className="media-play-btn"
+              variant="contained"
+              color="error"
+              sx={{
+                display: "flex",
+                opacity: isHovered ? 1 : 0,
+                transition: "opacity 0.3s ease",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                "& .MuiButton-startIcon": { marginRight: "-4px" },
+              }}
+            >
+              <PlayArrowIcon />
+            </Button>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "65%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 2,
+              }}
+            >
+              <StarRating />
+            </Box>
+
+            <Box
+              sx={{
+                position: "absolute",
+                top: "75%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 2,
+              }}
+            >
+              {!notConnected && (
+                <IconButton
+                  color="primary"
+                  onClick={handleLikeBtnClick}
+                  sx={{
+                    color: likeState ? "red" : "white",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: isHovered ? "scale(1.5)" : "scale(1)",
+                      boxShadow: "0px 2px 4px rgba(0, 0, 1, 0.95)",
+                    },
+                  }}
+                >
+                  <FavoriteIcon className="fav" />
+                </IconButton>
+              )}
+              {canEdit && (
+                <IconButton
+                  onClick={handleEditBtnClick}
+                  sx={{
+                    color: "white",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: isHovered ? "scale(1.5)" : "scale(1)",
+                      boxShadow: "0px 2px 4px rgba(0, 0, 1, 0.95)",
+                    },
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              )}
+              {canDelete && (
+                <IconButton
+                  onClick={handleDeleteBtnClick}
+                  sx={{
+                    color: "white",
+                    transition: "all 0.2s ease-in-out",
+
+                    "&:hover": {
+                      transform: isHovered ? "scale(1.5)" : "scale(1)",
+                      boxShadow: "0px 2px 4px rgba(0, 0, 1, 0.95)",
+                    },
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              )}
+            </Box>
+          </>
+        )}
+      </CardActionArea>
       <CardDialog
         open={open}
         onClose={handleClose}

@@ -15,9 +15,7 @@ function About() {
         alignItems: "center",
       }}
     >
-      <div>
-        <AccordionComp />
-      </div>
+      <AccordionComp />
     </div>
   );
 }

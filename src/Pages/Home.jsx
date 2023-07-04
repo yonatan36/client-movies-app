@@ -12,7 +12,6 @@ import { useState } from "react";
 import Logo from "../components/Logo";
 import axios from "axios";
 import MyLinearProgress from "../components/MyLinearProgress";
-import NoCards from "../components/NoCards";
 import { Grid, Container, Typography } from "@mui/material";
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -171,7 +170,6 @@ function Home() {
     return (
       <>
         <MyLinearProgress />;
-        <NoCards />
       </>
     );
   }
@@ -204,7 +202,7 @@ function Home() {
       >
         <Grid
           container
-          spacing={2.5}
+          spacing={1}
           justifyContent={"flex-start"}
           alignItems={"center"}
         >
