@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@material-ui/core/styles";
-import font from "../../src/assets/texure.jpg";
+
 import { Box, Button } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -103,11 +103,14 @@ const CarouselComponent = () => {
             <Button
               variant="contained"
               sx={{
-                backgroundColor: "grey",
                 color: "white",
                 position: "absolute",
-                top: 400,
-                left: { xs: 160, md: 190 },
+                top: { xs: "50%", md: "400px" },
+                left: { xs: "50%", md: "190px" },
+                backgroundColor: "grey",
+                "&:hover": {
+                  backgroundColor: "grey", // Set the same background color on hover
+                },
               }}
             >
               <ErrorIcon

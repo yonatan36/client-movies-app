@@ -5,7 +5,7 @@ function MyLinearProgress() {
   return (
     <LinearProgress
       color="error"
-      sx={{ height: "8px", mt: { xs: 7.5, md: 9.2 } }}
+      sx={{ height: "6px", mt: { xs: 7.5, md: 9.2 } }}
     />
   );
 }

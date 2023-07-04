@@ -49,16 +49,33 @@ function App() {
         <Container
           maxWidth={false}
           disableGutters
-          style={{ height: "100vh", position: "relative" }}
-          sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+          sx={{
+            position: "relative",
+            paddingBottom: "0.5rem",
+          }}
         >
           <header>
             <ResponsiveAppBar onThemeChange={changeTheme} darkMode={darkMode} />
           </header>
-          <main>
+          <main
+            style={{
+              flex: "1 0 auto",
+            }}
+          >
             <Router />
           </main>
-          {/* <Footer /> */}
+          <Footer
+            style={{
+              position: "absolute",
+              bottom: 0,
+              width: "100%",
+            }}
+          />
         </Container>
       </ThemeProvider>
     </>

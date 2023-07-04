@@ -189,7 +189,7 @@ const MyCards = () => {
       <Container maxWidth="lg" sx={{ my: 2, display: "flex" }}>
         <Grid
           container
-          spacing={3.5}
+          spacing={1}
           justifyContent={"flex-start"}
           alignItems={"center"}
         >
