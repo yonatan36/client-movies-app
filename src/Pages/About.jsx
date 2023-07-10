@@ -1,5 +1,4 @@
 import React from "react";
-import backgroundFav from "../assets/backroundFav.jpg";
 import AccordionComp from "../components/AccordionComp";
 import {
   Card,
@@ -12,6 +11,7 @@ import {
 import Home from "../assets/home.jpg";
 import about from "../assets/about.jpg";
 import register from "../assets/register.jpg";
+import backgroundFav from "../assets/backroundFav.jpg";
 
 function About() {
   return (

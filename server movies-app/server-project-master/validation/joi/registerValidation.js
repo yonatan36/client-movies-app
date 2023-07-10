@@ -33,7 +33,7 @@ const registerSchema = Joi.object({
   }),
   address: Joi.object()
     .keys({
-      state: Joi.string().min(2).max(256),
+      state: Joi.string().min(0).max(256).allow(""),
       country: Joi.string().min(2).max(256).required(),
       city: Joi.string().min(2).max(256).required(),
       street: Joi.string().min(2).max(256).required(),
@@ -42,7 +42,6 @@ const registerSchema = Joi.object({
     })
     .required(),
   isAdmin: Joi.boolean().allow(""),
-
 });
 
 const validateRegisterSchema = (userInput) =>

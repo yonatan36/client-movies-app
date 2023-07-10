@@ -54,7 +54,7 @@ export const cardFormArray = [
     label: "Image URL",
     name: "url",
     id: "imageUrl",
-    type: "url",
+    type: "text",
     sm: 12,
     required: false,
     joi: Joi.string()

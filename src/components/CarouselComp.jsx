@@ -105,12 +105,12 @@ const CarouselComponent = () => {
               sx={{
                 color: "white",
                 position: "absolute",
-                top: { xs: "50%", md: "400px" },
-                left: { xs: "50%", md: "190px" },
                 backgroundColor: "grey",
                 "&:hover": {
-                  backgroundColor: "grey", // Set the same background color on hover
+                  backgroundColor: "grey",
                 },
+                top: 400,
+                left: { xs: 160, md: 190 },
               }}
             >
               <ErrorIcon

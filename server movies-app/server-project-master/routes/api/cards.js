@@ -34,7 +34,7 @@ router.put(
     try {
       const id = req.params.id;
       await idValidationServise.idValidation(id);
-      await cardsValidationServise.createCardValidation(req.body);
+      await cardsValidationServise.editCardValidation(req.body);
       let updatenormalCard = await normalizeCard(req.body, req.userData._id);
       const updateCard = await cardAccessDataService.updateCard(
         id,

@@ -178,7 +178,7 @@ const Fav = () => {
                 component="h1"
                 variant="h6"
                 align="left"
-                sx={{ mt: 1, ml: 2 }}
+                sx={{ mt: 1, ml: 1 }}
               >
                 You haven't liked any movies yet. Start exploring and find your
                 favorites!

@@ -1,3 +1,6 @@
+import Slide from "@mui/material/Slide";
+import { forwardRef } from "react";
+
 import React from "react";
 import {
   Dialog,
@@ -10,11 +13,15 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-
+const Transition = forwardRef((props, ref) => {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 const CardDialog = ({ open, onClose, card, img, title, description }) => {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{title}</DialogTitle>
+    <Dialog open={open} onClose={onClose} TransitionComponent={Transition}>
+      <DialogTitle variant="h4" sx={{ textAlign: "center", fontWeight: 100 }}>
+        {title}
+      </DialogTitle>
       <DialogContent>
         <div style={{ position: "relative", paddingTop: "56.25%", height: 0 }}>
           <iframe
@@ -33,7 +40,12 @@ const CardDialog = ({ open, onClose, card, img, title, description }) => {
           ></iframe>
         </div>
         <Card>
-          <CardMedia component="img" image={img} alt={title} height="200" />
+          <CardMedia
+            sx={{ width: "600px", height: "300px" }}
+            component="img"
+            image={img}
+            alt={title}
+          />
           <CardContent>
             <Typography variant="body1">{description}</Typography>
           </CardContent>
