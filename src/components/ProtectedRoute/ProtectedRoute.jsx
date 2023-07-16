@@ -4,12 +4,11 @@ import ROUTES from "../../routes/ROUTES";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ element }) => {
-    
   const isLoggedIn = useSelector((bigState) => bigState.authSlice.isLoggedIn);
-  if (isLoggedIn) {
-    return element;
-  } else {
+  if (!isLoggedIn) {
     return <Navigate to={ROUTES.ABOUT} />;
+  } else {
+    return element;
   }
 };
 
