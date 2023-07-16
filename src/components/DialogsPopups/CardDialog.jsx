@@ -16,7 +16,7 @@ import {
 const Transition = forwardRef((props, ref) => {
   return <Slide direction="down" ref={ref} {...props} />;
 });
-const CardDialog = ({ open, onClose, card, img, title, description }) => {
+const CardDialog = ({ open, onClose, img, title, description }) => {
   return (
     <Dialog open={open} onClose={onClose} TransitionComponent={Transition}>
       <DialogTitle variant="h4" sx={{ textAlign: "center", fontWeight: 100 }}>

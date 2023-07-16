@@ -106,7 +106,7 @@ const CardForm = () => {
             // disabled={!formValid}
             sx={{ mt: 1, mb: { xs: 0, md: 2 } }}
           >
-            Save Card
+            Create Movie
           </Button>
         </Grid>
         <Grid item xs={12} sm={6}>

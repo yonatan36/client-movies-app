@@ -165,7 +165,7 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
                 <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                   <HowToRegIcon />
                 </Avatar>
-                Sign up
+                Sign In
               </DialogTitle>
               <Box
                 component="form"

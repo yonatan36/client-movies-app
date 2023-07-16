@@ -9,13 +9,14 @@ import Profile from "../Pages/profile/Profile";
 import LogOut from "../components/LogOut";
 import MyCards from "../Pages/MyCards";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import SuperProtectedRoute from "../components/ProtectedRoute/SuperProtectedRoute";
 const Router = () => {
   return (
     <Routes>
       <Route
         exact
         path={ROUTES.HOME}
-        element={<ProtectedRoute element={<Home />} />}
+        element={<ProtectedRoute isLoggedIn={true} element={<Home />} />}
       />
 
       <Route path={ROUTES.FAKEHOME} element={<Home />} />
@@ -25,7 +26,17 @@ const Router = () => {
       <Route exact path={ROUTES.PROFILE} element={<Profile />} />
       <Route exact path={ROUTES.FAV} element={<Fav />} />
       <Route exact path={ROUTES.LOGOUT} element={<LogOut />} />
-      <Route exact path={ROUTES.MYCARDS} element={<MyCards />} />
+      <Route
+        exact
+        path={ROUTES.MYCARDS}
+        element={
+          <SuperProtectedRoute
+            isAdmin={true}
+            isBusiness={true}
+            element={<MyCards />}
+          />
+        }
+      />
     </Routes>
   );
 };

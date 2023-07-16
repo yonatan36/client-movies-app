@@ -13,8 +13,8 @@ const normalizeUser = (userData) => {
     url:
       userData.image.url ||
       userData.url ||
-      "https://cdn.pixabay.com/photo/2020/04/07/17/01/chicks-5014152_960_720.jpg",
-    alt: userData.image.alt || userData.alt || "yellow fluffy chickens",
+      "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png",
+    alt: userData.image.alt || userData.alt || "my avatar image",
   };
 
   delete userData.url;

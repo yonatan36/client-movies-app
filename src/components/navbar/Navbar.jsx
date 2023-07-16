@@ -122,18 +122,20 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   }, []);
   const theme = useTheme();
   useEffect(() => {
-    axios
-      .get("/users/userInfo/")
-      .then((userInfo) => {
-        setAvatar({
-          url: userInfo.data.image.url,
-          alt: userInfo.data.image.alt,
-        });
-        setName({
-          name: userInfo.data.name.firstName,
-        });
-      })
-      .catch((err) => {});
+    if (isLoggedIn) {
+      axios
+        .get("/users/userInfo/")
+        .then((userInfo) => {
+          setAvatar({
+            url: userInfo.data.image.url,
+            alt: userInfo.data.image.alt,
+          });
+          setName({
+            name: userInfo.data.name.firstName,
+          });
+        })
+        .catch((err) => {});
+    }
   }, [isLoggedIn]);
 
   return (

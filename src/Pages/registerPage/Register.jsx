@@ -5,24 +5,26 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { TextField } from "@mui/material";
+import { TextField, FormControlLabel } from "@mui/material";
 import { toast } from "react-toastify";
-import ROUTES from "../../routes/ROUTES";
+import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Login from "../login/Login";
 import LinearProgress from "@mui/material/LinearProgress";
 import { feildValidation } from "../../validation/feildValidation";
 import { registerArray } from "../registerPage/ArrayInputs";
+
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
+  Checkbox,
+  IconButton,
 } from "@mui/material";
 
 const RegisterPage = ({ openRegister, setOpenRegister }) => {
@@ -65,31 +67,27 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
     setFormValid(validateForm());
   }, [formData, formError]);
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  debugger
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  try {
-    if (!formValid) {
-      toast.info("Don't piss me off!");
-      return;
+    try {
+      if (!formValid) {
+        toast.info("Don't piss me off!");
+        return;
+      }
+      setIsLoading(true);
+      const Data = await axios.post("users/register", formData);
+
+      setIsLoading(false);
+      handleClose(false);
+      setOpenLogin(true);
+      toast.success(`Register success!`);
+    } catch (err) {
+      setIsLoading(false);
+      toast.error(`Oops! Registration failed. Please try again.`);
+      console.log("Register error:", err);
     }
-
-    setIsLoading(true);
-
-    const result = await axios.post("users/register", formData);
-
-    setIsLoading(false);
-    handleClose(false);
-    setOpenLogin(true);
-    toast.success(`Register success!`);
-  } catch (err) {
-    setIsLoading(false);
-    toast.error(`Oops! Registration failed. Please try again.`);
-    console.log("Register error:", err);
-  }
-};
-
+  };
 
   const resetForm = () => {
     setFormData({});
@@ -102,6 +100,12 @@ const handleSubmit = async (event) => {
   return (
     <React.Fragment>
       <Dialog open={openRegister} onClose={handleClose}>
+        <IconButton
+          edge="start"
+          color="inherit"
+          onClick={handleClose}
+          aria-label="close"
+        ></IconButton>
         <DialogContent>
           <Container maxWidth="md">
             <Box
@@ -145,12 +149,12 @@ const handleSubmit = async (event) => {
                         onChange={handleChange}
                         onFocus={handleFocus}
                         autoFocus={index === fieldToFocus}
+                        error={!!formError[field.name]}
+                        helperText={formError[field.name] || ""}
                       />
-                      <Typography color="red" fontSize="8pt">
-                        {formError[field.name] || ""}
-                      </Typography>
                     </Grid>
                   ))}
+
                   <Grid item xs={12} sm={6}>
                     <Button
                       type="submit"
@@ -175,7 +179,18 @@ const handleSubmit = async (event) => {
                     </Button>
                   </Grid>
                 </Grid>
-                {/* Cancel button and Link to login page */}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      size="medium"
+                      onChange={handleChange}
+                      name="isBusiness"
+                    />
+                  }
+                  label="Register as a business"
+                  labelPlacement="end"
+                  style={{ display: "flex", alignItems: "center" }}
+                />
               </Box>
             </Box>
           </Container>
@@ -189,9 +204,9 @@ const handleSubmit = async (event) => {
           >
             <DialogContentText>alredy have acount?</DialogContentText>
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
+          <IconButton onClick={handleClose} color="primary">
+            <CloseIcon />
+          </IconButton>
         </DialogActions>
       </Dialog>
       <Login openLogin={openLogin} setOpenLogin={setOpenLogin} />

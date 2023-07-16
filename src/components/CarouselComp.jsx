@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@material-ui/core/styles";
-
+import StarRating from "./StarRatingComp";
 import { Box, Button } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 800,
     color: "white",
     [theme.breakpoints.down("sm")]: {
-      fontSize: 70,
-      top: 170,
+      fontSize: 50,
+      top: 120,
       left: 30,
     },
   },
@@ -49,7 +49,16 @@ const useStyles = makeStyles((theme) => ({
     top: 280,
     left: 60,
     [theme.breakpoints.down("sm")]: {
-      top: 270,
+      top: 285,
+      left: 40,
+    },
+  },
+  StarRating: {
+    position: "absolute",
+    top: 340,
+    left: 60,
+    [theme.breakpoints.down("sm")]: {
+      top: 260,
       left: 40,
     },
   },
@@ -77,6 +86,9 @@ const CarouselComponent = () => {
         cardsArr.map((item, index) => (
           <Box key={index}>
             <img src={item.image.url} className={classes.carouselImage} />
+            <Box className={classes.StarRating}>
+              <StarRating />
+            </Box>
             <Typography variant="h6" className={classes.description}>
               {item.description}
             </Typography>

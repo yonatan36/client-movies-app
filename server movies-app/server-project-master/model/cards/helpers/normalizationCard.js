@@ -9,8 +9,8 @@ const normalizeCard = async (card, userId) => {
     url:
       card.image.url ||
       card.url ||
-      "https://cdn.pixabay.com/photo/2020/04/07/17/01/chicks-5014152_960_720.jpg",
-    alt: card.image.alt || card.alt || "yellow fluffy chickens",
+      "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg",
+    alt: card.image.alt || card.alt || "my image videos",
   };
 
   delete card.url;

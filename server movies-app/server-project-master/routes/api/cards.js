@@ -16,11 +16,9 @@ router.post("/", authmw, async (req, res) => {
     await cardsValidationServise.createCardValidation(req.body);
     await normalizeCard(req.body, req.userData._id);
     await cardAccessDataService.createCard(normalCard);
-    console.log(chalk.greenBright("card created!"));
     res.status(200).json();
   } catch (err) {
     res.status(400).json(err.message);
-    console.log(err.message);
   }
 });
 
@@ -43,10 +41,8 @@ router.put(
       res
         .status(200)
         .json({ msg: `card - ${updateCard.title} update!`, card: updateCard });
-      console.log(chalk.greenBright(`card - ${updateCard.title} update!`));
     } catch (err) {
       res.status(400).json(err.message);
-      console.log(err.message);
     }
   }
 );
@@ -57,14 +53,13 @@ router.get("/my-cards", authmw, async (req, res) => {
   try {
     const userId = req.userData._id;
     const userCards = await cardAccessDataService.myCards(userId);
-    console.log(chalk.greenBright("get my cards!"));
+
     if (userCards == 0) {
       res.json({ msg: "You don't have any cards you've created" });
     } else {
       res.json(userCards);
     }
   } catch (err) {
-    console.log(err);
     res.status(400).json(err);
   }
 });
@@ -75,11 +70,10 @@ router.get("/", async (req, res) => {
   try {
     await cardsValidationServise.createCardValidation();
     const allCards = await cardAccessDataService.getAllCards();
-    console.log(chalk.greenBright("get all cards!"));
+
     res.status(200).json(allCards);
   } catch (err) {
     res.status(400).json(err.message);
-    console.log(err.message);
   }
 });
 
@@ -90,11 +84,9 @@ router.get("/:id", authmw, async (req, res) => {
     const id = req.params.id;
     await idValidationServise.idValidation(id);
     const findCardByiD = await cardAccessDataService.getcardById(id);
-    console.log(chalk.greenBright("get card!"));
     res.status(200).json(findCardByiD);
   } catch (err) {
     res.status(400).json(err.message);
-    console.log(err.message);
   }
 });
 
@@ -109,11 +101,8 @@ router.delete(
       const id = req.params.id;
       await idValidationServise.idValidation(id);
       const dataFromDb = await cardAccessDataService.deleteCard(id);
-
-      console.log(chalk.greenBright(`card - ${dataFromDb.title} deleted!`));
       res.status(200).json({ msg: `card - ${dataFromDb.title} deleted!` });
     } catch (err) {
-      console.log(chalk.redBright("Error during deletion:", err.message));
       res.status(400).json({ msg: "could not find the card" });
     }
   }
@@ -125,30 +114,23 @@ router.patch("/card-likes/:id", authmw, async (req, res) => {
   try {
     const user = req.userData;
     const cardId = req.params.id;
-
     let card = await cardAccessDataService.likesCard(cardId);
-
     const cardLikes = card.likes.find((id) => id === user._id);
-
     if (!cardLikes) {
       card.likes.push(user._id);
-      console.log(chalk.greenBright(`${card.title} liked!`));
       res
         .status(200)
         .json({ message: `${card.title} liked!`, likes: card.likes.length });
     } else {
       const cardFiltered = card.likes.filter((id) => id !== user._id);
       card.likes = cardFiltered;
-      console.log(chalk.greenBright(`${card.title} uNliked!`));
       res
         .status(200)
         .json({ message: `${card.title} uNliked!`, likes: card.likes.length });
     }
     card = await card.save();
   } catch (err) {
-    console.log(chalk.redBright("Card Like Error:"));
     res.status(400).json(err.message);
-    console.log(err.message);
   }
 });
 

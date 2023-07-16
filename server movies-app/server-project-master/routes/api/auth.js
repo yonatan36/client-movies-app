@@ -12,7 +12,7 @@ const CustomError = require("../../utils/CustomError");
 const permissionsMiddleware = require("../../middleware/permissionsMiddleware");
 const authmw = require("../../middleware/authMiddleware");
 const User = require("../../model/users/Users");
-//http://localhost:8181/api/auth/register
+//http://localhost:8181/api/users/register
 //register
 router.post("/register", async (req, res) => {
   try {
@@ -23,22 +23,19 @@ router.post("/register", async (req, res) => {
     req.body.password = await bcrypt.generateHash(req.body.password);
     req.body = normalizeUser(req.body);
     await userAccessDataService.registerUser(req.body);
-    console.log(chalk.greenBright("register"));
     res.status(200).json(register);
   } catch (err) {
     res.status(400).json(err);
-    console.log(chalk.redBright(err.message));
   }
 });
 
-//http://localhost:8181/api/auth/login
+//http://localhost:8181/api/users/login
 //login
 router.post("/login", async (req, res) => {
   try {
     await usersValidationServise.loginUserValidation(req.body);
     const userData = await userAccessDataService.getUserByEmail(req.body.email);
     if (!userData) {
-      console.log("invalid email or password");
       throw new CustomError("invalid email and/or password");
     }
     const isPasswordMatch = await bcrypt.cmpHash(
@@ -46,7 +43,6 @@ router.post("/login", async (req, res) => {
       userData.password
     );
     if (!isPasswordMatch) {
-      console.log("invalid email or password");
       throw new CustomError("invalid email and/or password");
     }
     const token = await jwt.generateToken({
@@ -55,13 +51,11 @@ router.post("/login", async (req, res) => {
       isBusiness: userData.isBusiness,
     });
     res.status(200).json({ token: token });
-    console.log(chalk.greenBright("login"));
   } catch (err) {
     res.status(400).json(err.message);
-    console.log(err.message);
   }
 });
-//http://localhost:8181/api/auth/:id
+//http://localhost:8181/api/users/:id
 //update user
 router.put(
   "/:id",
@@ -81,19 +75,13 @@ router.put(
       res.status(200).json({
         msg: `user - ${updateUser.name.firstName} ${updateUser.name.lastName} update!`,
       });
-      console.log(
-        chalk.greenBright(
-          `user - ${updateUser.name.firstName} ${updateUser.name.lastName} update!`
-        )
-      );
     } catch (err) {
-      console.log(err.message);
       res.status(400).json({ error: err.message });
     }
   }
 );
 
-//http://localhost:8181/api/auth
+//http://localhost:8181/api/users
 //get all users
 router.get(
   "/",
@@ -102,32 +90,13 @@ router.get(
   async (req, res) => {
     try {
       const getAll = await userAccessDataService.getUsers(req.body);
-      console.log(chalk.greenBright("get all users!"));
+
       res.json(getAll);
     } catch (err) {
       res.json(err).status(400);
-      console.log(chalk.redBright(err.message));
     }
   }
 );
-
-//http://localhost:8181/api/auth/:id
-//get user
-// router.get(
-//   "/:id",
-//   authmw,
-//   permissionsMiddleware(true, false, true),
-//   async (req, res) => {
-//     try {
-//       const getUser = await userAccessDataService.getUser(req.params.id);
-//       console.log(chalk.greenBright("get user!"));
-//       res.json(getUser);
-//     } catch (err) {
-//       res.json(err).status(400);
-//       console.log(chalk.redBright(err.message));
-//     }
-//   }
-// );
 
 router.get("/userInfo", authmw, (req, res) => {
   let user = req.userData;
@@ -138,7 +107,7 @@ router.get("/userInfo", authmw, (req, res) => {
     .catch((errorsFromMongoose) => res.status(500).send(errorsFromMongoose));
 });
 
-//http://localhost:8181/api/auth/:id
+//http://localhost:8181/api/users/:id
 //delete user
 router.delete(
   "/:id",
@@ -149,13 +118,11 @@ router.delete(
       const id = req.params.id;
       await idValidationServise.idValidation(id);
       const dataFromDb = await userAccessDataService.deleteUser(id);
-      console.log(chalk.greenBright("user deleted!"));
       res.json({
         msg: `user - ${dataFromDb.name.firstName} ${dataFromDb.name.lastName} deleted`,
       });
     } catch (err) {
       res.json(err).status(400);
-      console.log(chalk.redBright(err.message));
     }
   }
 );
@@ -165,13 +132,12 @@ router.patch("/:id", authmw, async (req, res) => {
     const id = req.params.id;
     await idValidationServise.idValidation(id);
     const updateUser = await userAccessDataService.updateBizUser(id);
-    console.log(chalk.greenBright("isBusiness update"));
+
     res.json(
       `${updateUser.name.firstName} ${updateUser.name.lastName}  isBusiness - ${updateUser.isBusiness}`
     );
   } catch (err) {
     res.json(err).status(400);
-    console.log(chalk.redBright(err.message));
   }
 });
 

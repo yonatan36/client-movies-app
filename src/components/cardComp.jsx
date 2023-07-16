@@ -36,10 +36,9 @@ const CardComponent = ({
   const [open, setOpen] = useState(false);
   const [likeState, setLikesState] = useState(isLiked);
   const [like, setLikes] = useState(likes.length);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleLikeBtnClick = async (event) => {
-    event.stopPropagation(); // Stop event propagation
+    event.stopPropagation();
     try {
       const response = await axios.patch("/cards/card-likes/" + id);
       const updatedLikes = response.data.likes.length;
@@ -52,12 +51,12 @@ const CardComponent = ({
   };
 
   const handleEditBtnClick = (event) => {
-    event.stopPropagation(); // Stop event propagation
+    event.stopPropagation();
     onEdit(id);
   };
 
   const handleDeleteBtnClick = (event) => {
-    event.stopPropagation(); // Stop event propagation
+    event.stopPropagation();
     onDelete(id);
   };
 
@@ -263,6 +262,18 @@ const CardComponent = ({
 
 CardComponent.propTypes = {
   img: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  onDelete: PropTypes.func,
+  canDelete: PropTypes.bool,
+  onEdit: PropTypes.func,
+  canEdit: PropTypes.bool,
+  onRemoveLikes: PropTypes.func,
+  isLiked: PropTypes.bool,
+  likes: PropTypes.arrayOf(PropTypes.string),
+  notConnected: PropTypes.bool,
+  isMyCard: PropTypes.bool,
 };
 
 export default CardComponent;

@@ -4,7 +4,7 @@ const registerSchema = Joi.object({
   name: Joi.object()
     .keys({
       firstName: Joi.string().min(2).max(256).required(),
-      middleName: Joi.string().min(2).max(256).allow(""),
+
       lastName: Joi.string().min(2).max(256).required(),
     })
     .required(),
@@ -42,6 +42,7 @@ const registerSchema = Joi.object({
     })
     .required(),
   isAdmin: Joi.boolean().allow(""),
+  isBusiness: Joi.boolean().allow(""),
 });
 
 const validateRegisterSchema = (userInput) =>

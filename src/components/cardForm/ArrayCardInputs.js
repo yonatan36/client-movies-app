@@ -51,7 +51,7 @@ export const cardFormArray = [
     joi: Joi.string().allow(""),
   },
   {
-    label: "Image URL",
+    label: "Demo Movie (Image URL)",
     name: "url",
     id: "imageUrl",
     type: "text",
@@ -65,14 +65,5 @@ export const cardFormArray = [
       // )
       .messages({ "string.pattern.base": `Image url is not vaild` })
       .allow(""),
-  },
-  {
-    label: "Web",
-    name: "web",
-    id: "web",
-    type: "url",
-    sm: 12,
-    required: false,
-    joi: Joi.string().allow(""),
   },
 ];

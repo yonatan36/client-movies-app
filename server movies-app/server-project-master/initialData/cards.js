@@ -1,170 +1,117 @@
 const cards = [
   {
-    title: "card1",
+    title: "Sands of Destiny",
     subTitle: "sub card 1",
-    description: "save the card pls",
+    description:
+      "A gripping tale of survival in a world plagued by sand and dust storms.",
     phone: "0500000000",
     email: "kenny1@gmail.com",
     image: {
       url: "assets/home1.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card2",
+    title: "Skull Island",
     subTitle: "sub card 2",
-    description: "save the card pls",
+    description:
+      "Uncover the secrets of a legendary island inhabited by ancient creatures.",
     phone: "0500000000",
     email: "kenny2@gmail.com",
     image: {
       url: "assets/home2.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card3",
+    title: "Pirates of Seve",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Embark on a thrilling adventure across treacherous waters with ruthless pirates vying for treasures.",
     phone: "0500000000",
     email: "kenny3@gmail.com",
     image: {
       url: "assets/home3.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card4",
+    title: "The Enigma Card",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "When a group of friends is catapulted through time, they must navigate different eras to find their way back home.",
     phone: "0500000000",
     email: "kenny4@gmail.com",
     image: {
       url: "assets/home4.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card5",
+    title: "Lost in Time",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "When a group of friends is catapulted through time, they must navigate different eras to find their way back home.",
     phone: "0500000000",
     email: "kenny5@gmail.com",
     image: {
       url: "assets/slide1.png",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card6",
+    title: "Jumbo Queen",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Witness the courageous battle of a brave queen leading her people against towering giants.",
     phone: "0500000000",
     email: "kenny6@gmail.com",
     image: {
       url: "assets/slide3.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card7",
+    title: "Chronicles of Destiny",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Follow the intertwined fates of extraordinary individuals on a quest to fulfill their shared destiny.",
     phone: "0500000000",
     email: "kenny7@gmail.com",
     image: {
       url: "assets/slide2.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card8",
+    title: "Beyond the Unknown",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Venture into the uncharted realms of the supernatural alongside a team of paranormal investigators.",
     phone: "0500000000",
     email: "kenny8@gmail.com",
     image: {
       url: "assets/u1.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card9",
+    title: "Shadow Realms",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Witness the extraordinary journey of a young hero mastering ancient magic to confront an ancient evil.",
     phone: "0500000000",
     email: "kenny9@gmail.com",
     image: {
       url: "assets/u6.png",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card10",
+    title: "Echoes of Eternity",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Experience a captivating tale of forbidden love and timeless devotion set in a picturesque town.",
     phone: "0500000000",
     email: "kenny10@gmail.com",
     image: {
@@ -180,39 +127,27 @@ const cards = [
     },
   },
   {
-    title: "card11",
+    title: "Mystic Sands",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Unearth the ancient secrets of an enigmatic desert as a courageous archaeologist delves into hidden treasures and long-forgotten civilizations.",
     phone: "0500000000",
     email: "kenny11@gmail.com",
     image: {
       url: "assets/u4.jpg",
       alt: "alalla",
     },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
-    },
   },
   {
-    title: "card12",
+    title: "The Seventh Key",
     subTitle: "sub card 3",
-    description: "save the card pls",
+    description:
+      "Join a group of intrepid adventurers racing against time to find the elusive seventh key and prevent impending catastrophe.",
     phone: "0500000000",
     email: "kenny12@gmail.com",
     image: {
       url: "assets/u7.jpg",
       alt: "alalla",
-    },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
     },
   },
 ];

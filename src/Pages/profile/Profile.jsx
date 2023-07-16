@@ -18,7 +18,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
 } from "@mui/material";
 
@@ -69,50 +68,55 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
   };
 
   const fetchData = async () => {
-    try {
-      const { data } = await axios.get("/users/userInfo/");
-      const firstName =
-        data && data.name && data.name.firstName ? data.name.firstName : "";
-      const lastName =
-        data && data.name && data.name.lastName ? data.name.lastName : "";
-      const url = data && data.image && data.image.url ? data.image.url : "";
-      const alt = data && data.image && data.image.alt ? data.image.alt : "";
-      const state =
-        data && data.address && data.address.state ? data.address.state : "";
-      const country =
-        data && data.address && data.address.country
-          ? data.address.country
-          : "";
-      const city =
-        data && data.address && data.address.city ? data.address.city : "";
-      const street =
-        data && data.address && data.address.street ? data.address.street : "";
-      const houseNumber =
-        data && data.address && data.address.houseNumber
-          ? data.address.houseNumber
-          : "";
-      const zip =
-        data && data.address && data.address.zip ? data.address.zip : "";
-      let newInputState = {
-        ...data,
-        firstName,
-        lastName,
-        url,
-        alt,
-        state,
-        country,
-        city,
-        street,
-        houseNumber,
-        zip,
-      };
+    if (isLoggedIn) {
+      try {
+        const { data } = await axios.get("/users/userInfo/");
+        const firstName =
+          data && data.name && data.name.firstName ? data.name.firstName : "";
+        const lastName =
+          data && data.name && data.name.lastName ? data.name.lastName : "";
+        const url = data && data.image && data.image.url ? data.image.url : "";
+        const alt = data && data.image && data.image.alt ? data.image.alt : "";
+        const state =
+          data && data.address && data.address.state ? data.address.state : "";
+        const country =
+          data && data.address && data.address.country
+            ? data.address.country
+            : "";
+        const city =
+          data && data.address && data.address.city ? data.address.city : "";
+        const street =
+          data && data.address && data.address.street
+            ? data.address.street
+            : "";
+        const houseNumber =
+          data && data.address && data.address.houseNumber
+            ? data.address.houseNumber
+            : "";
+        const zip =
+          data && data.address && data.address.zip ? data.address.zip : "";
 
-      delete newInputState.isBusiness;
-      delete newInputState.isAdmin;
-      delete newInputState.password;
+        let newInputState = {
+          ...data,
+          firstName,
+          lastName,
+          url,
+          alt,
+          state,
+          country,
+          city,
+          street,
+          houseNumber,
+          zip,
+        };
 
-      setInputState(newInputState);
-    } catch (err) {}
+        delete newInputState.isBusiness;
+        delete newInputState.isAdmin;
+        delete newInputState.password;
+
+        setInputState(newInputState);
+      } catch (err) {}
+    }
   };
   useEffect(() => {
     fetchData();
@@ -160,18 +164,6 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
     setFormData({});
     setFormError({});
   };
-
-  // useEffect(() => {
-  //   axios
-  //     .get("/users/userInfo/")
-  //     .then((userInfo) => {
-  //       setAvatar({
-  //         url: userInfo.data.image.url,
-  //         alt: userInfo.data.image.alt,
-  //       });
-  //     })
-  //     .catch((err) => {});
-  // }, [openProfile]);
 
   const handleClose = () => setOpenProfile(false);
 

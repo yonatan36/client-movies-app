@@ -8,7 +8,6 @@ const NavLinkComponent = ({ url, label }) => {
         my: 2,
         backgroundColor: isActive ? "red" : "transparent",
         borderRadius: "5px",
-
         transform: isActive ? "scale(0.98)" : "scale(1)",
         display: "inline-block",
         lineHeight: "9px",
@@ -61,12 +60,15 @@ const NavLinkComponent = ({ url, label }) => {
           {typography}
         </NavLink>
       ) : (
-        <Link
+        <NavLink
           onClick={url}
-          style={{ textDecoration: "none", color: "inherit" }}
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+          }}
         >
           {typography(true)}
-        </Link>
+        </NavLink>
       )}
     </>
   );
