@@ -1,8 +1,8 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CardComponent from "../components/cardComp";
-import { Box, Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
 import MyLinearProgress from "../components/MyLinearProgress";
@@ -15,7 +15,7 @@ const Fav = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [cardToEdit, setCardToEdit] = useState(null);
+  const [cardToEdit, setCardToEdit] = useState([]);
   const [myCardIds, setMyCardIds] = useState([]);
   const [title, SetTitle] = useState(null);
 
@@ -29,7 +29,7 @@ const Fav = () => {
           setIsLoading(false);
           setMyCardIds(data.map((item) => item._id));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {});
     }, 1700);
 
     return () => clearTimeout(delay);
@@ -87,7 +87,14 @@ const Fav = () => {
 
   const handleEditFromInitialCardsArr = (id) => {
     const card = cardsArr.find((item) => item._id === id);
-    setCardToEdit(card);
+    const url = card && card.image && card.image.url ? card.image.url : "";
+    const alt = card && card.image && card.image.alt ? card.image.alt : "";
+    const updatedCard = {
+      ...card,
+      url,
+      alt,
+    };
+    setCardToEdit(updatedCard);
     setOpenEditDialog(true);
   };
 

@@ -16,7 +16,7 @@ const Router = () => {
       <Route
         exact
         path={ROUTES.HOME}
-        element={<ProtectedRoute isLoggedIn={true} element={<Home />} />}
+        element={<ProtectedRoute element={<Home />} />}
       />
 
       <Route path={ROUTES.FAKEHOME} element={<Home />} />

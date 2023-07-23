@@ -45,9 +45,7 @@ const CardComponent = ({
       setLikes(updatedLikes);
       setLikesState((prevState) => !prevState);
       onRemoveLikes(id);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const handleEditBtnClick = (event) => {
@@ -138,25 +136,8 @@ const CardComponent = ({
           {title}
         </Typography>
 
-        <Typography
-          className="hover-element"
-          sx={{
-            position: "absolute",
-            top: "14%",
-            width: "100%",
-            color: "#fff",
-            padding: "8px",
-            zIndex: 1,
-            textAlign: "center",
-            fontWeight: "bold",
-            opacity: 0,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          {description}
-        </Typography>
-
         <Button
+          component="span"
           className="hover-element media-play-btn"
           variant="contained"
           color="error"
@@ -204,6 +185,7 @@ const CardComponent = ({
           {!notConnected && (
             <IconButton
               color="primary"
+              component="span"
               onClick={handleLikeBtnClick}
               sx={{
                 color: likeState ? "red" : "white",
@@ -219,6 +201,7 @@ const CardComponent = ({
           )}
           {canEdit && (
             <IconButton
+              component="span"
               onClick={handleEditBtnClick}
               sx={{
                 color: "white",
@@ -234,6 +217,7 @@ const CardComponent = ({
           )}
           {canDelete && (
             <IconButton
+              component="span"
               onClick={handleDeleteBtnClick}
               sx={{
                 color: "white",

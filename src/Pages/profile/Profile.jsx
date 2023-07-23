@@ -11,14 +11,18 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import axios from "axios";
-import LinearProgress from "@mui/material/LinearProgress";
+import CloseIcon from "@mui/icons-material/Close";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
 import { feildValidation } from "../../validation/feildValidation";
 import { profileArray } from "../profile/ArrayInputs";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
+  IconButton,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 
 const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
@@ -170,7 +174,45 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
   return (
     <React.Fragment>
       <Dialog open={openProfile} onClose={handleClose}>
+        <AppBar position="relative" color="error">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="close"
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h6" component="div">
+                profile
+              </Typography>
+            </Box>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "1rem",
+            }}
+          >
+            <Avatar
+              alt={avatar.alt}
+              src={avatar.url}
+              sx={{ width: 70, height: 70 }}
+            />
+          </Box>
           <Container maxWidth="md">
             <Box
               sx={{
@@ -180,19 +222,6 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
                 alignItems: "center",
               }}
             >
-              <Avatar
-                alt={avatar.alt}
-                src={avatar.url}
-                sx={{
-                  width: 70,
-                  height: 70,
-                }}
-              />
-              <DialogTitle>
-                profile
-                {isLoading && <LinearProgress color="error" />}
-              </DialogTitle>
-
               <Box
                 component="form"
                 onSubmit={handleSubmit}
@@ -223,38 +252,44 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
                       />
                     </Grid>
                   ))}
-                  <Grid item xs={12} sm={6}>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
-                      color="error"
-                    >
-                      update me
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Button
-                      type="button"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
-                      onClick={resetForm}
-                      color="error"
-                    >
-                      <RestartAltIcon /> Reset Form
-                    </Button>
-                  </Grid>
                 </Grid>
                 {/* Cancel button and Link to login page */}
               </Box>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    size="medium"
+                    onChange={handleChange}
+                    name="isBusiness"
+                  />
+                }
+                label="Register as a business"
+                labelPlacement="end"
+                style={{ display: "flex", alignItems: "center" }}
+              />
             </Box>
           </Container>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
+          <Button
+            onClick={handleSubmit}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
+            color="error"
+          >
+            update me
+          </Button>
+
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
+            onClick={resetForm}
+            color="error"
+          >
+            <RestartAltIcon /> Reset Form
           </Button>
         </DialogActions>
       </Dialog>

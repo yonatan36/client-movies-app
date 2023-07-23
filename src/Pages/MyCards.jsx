@@ -35,7 +35,7 @@ const MyCards = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [cardToEdit, setCardToEdit] = useState(null);
+  const [cardToEdit, setCardToEdit] = useState([]);
   const [myCardIds, setMyCardIds] = useState([]);
 
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
@@ -178,7 +178,7 @@ const MyCards = () => {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Add new movie
+              Add new mov/ie
             </Typography>
           </Toolbar>
         </AppBar>

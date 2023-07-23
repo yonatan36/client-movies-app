@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Grid, Button, Box } from "@mui/material";
+import { Grid, Button, Box, CardMedia } from "@mui/material";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { cardFormArray } from "./ArrayCardInputs";
 import { feildValidation } from "../../validation/feildValidation";
@@ -9,7 +9,7 @@ import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 
-const CardForm = () => {
+const CardForm = ({ img }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
@@ -66,7 +66,6 @@ const CardForm = () => {
       toast.info("Please fill in all required fields correctly.");
       return;
     }
-
     try {
       await axios.post("/cards", formData);
       navigate(ROUTES.HOME);
@@ -78,6 +77,21 @@ const CardForm = () => {
 
   return (
     <Box component={"form"} onSubmit={createCard}>
+      <CardMedia
+        height="250"
+        component="img"
+        src={
+          formData.url ||
+          "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
+        }
+        className="card-image"
+        sx={{
+          mb: 3,
+          filter: "brightness(100%)",
+          transition: "filter 0.3s ease-in-out",
+        }}
+      />
+
       <Grid container spacing={2}>
         {cardFormArray.map((field, index) => (
           <Grid item xs={12} sm={field.sm} key={`${new Date()}-${field.id}`}>

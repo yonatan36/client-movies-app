@@ -7,21 +7,22 @@ import Box from "@mui/material/Box";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Container from "@mui/material/Container";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { TextField, FormControlLabel } from "@mui/material";
+import { TextField, FormControlLabel, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Login from "../login/Login";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
 import LinearProgress from "@mui/material/LinearProgress";
 import { feildValidation } from "../../validation/feildValidation";
 import { registerArray } from "../registerPage/ArrayInputs";
+import BizDialog from "../../components/DialogsPopups/BizDialog";
 
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Checkbox,
   IconButton,
@@ -34,6 +35,7 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
   const [formValid, setFormValid] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openBizDialog, setOpenBizDialog] = useState(false);
   const navigate = useNavigate();
 
   // Handle input field focus
@@ -56,6 +58,12 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
     const { name, value, checked, type } = event.target;
     const fieldValue = type === "checkbox" ? checked : value;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: fieldValue }));
+
+    if (name === "isBusiness") {
+      // If the checkbox is checked, open the business dialog
+      setOpenBizDialog(checked);
+    }
+
     const fieldSchema = registerArray.find((field) => field.name === name)?.joi;
     if (fieldSchema) {
       const error = feildValidation(fieldSchema, fieldValue, name);
@@ -72,12 +80,11 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
 
     try {
       if (!formValid) {
-        toast.info("Don't piss me off!");
+        toast.info("Please fill in all the required fields correctly.");
         return;
       }
       setIsLoading(true);
-      const Data = await axios.post("users/register", formData);
-
+      await axios.post("users/register", formData);
       setIsLoading(false);
       handleClose(false);
       setOpenLogin(true);
@@ -89,23 +96,42 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
     }
   };
 
-  const resetForm = () => {
-    setFormData({});
-    setFormError({});
-  };
-
   // const formValid = Object.keys(formError).length === 0;
   const handleClose = () => setOpenRegister(false);
 
+  const handleBizDialogClose = () => {
+    setOpenBizDialog(false);
+  };
   return (
     <React.Fragment>
       <Dialog open={openRegister} onClose={handleClose}>
-        <IconButton
-          edge="start"
-          color="inherit"
-          onClick={handleClose}
-          aria-label="close"
-        ></IconButton>
+        <AppBar position="relative" color="error">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="close"
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h6" component="div">
+                Sign up
+              </Typography>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <HowToRegIcon />
+              </Avatar>
+            </Box>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
           <Container maxWidth="md">
             <Box
@@ -116,99 +142,73 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
                 alignItems: "center",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <HowToRegIcon />
-              </Avatar>
-              <DialogTitle>
-                Sign up
-                {isLoading && <LinearProgress color="error" />}
-              </DialogTitle>
-
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                noValidate
-                sx={{ mt: 3 }}
-              >
-                <Grid container spacing={2}>
-                  {registerArray.map((field, index) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={field.sm}
-                      key={`${new Date()}-${field.id}`}
-                    >
-                      <TextField
-                        fullWidth
-                        label={field.label}
-                        name={field.name}
-                        id={field.id}
-                        type={field.type}
-                        required={field.required}
-                        value={formData[field.name] || ""}
-                        onChange={handleChange}
-                        onFocus={handleFocus}
-                        autoFocus={index === fieldToFocus}
-                        error={!!formError[field.name]}
-                        helperText={formError[field.name] || ""}
-                      />
-                    </Grid>
-                  ))}
-
-                  <Grid item xs={12} sm={6}>
-                    <Button
-                      type="submit"
+              <Grid container spacing={2}>
+                {registerArray.map((field, index) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={field.sm}
+                    key={`${new Date()}-${field.id}`}
+                  >
+                    <TextField
                       fullWidth
-                      variant="contained"
-                      sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
-                      color="error"
-                    >
-                      Sign Up
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Button
-                      type="button"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
-                      onClick={resetForm}
-                      color="error"
-                    >
-                      <RestartAltIcon /> Reset Form
-                    </Button>
-                  </Grid>
-                </Grid>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="medium"
+                      label={field.label}
+                      name={field.name}
+                      id={field.id}
+                      type={field.type}
+                      required={field.required}
+                      value={formData[field.name] || ""}
                       onChange={handleChange}
-                      name="isBusiness"
+                      onFocus={handleFocus}
+                      autoFocus={index === fieldToFocus}
+                      error={!!formError[field.name]}
+                      helperText={formError[field.name] || ""}
                     />
-                  }
-                  label="Register as a business"
-                  labelPlacement="end"
-                  style={{ display: "flex", alignItems: "center" }}
-                />
-              </Box>
+                  </Grid>
+                ))}
+              </Grid>
             </Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  size="medium"
+                  onChange={handleChange}
+                  name="isBusiness"
+                />
+              }
+              label="Register as a business"
+              labelPlacement="end"
+              style={{ display: "flex", alignItems: "center" }}
+            />
           </Container>
         </DialogContent>
         <DialogActions>
           <Button
+            onClick={handleSubmit}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
+            color="error"
+          >
+            Sign Up
+          </Button>
+
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
             onClick={() => {
               setOpenLogin(true);
               handleClose();
             }}
+            color="error"
           >
-            <DialogContentText>alredy have acount?</DialogContentText>
+            Sign In
           </Button>
-          <IconButton onClick={handleClose} color="primary">
-            <CloseIcon />
-          </IconButton>
         </DialogActions>
       </Dialog>
+      <BizDialog open={openBizDialog} onClose={handleBizDialogClose} />
       <Login openLogin={openLogin} setOpenLogin={setOpenLogin} />
     </React.Fragment>
   );

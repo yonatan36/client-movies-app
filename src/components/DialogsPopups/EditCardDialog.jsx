@@ -1,25 +1,39 @@
 import React from "react";
 import { cardFormArray } from "../cardForm/ArrayCardInputs";
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { feildValidation } from "../../validation/feildValidation";
+import Slide from "@mui/material/Slide";
+import CloseIcon from "@mui/icons-material/Close";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
   Dialog,
-  DialogTitle,
+  Container,
   DialogContent,
   DialogActions,
   Button,
   TextField,
   Grid,
+  Typography,
+  IconButton,
+  Box,
+  CardMedia,
 } from "@mui/material";
 
+const Transition = forwardRef((props, ref) => {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 const EditCardDialog = ({
   open,
   onClose,
   cardToEdit,
   setCardToEdit,
   replaceEditedCard,
+  img,
 }) => {
   // const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
@@ -106,39 +120,106 @@ const EditCardDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Edit Movie</DialogTitle>
-      <DialogContent>
-        <Grid container spacing={2}>
-          {cardFormArray.map((field, index) => (
-            <Grid item xs={12} sm={field.sm} key={`${new Date()}-${field.id}`}>
-              <TextField
-                fullWidth
-                label={field.label}
-                name={field.name}
-                id={field.id}
-                type={field.type}
-                value={cardToEdit?.[field.name]}
-                required={field.required}
-                onChange={handleChange}
-                onFocus={handleFocus}
-                autoFocus={index === fieldToFocus}
-                error={cardToEdit && !!formError[cardToEdit._id]?.[field.id]}
-                helperText={
-                  (cardToEdit && formError[cardToEdit._id]?.[field.id]) || ""
+    <Box component={"form"}>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        fullScreen
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: "relative" }} color="error">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="close"
+              onClick={onClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Edit Movie
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Container maxWidth="md" sx={{ mt: 3 }}>
+          <DialogContent>
+            {cardToEdit && (
+              <CardMedia
+                height="250"
+                component="img"
+                image={
+                  cardToEdit.url ||
+                  "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
                 }
+                className="card-image"
+                sx={{
+                  mb: 3,
+                  filter: "brightness(100%)",
+                  transition: "filter 0.3s ease-in-out",
+                }}
               />
+            )}
+            <Grid container spacing={2}>
+              {cardFormArray.map((field, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={field.sm}
+                  key={`${new Date()}-${field.id}`}
+                >
+                  <TextField
+                    fullWidth
+                    label={field.label}
+                    name={field.name}
+                    id={field.id}
+                    type={field.type}
+                    value={cardToEdit?.[field.name]}
+                    required={field.required}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    autoFocus={index === fieldToFocus}
+                    error={
+                      cardToEdit && !!formError[cardToEdit._id]?.[field.id]
+                    }
+                    helperText={
+                      (cardToEdit && formError[cardToEdit._id]?.[field.id]) ||
+                      ""
+                    }
+                  />
+                </Grid>
+              ))}
+              <Grid item xs={12} sm={6}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="error"
+                  onClick={handleSaveCard}
+                  // disabled={!formValid}
+                  sx={{ mt: 1, mb: { xs: 0, md: 2 } }}
+                >
+                  Edit Movie
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  color="error"
+                  sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
+                  onClick={onClose}
+                >
+                  <RestartAltIcon /> Cancel
+                </Button>
+              </Grid>
             </Grid>
-          ))}
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button color="primary" onClick={handleSaveCard}>
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+          </DialogContent>
+        </Container>
+        <DialogActions></DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 

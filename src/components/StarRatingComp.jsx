@@ -15,7 +15,7 @@ const StarRating = () => {
         <StarIcon
           size="small"
           key={index}
-          sx={{ color: isPopular ? "gold" : "inherit", fontSize: "20px" }}
+          sx={{ color: isPopular ? "gold" : "white", fontSize: "20px" }}
         />
       ))}
       {Popular && (

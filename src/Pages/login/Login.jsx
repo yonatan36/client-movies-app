@@ -4,11 +4,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import LinearProgress from "@mui/material/LinearProgress";
+import LoginIcon from "@mui/icons-material/Login";
 import { LoginArray } from "./ArrayLogin";
 import ROUTES from "../../routes/ROUTES";
 import axios from "axios";
@@ -18,17 +16,20 @@ import { feildValidation } from "../../validation/feildValidation";
 import { useNavigate } from "react-router-dom";
 import RegisterPage from "../registerPage/Register";
 import PasswordField from "../../components/PasswordField";
-
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
 import useLoggedIn from "../../hooks/useLoggedIn";
+import CloseIcon from "@mui/icons-material/Close";
+
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
+  Typography,
+  IconButton,
 } from "@mui/material";
 
-const Login = ({ openLogin, setOpenLogin, avatar }) => {
+const Login = ({ openLogin, setOpenLogin }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
@@ -37,7 +38,6 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
 
   const navigate = useNavigate();
   const loggedIn = useLoggedIn();
@@ -84,11 +84,8 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
       setIsLoading(true);
       const { data } = await axios.post("/users/login", formData);
       localStorage.setItem("token", data.token);
-
       setIsLoading(false);
-
       loggedIn();
-
       const firstName = await getUserInfo();
       toast.success(`Welcome ${firstName}! Good to see you`);
       navigate(ROUTES.HOME);
@@ -99,44 +96,10 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
     }
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <div
-  //       style={{
-  //         position: "relative",
-  //         display: "inline-block",
-  //         display: "flex",
-  //         alignItems: "center",
-  //         justifyContent: "center",
-  //         marginTop: "200px",
-  //       }}
-  //     >
-  //       <CircularProgress
-  //         color="error"
-  //         style={{ position: "absolute", zIndex: 1 }}
-  //         size={100}
-  //       />
-  //       <Avatar
-  //         alt={avatar.alt}
-  //         src={avatar.url}
-  //         sx={{
-  //           width: 70,
-  //           height: 70,
-  //         }}
-  //       />
-  //     </div>
-  //   );
-  // }
-
   const handleFocus = (event) => {
     setFieldToFocus(
       LoginArray.findIndex((field) => field.name === event.target.name)
     );
-  };
-
-  const resetForm = () => {
-    setFormData({});
-    setFormError({});
   };
 
   const handleClose = () => {
@@ -150,9 +113,49 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
   return (
     <React.Fragment>
       <Dialog open={openLogin} onClose={handleClose}>
-        <DialogContent>
-          {isLoading && <LinearProgress color="error" />}
+        <AppBar position="relative" color="error">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="close"
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h6" component="div">
+                Sign In
+              </Typography>
+            </Box>
+          </Toolbar>
+        </AppBar>
 
+        <DialogContent>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "1rem",
+            }}
+          >
+            <Avatar
+              sx={{
+                m: 1,
+                bgcolor: "secondary.main",
+              }}
+            >
+              <LoginIcon />
+            </Avatar>
+          </Box>
           <Container maxWidth="xs">
             <Box
               sx={{
@@ -161,12 +164,6 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
                 alignItems: "center",
               }}
             >
-              <DialogTitle>
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                  <HowToRegIcon />
-                </Avatar>
-                Sign In
-              </DialogTitle>
               <Box
                 component="form"
                 onSubmit={handleSubmit}
@@ -222,10 +219,10 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
                       type="button"
                       fullWidth
                       variant="contained"
-                      onClick={resetForm}
+                      onClick={handleClick}
                       color="error"
                     >
-                      <RestartAltIcon /> Reset Form
+                      Sign Up
                     </Button>
                   </Grid>
                 </Grid>
@@ -234,19 +231,7 @@ const Login = ({ openLogin, setOpenLogin, avatar }) => {
             </Box>
                 
           </Container>
-          <RegisterPage
-            openRegister={openRegister}
-            setOpenRegister={setOpenRegister}
-          />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClick}>
-            <DialogContentText>Don't have an account?</DialogContentText>
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
       </Dialog>
       {openRegister && (
         <RegisterPage

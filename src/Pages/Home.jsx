@@ -20,7 +20,7 @@ function Home() {
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [cardToEdit, setCardToEdit] = useState(null);
+  const [cardToEdit, setCardToEdit] = useState([]);
   const [myCardIds, setMyCardIds] = useState([]);
   const [firstLoggedIn, setFirstLoggedIn] = useState(true);
   let qparams = useQueryParams();
@@ -190,7 +190,12 @@ function Home() {
             mb: 3,
           }}
         >
-          <Typography component="h1" variant="h5" align="left">
+          <Typography
+            component="h1"
+            fontWeight="700"
+            fontSize="1.7rem"
+            align="left"
+          >
             Welcome to a World of Movies
           </Typography>
         </Container>

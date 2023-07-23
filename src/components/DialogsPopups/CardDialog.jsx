@@ -1,27 +1,50 @@
 import Slide from "@mui/material/Slide";
 import { forwardRef } from "react";
-
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogActions,
-  Button,
   Card,
   CardMedia,
   CardContent,
   Typography,
+  IconButton,
 } from "@mui/material";
 const Transition = forwardRef((props, ref) => {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 const CardDialog = ({ open, onClose, img, title, description }) => {
   return (
-    <Dialog open={open} onClose={onClose} TransitionComponent={Transition}>
-      <DialogTitle variant="h4" sx={{ textAlign: "center", fontWeight: 100 }}>
-        {title}
-      </DialogTitle>
+    <Dialog open={open} onClose={onClose} TransitionComponent={Transition} full>
+      <AppBar position="relative" sx={{ backgroundColor: "red" }}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={onClose}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{
+              flexGrow: 1,
+              textAlign: "center",
+              fontWeight: "bold",
+              letterSpacing: 1,
+              textTransform: "uppercase",
+            }}
+          >
+            {title}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
       <DialogContent>
         <div style={{ position: "relative", paddingTop: "56.25%", height: 0 }}>
           <iframe
@@ -51,11 +74,6 @@ const CardDialog = ({ open, onClose, img, title, description }) => {
           </CardContent>
         </Card>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Close
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

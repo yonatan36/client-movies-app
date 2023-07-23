@@ -48,7 +48,7 @@ export const profileArray = [
     name: "alt",
     id: "alt",
     type: "text",
-    sm: 6,
+    sm: 12,
     required: false,
     joi: Joi.string().allow(""),
   },
