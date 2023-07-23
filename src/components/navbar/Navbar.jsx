@@ -19,7 +19,7 @@ import Profile from "../../Pages/profile/Profile";
 import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import SearchComp from "../SearchComp";
 import axios from "axios";
 import { useTheme } from "@mui/material";
@@ -269,6 +269,9 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                 ml: 1,
                 flexGrow: 1,
                 display: { xs: "flex", md: "none" },
+                "@media (max-width: 368px)": {
+                  display: "none", // Hide on screens with a width of 300px or smaller
+                },
               }}
             >
               Yoon

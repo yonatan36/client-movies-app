@@ -18,7 +18,7 @@ const Transition = forwardRef((props, ref) => {
 });
 const CardDialog = ({ open, onClose, img, title, description }) => {
   return (
-    <Dialog open={open} onClose={onClose} TransitionComponent={Transition} full>
+    <Dialog open={open} onClose={onClose} TransitionComponent={Transition}>
       <AppBar position="relative" sx={{ backgroundColor: "red" }}>
         <Toolbar>
           <IconButton
@@ -62,6 +62,7 @@ const CardDialog = ({ open, onClose, img, title, description }) => {
             }}
           ></iframe>
         </div>
+
         <Card>
           <CardMedia
             sx={{ width: "600px", height: "300px" }}

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "../Pages/Home";
 import Register from "../Pages/registerPage/Register";
 import Login from "../Pages/login/Login";
@@ -13,19 +13,27 @@ import SuperProtectedRoute from "../components/ProtectedRoute/SuperProtectedRout
 const Router = () => {
   return (
     <Routes>
+      <Route path={ROUTES.FAKEHOME} element={<Home />} />
       <Route
         exact
         path={ROUTES.HOME}
         element={<ProtectedRoute element={<Home />} />}
       />
-
-      <Route path={ROUTES.FAKEHOME} element={<Home />} />
+      <Route
+        exact
+        path={ROUTES.FAV}
+        element={<ProtectedRoute element={<Fav />} />}
+      />
+      <Route
+        exact
+        path={ROUTES.LOGOUT}
+        element={<ProtectedRoute element={<LogOut />} />}
+      />
       <Route exact path={ROUTES.REGISTER} element={<Register />} />
       <Route exact path={ROUTES.LOGIN} element={<Login />} />
       <Route exact path={ROUTES.ABOUT} element={<About />} />
       <Route exact path={ROUTES.PROFILE} element={<Profile />} />
-      <Route exact path={ROUTES.FAV} element={<Fav />} />
-      <Route exact path={ROUTES.LOGOUT} element={<LogOut />} />
+
       <Route
         exact
         path={ROUTES.MYCARDS}

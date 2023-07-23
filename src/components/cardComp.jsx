@@ -15,6 +15,7 @@ import {
   Button,
   Box,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -65,14 +66,14 @@ const CardComponent = ({
   const handleClose = () => {
     setOpen(false);
   };
-
+  const isLgScreen = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   return (
     <Card
       square
       raised
       sx={{
         "&:hover .card-image": {
-          filter: "brightness(0.5)", // Adjust the brightness value as needed
+          filter: "brightness(0.5)",
         },
       }}
     >
@@ -80,8 +81,14 @@ const CardComponent = ({
         onClick={handleOpen}
         sx={{
           position: "relative",
+          "& .hover-element": {
+            opacity: isLgScreen ? 0 : 1,
+            pointerEvents: "none",
+            transition: "opacity 0.3s ease",
+          },
           "&:hover .hover-element": {
             opacity: 1,
+            pointerEvents: "auto",
           },
         }}
       >
@@ -219,6 +226,7 @@ const CardComponent = ({
             <IconButton
               component="span"
               onClick={handleDeleteBtnClick}
+              onTouchStart={handleDeleteBtnClick}
               sx={{
                 color: "white",
                 transition: "all 0.2s ease-in-out",
