@@ -7,5 +7,6 @@ const ROUTES = {
   FAV: "/mylist",
   MYCARDS: "/mymovies",
   LOGOUT: "/logout",
+  PAGENOTFOUND: "/404",
 };
 export default ROUTES;
