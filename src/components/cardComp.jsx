@@ -23,6 +23,7 @@ const CardComponent = ({
   img,
   title,
   description,
+  createdYear,
   id,
   onDelete,
   canDelete,
@@ -30,20 +31,18 @@ const CardComponent = ({
   canEdit,
   onRemoveLikes,
   isLiked,
-  likes,
+
   notConnected,
   isMyCard,
 }) => {
   const [open, setOpen] = useState(false);
   const [likeState, setLikesState] = useState(isLiked);
-  const [like, setLikes] = useState(likes.length);
 
   const handleLikeBtnClick = async (event) => {
     event.stopPropagation();
     try {
       const response = await axios.patch("/cards/card-likes/" + id);
-      const updatedLikes = response.data.likes.length;
-      setLikes(updatedLikes);
+
       setLikesState((prevState) => !prevState);
       onRemoveLikes(id);
     } catch (err) {}
@@ -143,6 +142,38 @@ const CardComponent = ({
           {title}
         </Typography>
 
+        <Box
+          className="hover-element"
+          sx={{
+            position: "absolute",
+            top: "16%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 2,
+            opacity: 0,
+            transition: "opacity 0.3s ease",
+          }}
+        >
+          <StarRating />
+        </Box>
+        <Typography
+          className="hover-element"
+          sx={{
+            position: "absolute",
+            top: "18%",
+            width: "100%",
+            color: "#fff",
+            padding: "8px",
+            zIndex: 1,
+            textAlign: "center",
+
+            opacity: 0,
+            transition: "opacity 0.3s ease",
+          }}
+        >
+          {createdYear}
+        </Typography>
+
         <Button
           component="span"
           className="hover-element media-play-btn"
@@ -161,21 +192,6 @@ const CardComponent = ({
         >
           <PlayArrowIcon />
         </Button>
-
-        <Box
-          className="hover-element"
-          sx={{
-            position: "absolute",
-            top: "65%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 2,
-            opacity: 0,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          <StarRating />
-        </Box>
 
         <Box
           className="hover-element"

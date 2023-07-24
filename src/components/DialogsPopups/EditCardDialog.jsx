@@ -6,22 +6,23 @@ import Slide from "@mui/material/Slide";
 import CloseIcon from "@mui/icons-material/Close";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import EditIcon from "@mui/icons-material/Edit";
+import Avatar from "@mui/material/Avatar";
 
+import LogoDialog from "../LogoDialogs";
 import axios from "axios";
+import CardComponent from "../cardComp";
 import { toast } from "react-toastify";
 import {
   Dialog,
   Container,
   DialogContent,
-  DialogActions,
   Button,
   TextField,
   Grid,
   Typography,
   IconButton,
   Box,
-  CardMedia,
 } from "@mui/material";
 
 const Transition = forwardRef((props, ref) => {
@@ -120,7 +121,7 @@ const EditCardDialog = ({
   };
 
   return (
-    <Box component={"form"}>
+    <Box component="form">
       <Dialog
         open={open}
         onClose={onClose}
@@ -137,87 +138,107 @@ const EditCardDialog = ({
             >
               <CloseIcon />
             </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Edit Movie
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                Edit Movie
+              </Typography>
+              <Avatar
+                sx={{
+                  bgcolor: "secondary.main",
+                  ml: 1,
+                }}
+              >
+                <EditIcon />
+              </Avatar>
+            </Box>
           </Toolbar>
         </AppBar>
-        <Container maxWidth="md" sx={{ mt: 3 }}>
+        <Container maxWidth="lg" sx={{ mt: 3, mb: 1 }}>
           <DialogContent>
-            {cardToEdit && (
-              <CardMedia
-                height="250"
-                component="img"
-                image={
-                  cardToEdit.url ||
-                  "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
-                }
-                className="card-image"
-                sx={{
-                  mb: 3,
-                  filter: "brightness(100%)",
-                  transition: "filter 0.3s ease-in-out",
-                }}
-              />
-            )}
-            <Grid container spacing={2}>
-              {cardFormArray.map((field, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={field.sm}
-                  key={`${new Date()}-${field.id}`}
-                >
-                  <TextField
-                    fullWidth
-                    label={field.label}
-                    name={field.name}
-                    id={field.id}
-                    type={field.type}
-                    value={cardToEdit?.[field.name]}
-                    required={field.required}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    autoFocus={index === fieldToFocus}
-                    error={
-                      cardToEdit && !!formError[cardToEdit._id]?.[field.id]
-                    }
-                    helperText={
-                      (cardToEdit && formError[cardToEdit._id]?.[field.id]) ||
-                      ""
-                    }
-                  />
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LogoDialog />
+              <Grid item xs={12} sm={6}>
+                {/* Place the form on the left */}
+
+                <Grid container spacing={2}>
+                  {cardFormArray.map((field, index) => (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={field.sm}
+                      key={`${new Date()}-${field.id}`}
+                    >
+                      <TextField
+                        fullWidth
+                        label={field.label}
+                        name={field.name}
+                        id={field.id}
+                        type={field.type}
+                        value={cardToEdit?.[field.name]}
+                        required={field.required}
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        autoFocus={index === fieldToFocus}
+                        error={
+                          cardToEdit && !!formError[cardToEdit._id]?.[field.id]
+                        }
+                        helperText={
+                          (cardToEdit &&
+                            formError[cardToEdit._id]?.[field.id]) ||
+                          ""
+                        }
+                      />
+                    </Grid>
+                  ))}
+                  <Grid item xs={12}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="error"
+                      onClick={handleSaveCard}
+                      // disabled={!formValid}
+                      sx={{ mt: 1, mb: { xs: 0, md: 2 } }}
+                    >
+                      Edit Movie
+                    </Button>
+                    <Button
+                      type="button"
+                      fullWidth
+                      variant="outlined"
+                      onClick={onClose}
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
                 </Grid>
-              ))}
-              <Grid item xs={12} sm={6}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="error"
-                  onClick={handleSaveCard}
-                  // disabled={!formValid}
-                  sx={{ mt: 1, mb: { xs: 0, md: 2 } }}
-                >
-                  Edit Movie
-                </Button>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Button
-                  type="button"
-                  fullWidth
-                  variant="contained"
-                  color="error"
-                  sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
-                  onClick={onClose}
-                >
-                  <RestartAltIcon /> Cancel
-                </Button>
+
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                {/* Place the CardComponent on the right */}
+
+                <CardComponent
+                  id={""}
+                  description={""}
+                  createdYear={cardToEdit.createdYear}
+                  img={
+                    cardToEdit.url ||
+                    "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
+                  }
+                  title={cardToEdit.title || ""}
+                />
               </Grid>
             </Grid>
           </DialogContent>
         </Container>
-        <DialogActions></DialogActions>
       </Dialog>
     </Box>
   );

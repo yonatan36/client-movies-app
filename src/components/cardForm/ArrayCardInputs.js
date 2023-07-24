@@ -30,15 +30,13 @@ export const cardFormArray = [
   },
 
   {
-    label: "Email",
-    name: "email",
-    id: "email",
-    type: "email",
+    label: "createdYear",
+    name: "createdYear",
+    id: "createdYear",
+    type: "number",
     sm: 6,
-    required: true,
-    joi: Joi.string()
-      .email({ tlds: { allow: false } })
-      .required(),
+    required: false,
+    joi: Joi.number().allow("", 0),
   },
 
   {

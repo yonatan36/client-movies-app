@@ -4,6 +4,7 @@ import {
   IconButton,
   useTheme,
   Grid,
+  Box,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
@@ -21,7 +22,11 @@ import Logo from "../components/Logo";
 import MyLinearProgress from "../components/MyLinearProgress";
 import CardComponent from "../components/cardComp";
 import { toast } from "react-toastify";
+import CreateDialog from "../components/DialogsPopups/CreateDialog";
 import axios from "axios";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
+import Avatar from "@mui/material/Avatar";
+
 // Transition component for the dialog
 const Transition = forwardRef((props, ref) => {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -39,7 +44,7 @@ const MyCards = () => {
   const [myCardIds, setMyCardIds] = useState([]);
 
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
-
+  const [openBizDialog, setOpenBizDialog] = useState(false);
   const { isLoggedIn } = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice
   );
@@ -61,12 +66,12 @@ const MyCards = () => {
 
   const handleEditDialogClose = () => {
     setOpenEditDialog(false);
-    setCardToEdit(null);
+    setCardToEdit([]);
   };
 
   const handleClickOpen = () => {
     // Open the add card dialog
-    setAddDialogOpen(true);
+    setOpenBizDialog(true);
   };
 
   const handleCloseWithoutAdd = () => {
@@ -124,6 +129,9 @@ const MyCards = () => {
     setOpenEditDialog(true);
   };
 
+  const handleBizDialogClose = () => {
+    setOpenBizDialog(false);
+  };
   if (isLoading) {
     return (
       <>
@@ -177,12 +185,29 @@ const MyCards = () => {
             >
               <CloseIcon />
             </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Add new movie
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography variant="h6" component="div">
+                Add new movie
+              </Typography>
+              <Avatar
+                sx={{
+                  bgcolor: "secondary.main",
+                  ml: 1,
+                }}
+              >
+                <VideoCallIcon />
+              </Avatar>
+            </Box>
           </Toolbar>
         </AppBar>
-        <Container maxWidth="md" sx={{ mt: 3 }}>
+
+        <Container
+          maxWidth="lg"
+          sx={{
+            mt: 3,
+            mb: 3,
+          }}
+        >
           <CardForm onClose={handleClose} edit={false} />
         </Container>
       </Dialog>
@@ -203,7 +228,7 @@ const MyCards = () => {
                   phone={item.phone}
                   img={item.image ? item.image.url : ""}
                   description={item.description}
-                  email={item.email}
+                  createdYear={item.createdYear}
                   createdAt={item.createdAt}
                   likes={item.likes}
                   bizNumber={item.bizNumber}
@@ -265,6 +290,11 @@ const MyCards = () => {
           cardToEdit={cardToEdit}
           setCardToEdit={setCardToEdit}
           replaceEditedCard={replaceEditedCard}
+        />
+        <CreateDialog
+          open={openBizDialog}
+          onClose={handleBizDialogClose}
+          openCreate={setAddDialogOpen}
         />
       </Container>
     </Fragment>

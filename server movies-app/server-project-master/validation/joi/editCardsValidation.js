@@ -4,11 +4,9 @@ const editCardSchema = Joi.object({
   title: Joi.string().min(2).max(256).required(),
   subTitle: Joi.string().min(2).max(256).required(),
   description: Joi.string().min(2).max(1024).required(),
-  email: Joi.string()
-    .regex(
-      new RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)
-    )
-    .required(),
+  createdYear: Joi.string()
+    .pattern(/^\d{4}$/)
+    .allow(""),
   web: Joi.string()
     .regex(
       new RegExp(

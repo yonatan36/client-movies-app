@@ -75,7 +75,7 @@ const Fav = () => {
   };
   const handleEditDialogClose = () => {
     setOpenEditDialog(false);
-    setCardToEdit(null);
+    setCardToEdit([]);
   };
   //likes function
   const handlelikedCard = (id) => {
@@ -142,7 +142,7 @@ const Fav = () => {
                   phone={item.phone}
                   img={item.image ? item.image.url : ""}
                   description={item.description}
-                  email={item.email}
+                  createdYear={item.createdYear}
                   createdAt={item.createdAt}
                   likes={item.likes}
                   bizNumber={item.bizNumber}

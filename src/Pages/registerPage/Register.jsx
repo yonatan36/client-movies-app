@@ -6,7 +6,6 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Container from "@mui/material/Container";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { TextField, FormControlLabel, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,6 +18,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { feildValidation } from "../../validation/feildValidation";
 import { registerArray } from "../registerPage/ArrayInputs";
 import BizDialog from "../../components/DialogsPopups/BizDialog";
+import LogoDialog from "../../components/LogoDialogs";
 
 import {
   Dialog,
@@ -92,7 +92,6 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
     } catch (err) {
       setIsLoading(false);
       toast.error(`Oops! Registration failed. Please try again.`);
-      console.log("Register error:", err);
     }
   };
 
@@ -121,9 +120,15 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                mr: 2,
               }}
             >
-              <Typography variant="h6" component="div">
+              <Typography
+                variant="h6"
+                fontWeight="400"
+                fontSize="1.7rem"
+                component="div"
+              >
                 Sign up
               </Typography>
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -133,6 +138,18 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
           </Toolbar>
         </AppBar>
         <DialogContent>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mt: 2,
+              mb: 6,
+            }}
+          >
+            <LogoDialog />
+          </Box>
           <Container maxWidth="md">
             <Box
               sx={{
@@ -183,29 +200,35 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
           </Container>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleSubmit}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
-            color="error"
-          >
-            Sign Up
-          </Button>
-
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
-            onClick={() => {
-              setOpenLogin(true);
-              handleClose();
-            }}
-            color="error"
-          >
-            Sign In
-          </Button>
+          <Grid container>
+            <Grid container justifyContent="center">
+              <Grid item xs={10}>
+                <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 2, mb: 1 }}
+                  color="error"
+                >
+                  Sign Up
+                </Button>
+              </Grid>
+              <Grid item xs={10}>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="outlined"
+                  sx={{ mb: 2 }}
+                  onClick={() => {
+                    setOpenLogin(true);
+                    handleClose();
+                  }}
+                >
+                  Sign In
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
       <BizDialog open={openBizDialog} onClose={handleBizDialogClose} />

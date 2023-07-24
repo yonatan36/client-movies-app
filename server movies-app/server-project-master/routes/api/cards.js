@@ -4,7 +4,6 @@ const cardsValidationServise = require("../../validation/cardsValidationServise"
 const idValidationServise = require("../../validation/idValidationService");
 const cardAccessDataService = require("../../model/cards/models/cardAccessData");
 const normalizeCard = require("../../model/cards/helpers/normalizationCard");
-const chalk = require("chalk");
 const permissionsMiddleware = require("../../middleware/permissionsMiddleware");
 const authmw = require("../../middleware/authMiddleware");
 
@@ -13,12 +12,13 @@ const authmw = require("../../middleware/authMiddleware");
 router.post("/", authmw, async (req, res) => {
   try {
     let normalCard = await normalizeCard(req.body, req.userData._id);
-    await cardsValidationServise.createCardValidation(req.body);
+
     await normalizeCard(req.body, req.userData._id);
     await cardAccessDataService.createCard(normalCard);
     res.status(200).json();
   } catch (err) {
     res.status(400).json(err.message);
+    console.log(err.message);
   }
 });
 

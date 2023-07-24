@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Grid, Button, Box, CardMedia } from "@mui/material";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { cardFormArray } from "./ArrayCardInputs";
 import { feildValidation } from "../../validation/feildValidation";
-import { TextField } from "@mui/material";
+import { TextField, Grid, Button, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
+import LogoDialog from "../LogoDialogs";
+import CardComponent from "../cardComp";
 
-const CardForm = ({ img }) => {
+const CardForm = ({}) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
@@ -77,63 +78,81 @@ const CardForm = ({ img }) => {
 
   return (
     <Box component={"form"} onSubmit={createCard}>
-      <CardMedia
-        height="250"
-        component="img"
-        src={
-          formData.url ||
-          "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
-        }
-        className="card-image"
+      <Grid
+        container
+        spacing={2}
         sx={{
-          mb: 3,
-          filter: "brightness(100%)",
-          transition: "filter 0.3s ease-in-out",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 1,
         }}
-      />
+      >
+        <LogoDialog />
+        <Grid item xs={12} sm={6}>
+          {/* Place the form on the left */}
 
-      <Grid container spacing={2}>
-        {cardFormArray.map((field, index) => (
-          <Grid item xs={12} sm={field.sm} key={`${new Date()}-${field.id}`}>
-            <TextField
-              fullWidth
-              label={field.label}
-              name={field.name}
-              id={field.id}
-              type={field.type}
-              required={field.required}
-              value={formData[field.name] || ""}
-              onChange={handleChange}
-              onFocus={handleFocus}
-              autoFocus={index === fieldToFocus}
-              error={!!formError[field.name]}
-              helperText={formError[field.name] || ""}
-            />
+          <Grid container spacing={2}>
+            {cardFormArray.map((field, index) => (
+              <Grid
+                item
+                xs={12}
+                sm={field.sm}
+                key={`${new Date()}-${field.id}`}
+              >
+                <TextField
+                  fullWidth
+                  label={field.label}
+                  name={field.name}
+                  id={field.id}
+                  type={field.type}
+                  required={field.required}
+                  value={formData[field.name] || ""}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  autoFocus={index === fieldToFocus}
+                  error={!!formError[field.name]}
+                  helperText={formError[field.name] || ""}
+                />
+              </Grid>
+            ))}
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="error"
+                // disabled={!formValid}
+              >
+                Create Movie
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="button"
+                fullWidth
+                variant="outlined"
+                onClick={resetForm}
+              >
+                <RestartAltIcon /> Reset Form
+              </Button>
+            </Grid>
           </Grid>
-        ))}
-        <Grid item xs={12} sm={6}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="error"
-            // disabled={!formValid}
-            sx={{ mt: 1, mb: { xs: 0, md: 2 } }}
-          >
-            Create Movie
-          </Button>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            color="error"
-            sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
-            onClick={resetForm}
-          >
-            <RestartAltIcon /> Reset Form
-          </Button>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          {/* Place the CardComponent on the right */}
+
+          <CardComponent
+            id={""}
+            description={""}
+            createdYear={formData.createdYear}
+            title={formData.title || ""}
+            img={
+              formData.url ||
+              "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
+            }
+          />
         </Grid>
       </Grid>
     </Box>

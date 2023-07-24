@@ -76,7 +76,7 @@ function Home() {
 
   const handleEditDialogClose = () => {
     setOpenEditDialog(false);
-    setCardToEdit(null);
+    setCardToEdit([]);
   };
 
   useEffect(() => {
@@ -220,7 +220,7 @@ function Home() {
                 phone={item.phone}
                 img={item.image ? item.image.url : ""}
                 description={item.description}
-                email={item.email}
+                createdYear={item.createdYear}
                 createdAt={item.createdAt}
                 likes={item.likes}
                 bizNumber={item.bizNumber}

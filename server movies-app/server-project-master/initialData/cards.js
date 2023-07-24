@@ -5,7 +5,7 @@ const cards = [
     description:
       "A gripping tale of survival in a world plagued by sand and dust storms.",
     phone: "0500000000",
-    email: "kenny1@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/home1.jpg",
       alt: "alalla",
@@ -17,7 +17,7 @@ const cards = [
     description:
       "Uncover the secrets of a legendary island inhabited by ancient creatures.",
     phone: "0500000000",
-    email: "kenny2@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/home2.jpg",
       alt: "alalla",
@@ -29,7 +29,7 @@ const cards = [
     description:
       "Embark on a thrilling adventure across treacherous waters with ruthless pirates vying for treasures.",
     phone: "0500000000",
-    email: "kenny3@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/home3.jpg",
       alt: "alalla",
@@ -41,7 +41,7 @@ const cards = [
     description:
       "When a group of friends is catapulted through time, they must navigate different eras to find their way back home.",
     phone: "0500000000",
-    email: "kenny4@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/home4.jpg",
       alt: "alalla",
@@ -53,7 +53,7 @@ const cards = [
     description:
       "When a group of friends is catapulted through time, they must navigate different eras to find their way back home.",
     phone: "0500000000",
-    email: "kenny5@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/slide1.png",
       alt: "alalla",
@@ -65,7 +65,7 @@ const cards = [
     description:
       "Witness the courageous battle of a brave queen leading her people against towering giants.",
     phone: "0500000000",
-    email: "kenny6@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/slide3.jpg",
       alt: "alalla",
@@ -77,7 +77,7 @@ const cards = [
     description:
       "Follow the intertwined fates of extraordinary individuals on a quest to fulfill their shared destiny.",
     phone: "0500000000",
-    email: "kenny7@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/slide2.jpg",
       alt: "alalla",
@@ -89,7 +89,7 @@ const cards = [
     description:
       "Venture into the uncharted realms of the supernatural alongside a team of paranormal investigators.",
     phone: "0500000000",
-    email: "kenny8@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/u1.jpg",
       alt: "alalla",
@@ -101,7 +101,7 @@ const cards = [
     description:
       "Witness the extraordinary journey of a young hero mastering ancient magic to confront an ancient evil.",
     phone: "0500000000",
-    email: "kenny9@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/u6.png",
       alt: "alalla",
@@ -113,17 +113,10 @@ const cards = [
     description:
       "Experience a captivating tale of forbidden love and timeless devotion set in a picturesque town.",
     phone: "0500000000",
-    email: "kenny10@gmail.com",
+    createdYear: "2000",
     image: {
       url: "assets/u3.jpg",
       alt: "alalla",
-    },
-    address: {
-      country: "Israel",
-      city: "Ashkeluna",
-      street: "jump street",
-      houseNumber: 23,
-      zip: 0,
     },
   },
   {
@@ -132,7 +125,8 @@ const cards = [
     description:
       "Unearth the ancient secrets of an enigmatic desert as a courageous archaeologist delves into hidden treasures and long-forgotten civilizations.",
     phone: "0500000000",
-    email: "kenny11@gmail.com",
+    createdYear: "2000",
+
     image: {
       url: "assets/u4.jpg",
       alt: "alalla",
@@ -144,7 +138,8 @@ const cards = [
     description:
       "Join a group of intrepid adventurers racing against time to find the elusive seventh key and prevent impending catastrophe.",
     phone: "0500000000",
-    email: "kenny12@gmail.com",
+    createdYear: "2000",
+
     image: {
       url: "assets/u7.jpg",
       alt: "alalla",

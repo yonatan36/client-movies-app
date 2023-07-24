@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ROUTES from "../../routes/ROUTES";
 import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ProtectedRoute = ({ element }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +30,7 @@ const ProtectedRoute = ({ element }) => {
     return element;
   } else {
     // If not authenticated, redirect to the "About" page
+    toast.error("Oops! plese loogin.");
     return <Navigate to={ROUTES.ABOUT} />;
   }
 };

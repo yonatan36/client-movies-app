@@ -2,22 +2,19 @@ import React from "react";
 import { Container, useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
-function Logo() {
+function LogoDialog() {
   const theme = useTheme();
 
   return (
     <Container>
       {" "}
       <Typography
-        fontWeight="900"
-        fontSize="2.5rem"
+        fontWeight="600"
+        fontSize="1.9rem"
         sx={{
-          mr: 2.4,
-          ml: 0.6,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "100vh",
         }}
       >
         Yoon
@@ -27,4 +24,4 @@ function Logo() {
   );
 }
 
-export default Logo;
+export default LogoDialog;

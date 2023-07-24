@@ -10,10 +10,10 @@ import {
 function DeleteDialog({ open, onClose, cardToDelete, title }) {
   return (
     <Dialog open={open} onClose={onClose}>
-     <DialogTitle>Are you sure you want to delete {title} card?</DialogTitle>
+      <DialogTitle>Are you sure you want to delete {title} movie?</DialogTitle>
 
       <DialogContent>
-        Deleting a card is permanent and cannot be undone.
+        Deleting a movie is permanent and cannot be undone.
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

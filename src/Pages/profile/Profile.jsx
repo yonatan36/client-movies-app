@@ -16,6 +16,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { feildValidation } from "../../validation/feildValidation";
 import { profileArray } from "../profile/ArrayInputs";
+import LogoDialog from "../../components/LogoDialogs";
 import {
   Dialog,
   DialogContent,
@@ -190,15 +191,31 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                mr: 3,
               }}
             >
-              <Typography variant="h6" component="div">
+              <Typography
+                variant="h6"
+                fontWeight="400"
+                fontSize="1.7rem"
+                component="div"
+              >
                 profile
               </Typography>
             </Box>
           </Toolbar>
         </AppBar>
         <DialogContent>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <LogoDialog />
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -271,26 +288,32 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
           </Container>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleSubmit}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 2, mb: { xs: 0, md: 1 } }}
-            color="error"
-          >
-            update me
-          </Button>
-
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            sx={{ mb: 1, mt: { xs: 0, md: 2 } }}
-            onClick={resetForm}
-            color="error"
-          >
-            <RestartAltIcon /> Reset Form
-          </Button>
+          <Grid container>
+            <Grid container justifyContent="center">
+              <Grid item xs={10}>
+                <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 1 }}
+                  color="error"
+                >
+                  update me
+                </Button>
+              </Grid>
+              <Grid item xs={10}>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="outlined"
+                  sx={{ mb: 1, mt: 1 }}
+                  onClick={handleClose}
+                >
+                  cancal
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </React.Fragment>
