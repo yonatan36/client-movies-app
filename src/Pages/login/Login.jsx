@@ -4,7 +4,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import LoginIcon from "@mui/icons-material/Login";
 import { LoginArray } from "./ArrayLogin";
@@ -20,7 +19,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import useLoggedIn from "../../hooks/useLoggedIn";
 import CloseIcon from "@mui/icons-material/Close";
-
+import LogoDialog from "../../components/LogoDialogs";
 import {
   Dialog,
   DialogContent,
@@ -92,7 +91,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
       handleClose(true);
     } catch (err) {
       setIsLoading(false);
-      toast.error("An error occurred. Please try again.");
+      toast.error("Invalid email or password");
     }
   };
 
@@ -129,33 +128,32 @@ const Login = ({ openLogin, setOpenLogin }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                mr: 2.5,
               }}
             >
-              <Typography variant="h6" component="div">
+              <Typography
+                variant="h6"
+                fontWeight="400"
+                fontSize="1.7rem"
+                component="div"
+              >
                 Sign In
               </Typography>
+              <Avatar
+                sx={{
+                  ml: 1,
+                  bgcolor: "secondary.main",
+                }}
+              >
+                <LoginIcon />
+              </Avatar>
             </Box>
           </Toolbar>
         </AppBar>
-
+        <Box sx={{ mt: 4 }}>
+          <LogoDialog />
+        </Box>
         <DialogContent>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: "1rem",
-            }}
-          >
-            <Avatar
-              sx={{
-                m: 1,
-                bgcolor: "secondary.main",
-              }}
-            >
-              <LoginIcon />
-            </Avatar>
-          </Box>
           <Container maxWidth="xs">
             <Box
               sx={{
@@ -218,9 +216,8 @@ const Login = ({ openLogin, setOpenLogin }) => {
                     <Button
                       type="button"
                       fullWidth
-                      variant="contained"
+                      variant="outlined"
                       onClick={handleClick}
-                      color="error"
                     >
                       Sign Up
                     </Button>
