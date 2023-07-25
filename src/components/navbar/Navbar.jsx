@@ -15,31 +15,41 @@ import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
+import HomeIcon from "@mui/icons-material/Home";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import LoginIcon from "@mui/icons-material/Login";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import Profile from "../../Pages/profile/Profile";
+import CreateIcon from "@mui/icons-material/Create";
+import InfoIcon from "@mui/icons-material/Info";
 import Login from "../../Pages/login/Login";
 import RegisterPage from "../../Pages/registerPage/Register";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
+import LogoutIcon from "@mui/icons-material/Logout";
 import SearchComp from "../SearchComp";
 import axios from "axios";
 import { useTheme } from "@mui/material";
-const pages = [
-  {
-    label: "About",
-    url: ROUTES.ABOUT,
-  },
-];
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
+  const pages = [
+    {
+      label: "About",
+      icon: <InfoIcon />,
+      url: ROUTES.ABOUT,
+    },
+  ];
   //not logged in users
   const settings = [
     {
       label: "Profile",
+      icon: <AccountBoxIcon />,
       url: () => setOpenProfile(true),
     },
 
     {
       label: "LOGOUT",
+      icon: <LogoutIcon />,
       url: ROUTES.LOGOUT,
     },
   ];
@@ -47,22 +57,26 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const notAuthPages = [
     {
       label: "Sign In",
+      icon: <LoginIcon />,
       url: () => setOpenLogin(true),
     },
   ];
   const authedPages = [
     {
       label: "Home",
+      icon: <HomeIcon />,
       url: ROUTES.HOME,
     },
     {
-      label: "My List",
+      label: "Favorites",
+      icon: <FavoriteIcon />,
       url: ROUTES.FAV,
     },
   ];
   const BizAdminPages = [
     {
       label: "My Movies",
+      icon: <CreateIcon />,
       url: ROUTES.MYCARDS,
     },
   ];
@@ -200,13 +214,62 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                         >
                           <NavLink
                             to={page.url}
-                            label={page.label}
                             style={{
                               color: darkMode ? "#e8f5e9" : "#212121",
                               textDecoration: "none",
                               fontWeight: "bold",
+                              display: "flex",
+                              alignItems: "center", // Center items vertically within the container
                             }}
                           >
+                            {page.icon && (
+                              <span
+                                style={{
+                                  marginRight: "0.5rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {page.icon}
+                              </span>
+                            )}
+                            {page.label}
+                          </NavLink>
+                        </Typography>
+                      </MenuItem>
+                    ))
+                  : ""}
+                {isLoggedIn && (payload?.isBusiness || payload?.isAdmin)
+                  ? BizAdminPages.map((page) => (
+                      <MenuItem
+                        key={"miniLinks" + page.url}
+                        onClick={handleCloseNavMenu}
+                      >
+                        <Typography
+                          textAlign="center"
+                          sx={{ fontSize: "1rem" }}
+                        >
+                          <NavLink
+                            to={page.url}
+                            style={{
+                              color: darkMode ? "#e8f5e9" : "#212121",
+                              textDecoration: "none",
+                              fontWeight: "bold",
+                              display: "flex",
+                              alignItems: "center", // Center items vertically within the container
+                            }}
+                          >
+                            {page.icon && (
+                              <span
+                                style={{
+                                  marginRight: "0.5rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {page.icon}
+                              </span>
+                            )}
                             {page.label}
                           </NavLink>
                         </Typography>
@@ -221,43 +284,63 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                     <Typography textAlign="center" sx={{ fontSize: "1rem" }}>
                       <NavLink
                         to={page.url}
-                        label={page.label}
                         style={{
                           color: darkMode ? "#e8f5e9" : "#212121",
                           textDecoration: "none",
                           fontWeight: "bold",
+                          display: "flex",
+                          alignItems: "center", // Center items vertically within the container
                         }}
                       >
+                        {page.icon && (
+                          <span
+                            style={{
+                              marginRight: "0.5rem",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {page.icon}
+                          </span>
+                        )}
                         {page.label}
                       </NavLink>
                     </Typography>
                   </MenuItem>
                 ))}
-                {isLoggedIn
-                  ? ""
-                  : notAuthPages.map((page) => (
-                      <MenuItem
-                        key={"miniLinks" + page.url}
-                        onClick={handleCloseNavMenu}
-                      >
-                        <Typography
-                          textAlign="center"
-                          sx={{ fontSize: "1rem" }}
+                {!isLoggedIn &&
+                  notAuthPages.map((page) => (
+                    <MenuItem
+                      key={"miniLinks" + page.url}
+                      onClick={handleCloseNavMenu}
+                    >
+                      <Typography textAlign="center" sx={{ fontSize: "1rem" }}>
+                        <NavLink
+                          onClick={page.url}
+                          style={{
+                            color: darkMode ? "#e8f5e9" : "#212121",
+                            textDecoration: "none",
+                            fontWeight: "bold",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
                         >
-                          <NavLink
-                            onClick={page.url}
-                            label={page.label}
-                            style={{
-                              color: darkMode ? "#e8f5e9" : "#212121",
-                              textDecoration: "none",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {page.label}
-                          </NavLink>
-                        </Typography>
-                      </MenuItem>
-                    ))}
+                          {page.icon && (
+                            <span
+                              style={{
+                                marginRight: "0.5rem",
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              {page.icon}
+                            </span>
+                          )}
+                          {page.label}
+                        </NavLink>
+                      </Typography>
+                    </MenuItem>
+                  ))}
               </Menu>
             </Box>
 
@@ -284,14 +367,14 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                     <NavLinkComponent key={page.url} {...page} />
                   ))
                 : ""}{" "}
-              {pages.map((page) => (
-                <NavLinkComponent key={page.url} {...page} />
-              ))}
               {(isLoggedIn && payload && payload.isBusiness) || payload?.isAdmin
                 ? BizAdminPages.map((page) => (
                     <NavLinkComponent key={page.url} {...page} />
                   ))
                 : ""}
+              {pages.map((page) => (
+                <NavLinkComponent key={page.url} {...page} />
+              ))}
             </Box>
             <SearchComp />
             <IconButton
@@ -352,13 +435,33 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                   </Typography>
                   {settings.map((setting, index) => (
                     <MenuItem key={index} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center" sx={{ fontSize: "1rem" }}>
+                      <Typography
+                        textAlign="center"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center", // Center items vertically within the container
+                          fontSize: "1rem",
+                        }}
+                      >
+                        {setting.icon && (
+                          <span
+                            style={{
+                              marginRight: "0.5rem",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {setting.icon}
+                          </span>
+                        )}
                         <NavLink
                           key={setting.url}
                           style={{
                             color: darkMode ? "#e8f5e9" : "#212121",
                             textDecoration: "none",
                             fontWeight: "bold",
+                            display: "flex",
+                            alignItems: "center", // Center items vertically within the container
                           }}
                           {...(typeof setting.url === "string"
                             ? { to: setting.url }

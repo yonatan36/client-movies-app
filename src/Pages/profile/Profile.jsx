@@ -115,7 +115,6 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
           zip,
         };
 
-        delete newInputState.isBusiness;
         delete newInputState.isAdmin;
         delete newInputState.password;
 
@@ -272,19 +271,20 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
                 </Grid>
                 {/* Cancel button and Link to login page */}
               </Box>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    size="medium"
-                    onChange={handleChange}
-                    name="isBusiness"
-                  />
-                }
-                label="Register as a business"
-                labelPlacement="end"
-                style={{ display: "flex", alignItems: "center" }}
-              />
             </Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  size="large"
+                  onChange={handleChange}
+                  name="isBusiness"
+                  checked={inputState.isBusiness || false}
+                />
+              }
+              label="a business user"
+              labelPlacement="end"
+              style={{ display: "flex", alignItems: "center" }}
+            />
           </Container>
         </DialogContent>
         <DialogActions>

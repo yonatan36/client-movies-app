@@ -28,7 +28,12 @@ export const LoginArray = [
       )
       .min(8)
       .max(15)
-      .required(),
-    // component: PasswordField,
+      .required()
+      .messages({
+        "string.pattern.base": `Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&).`,
+        "string.min": `Password must be at least 8 characters long.`,
+        "string.max": `Password cannot exceed 15 characters.`,
+        "any.required": `Password is required.`,
+      }),
   },
 ];

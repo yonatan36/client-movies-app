@@ -188,7 +188,7 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
             <FormControlLabel
               control={
                 <Checkbox
-                  size="medium"
+                  size="large"
                   onChange={handleChange}
                   name="isBusiness"
                 />

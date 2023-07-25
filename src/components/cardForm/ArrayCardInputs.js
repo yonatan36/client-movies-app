@@ -35,8 +35,14 @@ export const cardFormArray = [
     id: "createdYear",
     type: "number",
     sm: 6,
-    required: false,
-    joi: Joi.number().allow("", 0),
+    required: true,
+    joi: Joi.number().min(1000).max(9999).required().messages({
+      "number.base": `Please enter a valid number.`,
+      "number.integer": `Please enter an integer (no decimal places).`,
+      "number.min": `Please enter min 4 numbers.`,
+      "number.max": `Please enter max 4 numbers.`,
+      "any.required": `This field is required.`,
+    }),
   },
 
   {
@@ -56,11 +62,11 @@ export const cardFormArray = [
     sm: 12,
     required: false,
     joi: Joi.string()
-      // .pattern(
-      //   new RegExp(
-      //     "^(https?://)?[^\\s/]+\\.[^\\s/]+/\\S+\\.(jpg|jpeg|png|gif)$"
-      //   )
-      // )
+      .pattern(
+        new RegExp(
+          "^(https://www.|http://www.|https://|http://)?[a-zA-Z0-9]{2,}(.[a-zA-Z0-9]{2,})(.[a-zA-Z0-9]{2,})?|(https|assets/u[0-9]+.jpg)$"
+        )
+      )
       .messages({ "string.pattern.base": `Image url is not vaild` })
       .allow(""),
   },
