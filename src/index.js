@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -17,15 +17,18 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./store/bigPie";
 
-axios.defaults.baseURL = "/api";
-
+axios.defaults.baseURL = process.env.REACT_APP_PROXY + "/api";
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers["x-auth-token"] = token;
+    if (config.url !== "https://hp-api.onrender.com/api/spells") {
+      // Check if the request URL is not the specific URL that does not need the header
+      config.headers["x-auth-token"] = token;
+    }
   }
-  return config;
+  return config; // send the new data
 });
+
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
