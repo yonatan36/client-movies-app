@@ -65,7 +65,7 @@ const CardComponent = ({
   const handleClose = () => {
     setOpen(false);
   };
-  const isLgScreen = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+  const isLgScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
   return (
     <Card
       square
@@ -178,7 +178,6 @@ const CardComponent = ({
           component="span"
           className="hover-element media-play-btn"
           variant="contained"
-          color="error"
           sx={{
             display: "flex",
             opacity: 0,
@@ -186,6 +185,11 @@ const CardComponent = ({
             position: "absolute",
             top: "50%",
             left: "50%",
+            backgroundColor: "#e50914",
+            color: "#fff",
+            "&:hover": {
+              backgroundColor: "#b6070c",
+            },
             transform: "translate(-50%, -50%)",
             "& .MuiButton-startIcon": { marginRight: "-4px" },
           }}

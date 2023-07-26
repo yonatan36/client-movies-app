@@ -26,6 +26,7 @@ axios.interceptors.request.use((config) => {
   }
   return config;
 });
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

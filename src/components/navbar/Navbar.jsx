@@ -94,6 +94,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const [openProfile, setOpenProfile] = useState(false);
   const [avatar, setAvatar] = useState([]);
   const [name, setName] = useState([]);
+  const [bizAdminPages, setBizAdminPages] = useState([]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);

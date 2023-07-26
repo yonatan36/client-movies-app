@@ -17,6 +17,8 @@ import Toolbar from "@mui/material/Toolbar";
 import { feildValidation } from "../../validation/feildValidation";
 import { profileArray } from "../profile/ArrayInputs";
 import LogoDialog from "../../components/LogoDialogs";
+
+import useLoggedIn from "../../hooks/useLoggedIn";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +35,7 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
   const [formValid, setFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inputState, setInputState] = useState({});
-
+  const loggedIn = useLoggedIn();
   const { isLoggedIn } = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice
   );
@@ -150,8 +152,10 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
         address: undefined,
       };
 
-      await axios.put(`/users/${_id}`, updatedCard);
+      const { data } = await axios.put(`/users/${_id}`, updatedCard);
+      localStorage.setItem("token", data.token);
       setIsLoading(false);
+      loggedIn();
       handleClose(false);
       onUpdate(inputState.url, inputState.alt, inputState.firstName);
 

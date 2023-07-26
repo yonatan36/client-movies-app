@@ -92,13 +92,12 @@ const EditCardDialog = ({
       let newInputState = {
         ...data,
       };
+
+      onClose(onClose);
       setInputState(newInputState);
       toast.info("movie updated!");
       replaceEditedCard(data.card);
-      onClose(onClose);
-    } catch (err) {
-      console.log("Error updating card:", err);
-    }
+    } catch (err) {}
   };
 
   // Handle input field changes
@@ -206,7 +205,7 @@ const EditCardDialog = ({
                       color="error"
                       onClick={handleSaveCard}
                       // disabled={!formValid}
-                      sx={{ mt: 1, mb: { xs: 0, md: 2 } }}
+                      sx={{ mt: 1, mb: { xs: 2, md: 2 } }}
                     >
                       Edit Movie
                     </Button>

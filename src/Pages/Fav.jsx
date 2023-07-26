@@ -77,6 +77,7 @@ const Fav = () => {
     setOpenEditDialog(false);
     setCardToEdit([]);
   };
+
   //likes function
   const handlelikedCard = (id) => {
     setCardArr((prevCardsArr) =>
