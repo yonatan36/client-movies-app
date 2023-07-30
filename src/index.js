@@ -17,7 +17,7 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./store/bigPie";
 
-axios.defaults.baseURL = `${process.env.REACT_APP_API_URL}/api`;
+axios.defaults.baseURL = `/api`;
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -29,7 +29,7 @@ axios.interceptors.request.use((config) => {
   return config; // send the new data
 });
 
-const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
+// const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
