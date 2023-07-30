@@ -218,7 +218,7 @@ function Home() {
                 title={item.title}
                 subTitle={item.subTitle}
                 phone={item.phone}
-                img={item.image ? item.image.url : ""}
+                img={item.image ? item.image.url : ""} // http://localhost:8181/assets/jpg.1
                 description={item.description}
                 createdYear={item.createdYear}
                 createdAt={item.createdAt}
