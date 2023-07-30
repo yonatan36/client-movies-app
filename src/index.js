@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -21,14 +21,10 @@ axios.defaults.baseURL = `${process.env.REACT_APP_API_URL}/api`;
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    if (config.url !== "https://hp-api.onrender.com/api/spells") {
-      // Check if the request URL is not the specific URL that does not need the header
-      config.headers["x-auth-token"] = token;
-    }
+    config.headers["x-auth-token"] = token;
   }
-  return config; // send the new data
+  return config;
 });
-
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
