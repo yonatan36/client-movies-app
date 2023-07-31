@@ -17,7 +17,7 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./store/bigPie";
 
-axios.defaults.baseURL = `/api`;
+axios.defaults.baseURL = `${process.env.REACT_APP_API_URL}/api`;
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
