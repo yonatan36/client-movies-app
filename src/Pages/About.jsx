@@ -28,11 +28,11 @@ function About() {
         className="image-title"
         sx={{
           position: "absolute",
-          top: { md: "8.5%", xs: "5%" },
+          top: { md: "8.5%", xs: "6%" },
           left: "50%",
           transform: "translate(-50%, -50%)",
           color: "#ffffff",
-          fontSize: { md: "3rem", sm: "2rem", xs: "1.5rem" },
+          fontSize: { md: "3rem", sm: "2rem", xs: "1.8rem" },
           fontWeight: "bold",
           textAlign: "center",
           zIndex: 1,
@@ -48,7 +48,7 @@ function About() {
         className="image-title"
         sx={{
           position: "absolute",
-          top: { md: "13%", xs: "9%" },
+          top: { md: "13%", xs: "9.5%" },
           left: "50%",
           transform: "translate(-50%, -50%)",
           color: "#ffffff",
