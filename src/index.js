@@ -29,7 +29,7 @@ axios.interceptors.request.use((config) => {
   return config; // send the new data
 });
 
-// const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
