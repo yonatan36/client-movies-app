@@ -26,16 +26,18 @@ function About() {
         variant="h5"
         component="h2"
         className="image-title"
-        style={{
+        sx={{
           position: "absolute",
-          top: "8.5%",
+          top: { md: "8.5%", xs: "5%" },
           left: "50%",
           transform: "translate(-50%, -50%)",
           color: "#ffffff",
-          fontSize: "3rem",
+          fontSize: { md: "3rem", sm: "2rem", xs: "1.5rem" },
           fontWeight: "bold",
           textAlign: "center",
           zIndex: 1,
+          width: "80%", // Adjust the width to avoid overflowing in smaller screens
+          maxWidth: "600px", // Limit the maximum width of the text
         }}
       >
         Unlimited movies, TV shows, and more
@@ -44,21 +46,24 @@ function About() {
         variant="h5"
         component="h2"
         className="image-title"
-        style={{
+        sx={{
           position: "absolute",
-          top: "14.5%",
+          top: { md: "13%", xs: "9%" },
           left: "50%",
           transform: "translate(-50%, -50%)",
           color: "#ffffff",
-          fontSize: "1.1rem",
+          fontSize: { md: "1.5rem", sm: "1.2rem", xs: "1rem" },
           fontWeight: "bold",
           textAlign: "center",
           zIndex: 1,
+          width: "80%", // Adjust the width to avoid overflowing in smaller screens
+          maxWidth: "600px", // Limit the maximum width of the text
         }}
       >
         Watch anywhere. Cancel at any time. Ready to watch? Register now and
         start enjoying thousands of movies.
       </Typography>
+
       <Container>
         <Grid container spacing={6} mt={2} alignItems="center">
           <Grid item xs={12}>
