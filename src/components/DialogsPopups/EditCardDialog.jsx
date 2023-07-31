@@ -164,9 +164,23 @@ const EditCardDialog = ({
               }}
             >
               <LogoDialog />
-              <Grid item xs={12} sm={6}>
-                {/* Place the form on the left */}
 
+              {/* Right Section - CardComponent */}
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <CardComponent
+                  id={""}
+                  description={""}
+                  createdYear={cardToEdit.createdYear}
+                  img={
+                    cardToEdit.url ||
+                    "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
+                  }
+                  title={cardToEdit.title || ""}
+                />
+              </Grid>
+
+              {/* Left Section - Form */}
+              <Grid item xs={12} sm={6}>
                 <Grid container spacing={2}>
                   {cardFormArray.map((field, index) => (
                     <Grid
@@ -219,21 +233,6 @@ const EditCardDialog = ({
                     </Button>
                   </Grid>
                 </Grid>
-              </Grid>
-
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-                {/* Place the CardComponent on the right */}
-
-                <CardComponent
-                  id={""}
-                  description={""}
-                  createdYear={cardToEdit.createdYear}
-                  img={
-                    cardToEdit.url ||
-                    "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
-                  }
-                  title={cardToEdit.title || ""}
-                />
               </Grid>
             </Grid>
           </DialogContent>
