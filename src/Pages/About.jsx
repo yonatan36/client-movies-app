@@ -8,10 +8,10 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import Home from "./images/home.jpg";
-import about from "./images/about.jpg";
-import register from "./images/register.jpg";
-import backgroundFav from "./images/backroundFav.jpg";
+import Home from "../assets/home.jpg";
+import about from "../assets/about.jpg";
+import register from "../assets/register.jpg";
+import backgroundFav from "../assets/backroundFav.jpg";
 
 function About() {
   return (
