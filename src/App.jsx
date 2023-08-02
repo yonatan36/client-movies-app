@@ -25,7 +25,7 @@ function App() {
   const loggIn = useLoggedIn();
   useEffect(() => {
     loggIn();
-  }, []);
+  }, [loggIn]);
   const [darkMode, setDarkMode] = useState(true);
   const changeTheme = () => {
     setDarkMode(!darkMode);

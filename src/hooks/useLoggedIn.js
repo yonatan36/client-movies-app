@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/auth";
 import jwt_decode from "jwt-decode";
-import axios from "axios";
 
 const useLoggedIn = () => {
   const dispatch = useDispatch();

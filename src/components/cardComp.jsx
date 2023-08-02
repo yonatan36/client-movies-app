@@ -41,7 +41,7 @@ const CardComponent = ({
   const handleLikeBtnClick = async (event) => {
     event.stopPropagation();
     try {
-      const response = await axios.patch("/cards/card-likes/" + id);
+      await axios.patch("/cards/card-likes/" + id);
 
       setLikesState((prevState) => !prevState);
       onRemoveLikes(id);

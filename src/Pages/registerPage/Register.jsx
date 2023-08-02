@@ -10,11 +10,11 @@ import { TextField, FormControlLabel, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+
 import Login from "../login/Login";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import LinearProgress from "@mui/material/LinearProgress";
+
 import { feildValidation } from "../../validation/feildValidation";
 import { registerArray } from "../registerPage/ArrayInputs";
 import BizDialog from "../../components/DialogsPopups/BizDialog";
@@ -36,7 +36,6 @@ const RegisterPage = ({ openRegister, setOpenRegister }) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [openBizDialog, setOpenBizDialog] = useState(false);
-  const navigate = useNavigate();
 
   // Handle input field focus
   const handleFocus = (event) => {

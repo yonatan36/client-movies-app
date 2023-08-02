@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+
 import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -166,11 +166,6 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
       toast.error(`Oops! update failed. Please try again.`);
       console.log("Register error:", err);
     }
-  };
-
-  const resetForm = () => {
-    setFormData({});
-    setFormError({});
   };
 
   const handleClose = () => setOpenProfile(false);

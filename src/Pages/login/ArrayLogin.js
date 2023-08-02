@@ -1,5 +1,4 @@
 import Joi from "joi";
-import PasswordField from "../../components/PasswordField";
 
 export const LoginArray = [
   {

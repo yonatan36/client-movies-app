@@ -20,13 +20,7 @@ import Toolbar from "@mui/material/Toolbar";
 import useLoggedIn from "../../hooks/useLoggedIn";
 import CloseIcon from "@mui/icons-material/Close";
 import LogoDialog from "../../components/LogoDialogs";
-import {
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { Dialog, DialogContent, Typography, IconButton } from "@mui/material";
 
 const Login = ({ openLogin, setOpenLogin }) => {
   const [formData, setFormData] = useState({});

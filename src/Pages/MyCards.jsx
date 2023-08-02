@@ -45,9 +45,7 @@ const MyCards = () => {
 
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
   const [openBizDialog, setOpenBizDialog] = useState(false);
-  const { isLoggedIn } = useSelector(
-    (bigPieBigState) => bigPieBigState.authSlice
-  );
+
   const theme = useTheme();
 
   useEffect(() => {

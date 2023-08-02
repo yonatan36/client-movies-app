@@ -94,7 +94,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const [openProfile, setOpenProfile] = useState(false);
   const [avatar, setAvatar] = useState([]);
   const [name, setName] = useState([]);
-  const [bizAdminPages, setBizAdminPages] = useState([]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -427,9 +426,8 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                       paddingX: "0.3rem",
                       textAlign: "center",
                       textTransform: "none",
-                      fontWeight: 600,
                       color: "inherit",
-                      fontWeight: "bold",
+                      fontWeight: 600,
                     }}
                   >
                     Hi {name.name}!

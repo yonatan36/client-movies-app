@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 
 const NavLinkComponent = ({ url, label }) => {
@@ -9,7 +9,7 @@ const NavLinkComponent = ({ url, label }) => {
         backgroundColor: isActive ? "red" : "transparent",
         borderRadius: "5px",
         transform: isActive ? "scale(0.98)" : "scale(1)",
-        display: "inline-block",
+
         lineHeight: "9px",
         display: "block",
         p: 2,

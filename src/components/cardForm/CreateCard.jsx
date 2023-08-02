@@ -4,13 +4,13 @@ import axios from "axios";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { cardFormArray } from "./ArrayCardInputs";
 import { feildValidation } from "../../validation/feildValidation";
-import { TextField, Grid, Button, Box, Typography } from "@mui/material";
+import { TextField, Grid, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import LogoDialog from "../LogoDialogs";
 import CardComponent from "../cardComp";
 
-const CardForm = ({}) => {
+const CardForm = () => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState({});
   const [fieldToFocus, setFieldToFocus] = useState(0);
@@ -89,6 +89,20 @@ const CardForm = ({}) => {
         }}
       >
         <LogoDialog />
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          {/* Place the CardComponent on the right */}
+
+          <CardComponent
+            id={""}
+            description={""}
+            createdYear={formData.createdYear}
+            title={formData.title || ""}
+            img={
+              formData.url ||
+              "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
+            }
+          />
+        </Grid>
         <Grid item xs={12} sm={6}>
           {/* Place the form on the left */}
 
@@ -138,21 +152,6 @@ const CardForm = ({}) => {
               </Button>
             </Grid>
           </Grid>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          {/* Place the CardComponent on the right */}
-
-          <CardComponent
-            id={""}
-            description={""}
-            createdYear={formData.createdYear}
-            title={formData.title || ""}
-            img={
-              formData.url ||
-              "https://cdn.pixabay.com/photo/2013/03/08/05/28/filmstrip-91434_1280.jpg"
-            }
-          />
         </Grid>
       </Grid>
     </Box>
